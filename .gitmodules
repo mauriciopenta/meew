@@ -1,0 +1,3 @@
+[submodule "vendor/hot/phpunit-runner"]
+	path = vendor/hot/phpunit-runner
+	url = https://github.com/slavahatnuke/hot-phpunit-runner.git
