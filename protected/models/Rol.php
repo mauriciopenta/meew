@@ -7,6 +7,7 @@
  * @property integer $id_rol
  * @property string $rol_nombre
  * @property string $rol_codigo
+ * @property integer $acceso_web
  *
  * The followings are the available model relations:
  * @property Permiso[] $permisos
@@ -30,11 +31,12 @@ class Rol extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('rol_nombre, rol_codigo', 'required'),
+			array('rol_nombre, rol_codigo, acceso_web', 'required'),
+			array('acceso_web', 'numerical', 'integerOnly'=>true),
 			array('rol_nombre, rol_codigo', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_rol, rol_nombre, rol_codigo', 'safe', 'on'=>'search'),
+			array('id_rol, rol_nombre, rol_codigo, acceso_web', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,6 +62,7 @@ class Rol extends CActiveRecord
 			'id_rol' => 'Id Rol',
 			'rol_nombre' => 'Rol Nombre',
 			'rol_codigo' => 'Rol Codigo',
+			'acceso_web' => 'Acceso Web',
 		);
 	}
 
@@ -84,6 +87,7 @@ class Rol extends CActiveRecord
 		$criteria->compare('id_rol',$this->id_rol);
 		$criteria->compare('rol_nombre',$this->rol_nombre,true);
 		$criteria->compare('rol_codigo',$this->rol_codigo,true);
+		$criteria->compare('acceso_web',$this->acceso_web);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

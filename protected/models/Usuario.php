@@ -11,14 +11,15 @@
  * @property integer $id_empresa
  * @property string $usuario
  * @property string $password
+ * @property integer $usuario_activo
  *
  * The followings are the available model relations:
  * @property MContacto[] $mContactos
  * @property MSoporte[] $mSoportes
- * @property TipoLogin $idTipologin
  * @property Empresa $idEmpresa
  * @property Persona $idPersona
  * @property Rol $idRol
+ * @property TipoLogin $idTipologin
  */
 class Usuario extends CActiveRecord
 {
@@ -38,11 +39,13 @@ class Usuario extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_tipologin, id_persona, id_rol, id_empresa', 'numerical', 'integerOnly'=>true),
+			array('id_persona, usuario_activo', 'required'),
+			array('id_tipologin, id_persona, id_rol, id_empresa, usuario_activo', 'numerical', 'integerOnly'=>true),
 			array('usuario', 'length', 'max'=>50),
+			array('password', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password', 'safe', 'on'=>'search'),
+			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password, usuario_activo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,10 +59,10 @@ class Usuario extends CActiveRecord
 		return array(
 			'mContactos' => array(self::HAS_MANY, 'MContacto', 'id_usuario'),
 			'mSoportes' => array(self::HAS_MANY, 'MSoporte', 'id_usuario'),
-			'idTipologin' => array(self::BELONGS_TO, 'TipoLogin', 'id_tipologin'),
 			'idEmpresa' => array(self::BELONGS_TO, 'Empresa', 'id_empresa'),
 			'idPersona' => array(self::BELONGS_TO, 'Persona', 'id_persona'),
 			'idRol' => array(self::BELONGS_TO, 'Rol', 'id_rol'),
+			'idTipologin' => array(self::BELONGS_TO, 'TipoLogin', 'id_tipologin'),
 		);
 	}
 
@@ -76,6 +79,7 @@ class Usuario extends CActiveRecord
 			'id_empresa' => 'Id Empresa',
 			'usuario' => 'Usuario',
 			'password' => 'Password',
+			'usuario_activo' => 'Usuario Activo',
 		);
 	}
 
@@ -104,6 +108,7 @@ class Usuario extends CActiveRecord
 		$criteria->compare('id_empresa',$this->id_empresa);
 		$criteria->compare('usuario',$this->usuario,true);
 		$criteria->compare('password',$this->password,true);
+		$criteria->compare('usuario_activo',$this->usuario_activo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -2,5 +2,5 @@
 return array (
   'template' => 'default',
   'baseClass' => 'Controller',
-  'actions' => 'registerSensor',
+  'actions' => 'userManager',
 );

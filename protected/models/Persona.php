@@ -5,12 +5,14 @@
  *
  * The followings are the available columns in table 'persona':
  * @property integer $id_persona
+ * @property integer $id_doc
  * @property string $persona_doc
  * @property string $persona_nombre
  * @property string $persona_apellidos
  * @property string $persona_correo
  *
  * The followings are the available model relations:
+ * @property TipoDoc $idDoc
  * @property Usuario[] $usuarios
  */
 class Persona extends CActiveRecord
@@ -31,11 +33,12 @@ class Persona extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('persona_nombre, persona_apellidos, persona_correo', 'required'),
+			array('id_doc, persona_nombre, persona_apellidos, persona_correo', 'required'),
+			array('id_doc', 'numerical', 'integerOnly'=>true),
 			array('persona_doc, persona_nombre, persona_apellidos, persona_correo', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_persona, persona_doc, persona_nombre, persona_apellidos, persona_correo', 'safe', 'on'=>'search'),
+			array('id_persona, id_doc, persona_doc, persona_nombre, persona_apellidos, persona_correo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,6 +50,7 @@ class Persona extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'idDoc' => array(self::BELONGS_TO, 'TipoDoc', 'id_doc'),
 			'usuarios' => array(self::HAS_MANY, 'Usuario', 'id_persona'),
 		);
 	}
@@ -58,6 +62,7 @@ class Persona extends CActiveRecord
 	{
 		return array(
 			'id_persona' => 'Id Persona',
+			'id_doc' => 'Id Doc',
 			'persona_doc' => 'Persona Doc',
 			'persona_nombre' => 'Persona Nombre',
 			'persona_apellidos' => 'Persona Apellidos',
@@ -84,6 +89,7 @@ class Persona extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id_persona',$this->id_persona);
+		$criteria->compare('id_doc',$this->id_doc);
 		$criteria->compare('persona_doc',$this->persona_doc,true);
 		$criteria->compare('persona_nombre',$this->persona_nombre,true);
 		$criteria->compare('persona_apellidos',$this->persona_apellidos,true);

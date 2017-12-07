@@ -50,9 +50,9 @@
     <!-- Logo -->
     <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>T</b>MD</span>
+      <span class="logo-mini"><b>M</b>W</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>tele</b>MED</span>
+      <span class="logo-lg"><b>Meew</b>Admin</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -210,50 +210,26 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENÚ PRINCIPAL</li>
-        <?php if(Yii::app()->user->getState('nombreRole')=="SUPERADMIN"):?>
+        <?php if(Yii::app()->user->getState('nombreRole')=="ADMINISTRADOR"):?>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-edit"></i> <span>Registro</span>
+                <i class="fa fa-edit"></i> <span>Gestión</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
                 <li>
-                  <a href="#"><i class="fa fa-circle-o"></i> Cliente
+                  <a href="#"><i class="fa fa-circle-o"></i> Usuarios
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
                   </a>
                   <ul class="treeview-menu">
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/entity/createEntity"><i class="fa fa-circle-o"></i>Registrar empresa</a></li>
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/service/registerEntityService"><i class="fa fa-circle-o"></i>Registrar servicio</a></li>
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/person/registerPerson"><i class="fa fa-circle-o"></i>Registrar persona</a></li>
-                    <li>
-                        <a href="#"><i class="fa fa-circle-o"></i> Objeto
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/entitydevice/registerObjectDevice"><i class="fa fa-circle-o"></i>Registrar objeto</a></li>
-                            <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/entitydevice/loadDataEntityService"><i class="fa fa-circle-o"></i>Editar Objeto</a></li>                   
-                        </ul>
-                    </li>                    
+                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a href="#"><i class="fa fa-circle-o"></i> Dispositivo
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/device/registerDevice"><i class="fa fa-circle-o"></i> Registrar dispositivo</a></li>
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/sensor/registerSensor"><i class="fa fa-circle-o"></i> Registrar sensor</a></li>
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/service/showDataMace"><i class="fa fa-circle-o"></i> Ver data post</a></li>
-                  </ul>
-                </li>
+               
               </ul>
             </li>
          <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTEPRINCIPAL"):?>
@@ -597,20 +573,9 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.redirect.js"></script>
 <!-- Configuración general -->
 <?php 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Telemed.js");
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Meew.js");
 ?>
-<script>
-$(document).ready(function() {
-//   var estadoGuarda="true";
-    $(window).on('beforeunload', function() {
-        $.notify(estadoGuarda, "warn");
-        if (!estadoGuarda) {
-            return "No ha guardado datos";
-        }
-    });
-      
-});
-</script>
+
 <?php
     else:
         echo $content;

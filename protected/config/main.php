@@ -37,6 +37,9 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+            'session' => array(
+                'autoStart'=>true,
+            ),
 		// uncomment the following to enable URLs in path-format
 		
 		'urlManager'=>array(

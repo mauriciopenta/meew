@@ -15,6 +15,8 @@ class UserIdentity extends CUserIdentity
 	 * against some persistent user identity storage (e.g. database).
 	 * @return boolean whether authentication succeeds.
 	 */
+    const ERROR_INVALID_USER=3;
+    public $_id;
 //    private $keyString="_.$|°p8";
     public function authenticate(){
         $criteria = new CDbCriteria;
@@ -29,13 +31,20 @@ class UserIdentity extends CUserIdentity
                 $this->errorCode=self::ERROR_PASSWORD_INVALID;
             }
             else{
-                if($userFromDb->id_rol==1){
-                    $this->errorCode=self::ERROR_NONE;
-                    $modelPerson=  Persona::model()->findByPk($userFromDb->id_persona);
-                    $modelRole=  Rol::model()->findByPk($userFromDb->id_rol);
-//                Yii::app()->user->setState('nombrePerson',$modelPerson->person_name." ".$modelPerson->person_lastname);
-//                Yii::app()->user->setState('nombreUsuario',$this->username);
-//                Yii::app()->user->setState('nombreRole',$modelRole->role_name);
+                $tipoRol= Rol::model()->findByPk($userFromDb->id_rol);
+                if($tipoRol->acceso_web==1){
+                    if($userFromDb->usuario_activo==2){
+                        $this->errorCode=self::ERROR_USERNAME_INVALID;
+                    }else{
+                        $this->errorCode=self::ERROR_NONE;
+                        $this->_id=$userFromDb->id_persona;
+                        $modelPerson=  Persona::model()->findByPk($userFromDb->id_persona);
+                        $modelRole=  Rol::model()->findByPk($userFromDb->id_rol);
+                        Yii::app()->user->setState('nombrePerson',$modelPerson->persona_nombre." ".$modelPerson->persona_apellidos);
+                        Yii::app()->user->setState('nombreUsuario',$this->username);
+                        Yii::app()->user->setState('nombreRole',$modelRole->rol_codigo);
+                    }
+                    
                 }
                 else{
                     $this->errorCode=self::ERROR_USERNAME_INVALID;
@@ -55,6 +64,10 @@ class UserIdentity extends CUserIdentity
             echo  false;
         }
     }
+    public function getId() {
+        return $this->_id;
+    }
+
 //    private function cryptPassword($password){
 //        $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
 //        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_DEV_URANDOM );

@@ -9,13 +9,14 @@
  * @param {object} params Object with the class parameters
  * @param {function} callback Function to return the results
  */
-var Device = function(){
+var Usuario = function(){
     
     /**************************************************************************/
     /******************************* ATTRIBUTES *******************************/
     /**************************************************************************/
     var self = this;
-    self.arrayDevice=[];
+    var estadoGuarda;
+    self.arrayUsuario=[];
     //DOM attributes
     /**************************************************************************/
     /********************* CONFIGURATION AND CONSTRUCTOR **********************/
@@ -28,8 +29,8 @@ var Device = function(){
     /**
      * Constructor Method 
      */
-    var Device = function() {
-        self.div=$("#divDevice");
+    var Usuario = function() {
+        self.div=$("#divUsuario");
         setDefaults();
     }();
      
@@ -41,22 +42,23 @@ var Device = function(){
      * @returns {undefined}
      */
     function setDefaults(){
+        var estadoGuarda ;
         //Inicializa datatable
-        dataTableAct=self.div.find("#dataTableDevice").DataTable({
-            oLanguage: Telemed.getDatatableLang(),
+        dataTableAct=self.div.find("#dataTableUsuarios").DataTable({
+            oLanguage: Meew.getDatatableLang(),
             scrollX: true
         });
         
-        self.div.find("#device-form").change(function (){
+        self.div.find("#usuario-form").change(function (){
             estadoGuarda=false;
         });
-        self.div.find("#btnRegDevice").click(function(){
+        self.div.find("#btnRegUsuario").click(function(){
             self.registerDevice();
         });
-        self.div.find("#btnEditaDevice").hide();
+        self.div.find("#btnEditaUsuario").hide();
         self.div.find("#btnCancelaEdicion").hide();
         
-        self.div.find("#btnEditaDevice").click(function(){
+        self.div.find("#btnEditaUsuario").click(function(){
             self.editDevice();
         });
         self.div.find("#btnCancelaEdicion").click(function (){
@@ -71,24 +73,41 @@ var Device = function(){
     /**
      * Carga datos del Dispositivo seleccionado en el formulario para editar
      */
-    self.cargaDeviceAForm=function(idDevice){
-        self.div.find("#btnRegDevice").css("display","none");
-        self.div.find("#btnEditaDevice").css("display","block");
-        self.div.find("#btnCancelaEdicion").css("display","block");
-        self.div.find("#device-form #Device_id_device").attr("readonly",true);
-        $.each(self.arrayDevice,function(key,value){
-            if(value.id_device==idDevice){
-                self.div.find("#device-form #Device_id_device").val(value.id_device);
-                self.div.find("#device-form #Device_device_name").val(value.device_name);
-                self.div.find("#device-form #Device_id_type_device").val(value.id_type_device);
-                self.div.find("#device-form #Device_id_statedevice").val(value.id_statedevice);
-                var servicesArr=[];
-                $.each(value.services,function(pk,val){
-                    servicesArr[pk]=val.id_service;
-                });
-                self.div.find("#device-form #ServiceDevice_id_service").val(servicesArr);
-                
+    self.cambiaEstadoLogin=function(estado,idpersona){
+         $.ajax({
+            type: "POST",
+            dataType:'json',
+            url: 'cambiaEstado',
+            data:{"estado":estado,"idpersona":idpersona}
+            
+//            async:false
+        }).done(function(response) {
+            if(response.status=="nosession"){
+                $.notify("La sesión ha caducado, debe hacer login de nuevo", "warn");
+                setTimeout(function(){document.location.href="site/login";}, 3000);
+                return;
             }
+            else{
+                if(response.status=="exito"){
+                    msg=response.msg;
+                    typeMsg="success";
+                    self.loadDataUsuario();
+                }
+                else{
+                    if(response.status=="noexito"){
+                         msg=response.msg;
+                        typeMsg="warn";
+                    }
+                    
+                }
+            }
+        }).fail(function(error, textStatus, xhr) {
+            msg="Error al crear el dispositivo, el código del error es: "+error.status+" "+xhr;
+            typeMsg="error";
+            self.div.find("#btnRegDevice").show();
+        }).always(function(){
+            self.div.find("#btnRegDevice").show();
+            $.notify(msg, typeMsg);
         });
     }; 
     /**
@@ -242,18 +261,46 @@ var Device = function(){
     * @param array data
     * @returns N.A
     */ 
-    self.loadDataDevice=function(data){
-        self.arrayDevice=data;
+    self.loadDataUsuario=function(){
+        var estado;
+        var estadoCode;
+        var estadoActual;
+        $.ajax({
+            type: "POST",
+            dataType:'json',
+            url: 'consultaPersona'
+//            async:false
+        }).done(function(response) {
+//            console.log(JSON.stringify(response));
             dataTableAct.clear();
-            $.each(data,function(key,value){
+            $.each(response,function(key,value){
+//                console.log(value.usuario_activo);
+                if(value.usuario_activo==1){
+                    estado=2;
+                    estadoCode="Deshabilitar";
+                    estadoActual="Habilitado";
+                }
+                else{
+                    estado=1;
+                    estadoCode="Habilitar";
+                    estadoActual="Inhabilitado";
+                }
                 dataTableAct.row.add([
-                    value.id_device,
-                    value.devicetype_label,
-                    value.device_name,
-                    value.statedevice_label,
-                    "<a href=javascript:Device.cargaDeviceAForm('"+value.id_device+"');>Editar</a>"
+                    value.persona_doc,
+                    value.persona_nombre,
+                    value.persona_apellidos,
+                    value.persona_correo,
+                    estadoActual,
+                    "<a href=javascript:Usuario.cambiaEstadoLogin('"+estado+"','"+value.id_persona+"');>"+estadoCode+"</a>"
                 ]).draw();
             });
+        }).fail(function(error, textStatus, xhr) {
+            msg="Error al crear el dispositivo, el código del error es: "+error.status+" "+xhr;
+            typeMsg="error";
+            $.notify(msg, typeMsg);
+        });
+//        self.arrayDevice=data;
+//            
     };
     /**************************************************************************/
     /******************************* DOM METHODS ******************************/
@@ -265,5 +312,5 @@ var Device = function(){
     
 };
 $(document).ready(function() {
-    window.Device=new Device();
+    window.Usuario=new Usuario();
 });

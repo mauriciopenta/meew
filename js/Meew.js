@@ -9,13 +9,12 @@
  * @param {object} params Object with the class parameters
  * @param {function} callback Function to return the results
  */
-var Telemed = function(){
+var Meew = function(){
     
     /**************************************************************************/
     /******************************* ATTRIBUTES *******************************/
     /**************************************************************************/
     var self = this;
-    
     //DOM attributes
     /**************************************************************************/
     /********************* CONFIGURATION AND CONSTRUCTOR **********************/
@@ -28,7 +27,7 @@ var Telemed = function(){
     /**
      * Constructor Method 
      */
-    var Telemed = function() {
+    var Meew = function() {
         setDefaults();
     }();
      
@@ -40,7 +39,8 @@ var Telemed = function(){
      * @returns {undefined}
      */
     function setDefaults(){
-    
+        
+        var estadoGuarda;
     
         
 //       
@@ -108,7 +108,8 @@ var Telemed = function(){
 };
 $(document).ready(function() {
     
-    window.Telemed=new Telemed();
+    window.Meew=new Meew();
+    
     
     
 });
