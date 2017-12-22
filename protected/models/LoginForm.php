@@ -8,9 +8,9 @@
 class LoginForm extends CFormModel
 {
 	public $username;
-	public $password;
+	public $password='80760766';
 	public $rememberMe;
-
+	
 	private $_identity;
 
 	/**
@@ -36,7 +36,7 @@ class LoginForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'rememberMe'=>'Remember me next time',
+			'rememberMe'=>'Recordar usuario',
 		);
 	}
 
@@ -48,9 +48,10 @@ class LoginForm extends CFormModel
 	{
 		if(!$this->hasErrors())
 		{
+			
 			$this->_identity=new UserIdentity($this->username,$this->password);
 			if(!$this->_identity->authenticate())
-				$this->addError('password','Incorrect username or password.');
+				$this->addError('password','Verifique el usuario y la contraseña.');
 		}
 	}
 

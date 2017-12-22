@@ -32,7 +32,8 @@
   <!-- configuración ui general css -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
   <!-- css jquery ui -->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jQueryUI/jquery-ui.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -220,7 +221,7 @@
               </a>
               <ul class="treeview-menu">
                 <li>
-                  <a href="#"><i class="fa fa-circle-o"></i> Usuarios
+                  <a ><i class="fa fa-circle-o"></i> Usuarios
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -231,7 +232,28 @@
                 </li>
                
               </ul>
+                
+               <a >
+                <i class="fa fa-edit"></i> <span>configuración</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li>
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/aplicacionConfig"><i class="fa fa-circle-o"></i>Plantilla</a>
+             </li>
+                <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>contenido</a></li>
+                  
+               
+              </ul>  
+                
+                
+                
+                
             </li>
+
+            
          <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTEPRINCIPAL"):?>
             <?php
                 $modelEntityPerson=  EntityPerson::model();
@@ -270,9 +292,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Dashboard
-      </h1>
+     
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
@@ -538,6 +558,13 @@
     Yii::app()->clientScript->registerCoreScript('jquery.ui');
 ?>
 <!-- jQuery UI 1.11.4 -->
+
+
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jquery/dist/jquery.min.js"></script>
+
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jQueryUI/jquery-ui.min.js"></script>
+
+
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>

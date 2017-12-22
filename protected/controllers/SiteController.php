@@ -13,6 +13,7 @@ class SiteController extends Controller
                 exit();
             }
             else{
+          
                 Yii::app()->user->returnUrl = array("site/login");                                                          
                 $this->redirect(Yii::app()->user->returnUrl);
             }
@@ -28,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -login -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile',                      
+                'enforcelogin -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig',                      
         );
     }
 	/**
@@ -138,8 +139,9 @@ class SiteController extends Controller
 	 */
 	public function actionLogin()
 	{
-            
-            if(Yii::app()->user->isGuest){
+       
+          
+        if(Yii::app()->user->isGuest){
                 $model=new LoginForm;
                 //print_r($_POST);
                 // if it is ajax validation request
@@ -166,6 +168,7 @@ class SiteController extends Controller
             else{
                  $this->redirect(Yii::app()->user->returnUrl);
             }
+
 	}
 
 	/**
@@ -177,46 +180,10 @@ class SiteController extends Controller
             $this->redirect(Yii::app()->user->returnUrl);
 	}
         
-        public function actionRegisterPlatformMovile(){
-            $modeloUsuario=new Usuario();
-            $modeloPersona=new Persona();
-            $datos=Yii::app()->request->getPost("Usuario");
-            $modeloUsuario->attributes=$datos;
-            $modeloUsuario=
-            $modeloPersona->attributes=$datos;
-            $correo=$modeloPersona->findByAttributes(array("persona_correo"=>$modeloPersona->persona_correo));
-            $usuario=$modeloUsuario->findByAttributes(array("usuario"=>$modeloUsuario->usuario));
-            
-            if(empty($correo) && empty($usuario)){
-                $transaction=Yii::app()->db->beginTransaction();
-                try{
-                    $modeloPersona->save();
-                    $modeloUsuario->id_persona=$modeloPersona->id_persona;
-                    $modeloUsuario->password=$this->cryptPassword($modeloUsuario->password);
-                    if($modeloUsuario->save()){
-                        $transaction->commit();
-                        $response["status"]="exito";
-                        $response["msg"]="El usuario ha sido registrado";
-                    }
-                    else{
-                        $transaction->rollback();
-                        $response["status"]="noexito";
-                        $response["msg"]=$modeloUsuario->errors;
-                    }
-                    
-                }
-                catch(ErrorException $e){
-                    
-                    throw new CHttpException($e->get,$e->getMessage());
-                }
-            }
-            else{
-                (!empty($correo))?$response["msg"]="El correo ya está registrado </br>":$response["msg"]="";
-                (!empty($usuario))?$response["msg"].="El usuario ya está registrado":$response["msg"].="";
-                $response["status"]="noexito";
-            }
-            echo CJSON::encode($response);
-        }
+     
+    
+    
+    
         
         public function actionLoginPlatformMovile(){
             $modeloUsuario= Usuario::model();
@@ -240,58 +207,182 @@ class SiteController extends Controller
             }
             echo CJSON::encode($response);
         }
-        public function actionRegisterPlatform(){
-            if(empty($_POST)){
-                $cdrs=$_GET["cdrs"];
-                $modelCodeRegister=  CodeRegister::model()->findByAttributes(array('code_register'=>$cdrs));
-                $personRegister=false;
-                $modelUser=  User::model();
-                if(!empty($modelCodeRegister)){
-                    $personRegister=true;
-                }
-                $this->render('_registerplatform',array(
-                    "cdrs"=>$cdrs,
-                    'model'=>$modelUser,
-                    'modelCodeRegister'=>$modelCodeRegister,
-                    'personRegister'=>$personRegister
-                ));
+   
+
+        private function randKey($str='', $long=0)
+        {
+            $key = null;
+            $str = str_split($str);
+            $start = 0;
+            $limit = count($str)-1;
+            for($x=0; $x<$long; $x++)
+            {
+                $key .= $str[rand($start, $limit)];
             }
-            else{
-                $personRegister=true;
-                $modelUser=User::model();
-                $modelUser->attributes=Yii::app()->request->getPost("User");
-                $cdrs=$_GET["cdrs"];
-                $modelCodeRegister=  CodeRegister::model()->findByAttributes(array('code_register'=>$cdrs));
-                if(!empty($modelCodeRegister)){
-                    $modelUserReg=  User::model()->findByPk($modelCodeRegister->id_user);
-                }
-                $modelUser->id_user=$modelUserReg->id_user;
-                $modelUser->id_person=$modelUserReg->id_person;
-                $modelUser->id_role=$modelUserReg->id_role;
-                $modelUser->user_active=1;
-                 // if it is ajax validation request
-                if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
+            return $key;
+        }
+        
+        public function actionConfirm()
+        {
+            $table = new Users;
+            if (Yii::$app->request->get())
+            {
+        
+                //Obtenemos el valor de los parámetros get
+                $id = Html::encode($_GET["id"]);
+                $authKey = $_GET["authKey"];
+            
+                if ((int) $id)
                 {
-                        echo CActiveForm::validate($modelUser);
-                        Yii::app()->end();
-                }
-                
-                if($modelUser->validate()){
-                    $modelUser->password=$this->cryptPassword($modelUser->password);
-                    if($modelUser->updateByPk($modelUser->id_user,array("password"=>$modelUser->password,"username"=>$modelUser->username,"user_active"=>$modelUser->user_active))){
-                        $modelCodeRegister->deleteByPk($modelCodeRegister->id_coderegister);
-                        Yii::app()->user->setFlash('success', "Su usuario ha sido activado");
+                    //Realizamos la consulta para obtener el registro
+                    $model = $table
+                    ->find()
+                    ->where("id=:id", [":id" => $id])
+                    ->andWhere("authKey=:authKey", [":authKey" => $authKey]);
+        
+                    //Si el registro existe
+                    if ($model->count() == 1)
+                    {
+                        $activar = Users::findOne($id);
+                        $activar->activate = 1;
+                        if ($activar->update())
+                        {
+                            echo "Enhorabuena registro llevado a cabo correctamente, redireccionando ...";
+                            echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
+                        }
+                        else
+                        {
+                            echo "Ha ocurrido un error al realizar el registro, redireccionando ...";
+                            echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
+                        }
+                    }
+                    else //Si no existe redireccionamos a login
+                    {
+                        return $this->redirect(["site/login"]);
                     }
                 }
-                
-                $this->render('_registerplatform',array(
-                    "cdrs"=>$cdrs,
-                    'model'=>$modelUser,
-                    'modelCodeRegister'=>$modelCodeRegister,
-                    'personRegister'=>$personRegister
-                ));
+                else //Si id no es un número entero redireccionamos a login
+                {
+                    return $this->redirect(["site/login"]);
+                }
             }
         }
+        
+        public function actionRegister(){
+            if(Yii::app()->user->isGuest){
+                $model=new RegisterForm;
+                //print_r($_POST);
+                // if it is ajax validation request
+                if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
+                {
+                        print_r( CActiveForm::validate($model));
+//                        
+                    Yii::app()->end();
+                }
+                
+                // collect user input data
+                if(isset($_POST['RegisterForm'])){
+                        $model->attributes=$_POST['RegisterForm'];
+                        // validate user input and redirect to the previous page if valid
+                        if($model->validate() && $model->register()){
+                          //  Yii::app()->user->returnUrl = array("site/index");                                                          
+                           // $this->redirect(Yii::app()->user->returnUrl);
+                            $messageType = 'success';
+                            $message = "<div class='alert alert-info alert-dismissable'>Se envío un email, para confirmar tu correo.</div>";
+                            Yii::app()->user->setFlash($messageType, $message);
+            
+                        }
+                }
+                // display the login form
+//                Yii::app()->user->setFlash('success', "Data1 saved!");
+                $this->render('register',array("model"=>$model));
+            }
+            else{
+                 $this->redirect(Yii::app()->user->returnUrl);
+            }    
+        }
+
+        public function actionRegister2()
+        {
+        //Creamos la instancia con el model de validación
+        $model = new FormRegister;
+        
+        //Mostrará un mensaje en la vista cuando el usuario se haya registrado
+        $msg = null;
+        
+        //Validación mediante ajax
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax)
+                {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
+        
+        //Validación cuando el formulario es enviado vía post
+        //Esto sucede cuando la validación ajax se ha llevado a cabo correctamente
+        //También previene por si el usuario tiene desactivado javascript y la
+        //validación mediante ajax no puede ser llevada a cabo
+        if ($model->load(Yii::$app->request->post()))
+        {
+        if($model->validate())
+        {
+            //Preparamos la consulta para guardar el usuario
+            $table = new Usuario;
+            $table->username = $model->username;
+            $table->email = $model->email;
+            //Encriptamos el password
+            $table->password = crypt($model->password, Yii::$app->params["salt"]);
+            //Creamos una cookie para autenticar al usuario cuando decida recordar la sesión, esta misma
+            //clave será utilizada para activar el usuario
+            $table->authKey = $this->randKey("abcdef0123456789", 200);
+            //Creamos un token de acceso único para el usuario
+            $table->accessToken = $this->randKey("abcdef0123456789", 200);
+            
+            //Si el registro es guardado correctamente
+            if ($table->insert())
+            {
+            //Nueva consulta para obtener el id del usuario
+            //Para confirmar al usuario se requiere su id y su authKey
+            $user = $table->find()->where(["email" => $model->email])->one();
+            $id = urlencode($user->id);
+            $authKey = urlencode($user->authKey);
+            
+            $subject = "Confirmar registro";
+            $body = "<h1>Haga click en el siguiente enlace para finalizar tu registro</h1>";
+            $body .= "<a href='http://yii.local/index.php?r=site/confirm&id=".$id."&authKey=".$authKey."'>Confirmar</a>";
+            
+            //Enviamos el correo
+            Yii::$app->mailer->compose()
+            ->setTo($user->email)
+            ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
+            ->setSubject($subject)
+            ->setHtmlBody($body)
+            ->send();
+            
+            $model->username = null;
+            $model->email = null;
+            $model->password = null;
+            $model->password_repeat = null;
+            
+            $msg = "Enhorabuena, ahora sólo falta que confirmes tu registro en tu cuenta de correo";
+            }
+            else
+            {
+            $msg = "Ha ocurrido un error al llevar a cabo tu registro";
+            }
+            
+        }
+        else
+        {
+            $model->getErrors();
+        }
+        }
+        return $this->render("register", ["model" => $model, "msg" => $msg]);
+        }
+
+
+
+
+
         private function cryptPassword($prePassword){
             $opciones = [
                 'cost' => 10
@@ -299,4 +390,12 @@ class SiteController extends Controller
             $password=password_hash($prePassword, PASSWORD_BCRYPT, $opciones);
             return $password;
         }
+
+
+
+ 
+
+
+
+
 }

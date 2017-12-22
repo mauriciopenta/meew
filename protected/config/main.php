@@ -68,7 +68,7 @@ return array(
 		'db'=>array(
                     'tablePrefix'=>'',
                     'connectionString' => 'mysql:host=localhost;port=3306;dbname=meewco_meew',
-                    'username'=>'meewco_meew',
+				    'username'=>'meewco_meew',
                     'password'=>'Meew2017!',
                     'charset'=>'UTF8',
                 ),

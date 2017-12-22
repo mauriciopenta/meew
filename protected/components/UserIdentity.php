@@ -17,11 +17,18 @@ class UserIdentity extends CUserIdentity
 	 */
     const ERROR_INVALID_USER=3;
     public $_id;
+    
+
 //    private $keyString="_.$|°p8";
     public function authenticate(){
         $criteria = new CDbCriteria;
-        $criteria->select = 'password,id_persona,id_rol';
+        $criteria->select = 'id_usuario, password,id_persona,id_rol';
+        
         $userFromDb= Usuario::model()->findByAttributes(array('usuario'=>$this->username),$criteria);
+      
+
+
+        
         if(!is_object($userFromDb) && !isset($userFromDb->usuario)){
                 $this->errorCode=self::ERROR_USERNAME_INVALID;
         }
@@ -43,6 +50,7 @@ class UserIdentity extends CUserIdentity
                         Yii::app()->user->setState('nombrePerson',$modelPerson->persona_nombre." ".$modelPerson->persona_apellidos);
                         Yii::app()->user->setState('nombreUsuario',$this->username);
                         Yii::app()->user->setState('nombreRole',$modelRole->rol_codigo);
+                        Yii::app()->user->setState('id_usuario',$userFromDb->id_usuario);
                     }
                     
                 }
@@ -57,8 +65,8 @@ class UserIdentity extends CUserIdentity
     }
     
     private function verifyPassword($passHash,$passwordForm){
-        if (password_verify($passwordForm, $passHash)) {
-        //if ($passwordForm==$passHash) {
+       if (password_verify($passwordForm, $passHash)) {
+       // if ($passwordForm==$passHash) {
           return true;
         } else {
             echo  false;
@@ -67,6 +75,12 @@ class UserIdentity extends CUserIdentity
     public function getId() {
         return $this->_id;
     }
+
+   
+
+
+    
+
 
 //    private function cryptPassword($password){
 //        $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');

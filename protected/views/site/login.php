@@ -40,7 +40,7 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Iniciar sesión</p>
     <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'login-form',
             'enableClientValidation'=>true,
@@ -49,15 +49,15 @@
                     'validateOnSubmit'=>true,
             ),
     )); ?>
-    <p class="note">Fields with <span class="required">*</span> are required.</p>
+   
     <div class="form-group has-feedback">
-        <?php echo $form->labelEx($model,'username'); ?>
+        <?php echo $form->labelEx($model,'Usuario'); ?>
         <?php echo $form->textField($model,'username', array ('class' => 'form-control','placeholder'=>'Digite nombre de usuario')); ?>
         <?php echo $form->error($model,'username'); ?>
     </div>
     <div class="form-group has-feedback">
-        <?php echo $form->labelEx($model,'password'); ?>
-        <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite password')); ?>
+        <?php echo $form->labelEx($model,'Contraseña'); ?>
+        <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite la contraseña')); ?>
         <?php echo $form->error($model,'password'); ?>
     </div>
       <div class="row">
@@ -65,8 +65,8 @@
           <div class="checkbox icheck">
             <label>
                 <?php echo $form->checkBox($model,'rememberMe'); ?>
-		<?php echo $form->label($model,'rememberMe'); ?>
-		<?php echo $form->error($model,'rememberMe'); ?>
+              <?php echo $form->label($model,'rememberMe'); ?>
+              <?php echo $form->error($model,'rememberMe'); ?>
             </label>
           </div>
         </div>
@@ -74,13 +74,14 @@
         <div class="col-xs-4">
           <?php echo CHtml::submitButton('Login', array ('class' => 'btn btn-primary btn-block btn-flat')); ?>
         </div>
+        
         <!-- /.col -->
       </div>    
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 
     <div class="social-auth-links text-center">
-      <p>- OR -</p>
+      <p>- O -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
         Facebook</a>
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
@@ -88,9 +89,10 @@
     </div>
     <!-- /.social-auth-links -->
 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
-
+    <a href="#">Olvido su contraseña?</a><br>
+    
+   
+    <?php echo CHtml::link('Registrar Usuario',array('site/register')); ?>
   </div>
   <!-- /.login-box-body -->
 

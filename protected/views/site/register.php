@@ -33,52 +33,74 @@
 ?>
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Tele</b>MED</a>
+    <a href="../../index2.html">Meew</a>
   </div>
   <!-- /.login-logo -->
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Registro de usuario</p>
-    <?php if(!$personRegister):?>
-    <p>Esta cuenta ya ha sido activada</p>
-    <?php elseif(Yii::app()->user->hasFlash('success')): ?>
-    <p><?php echo Yii::app()->user->getFlash('success')?></p>
-    <?php else:?>
+   
         <?php $form=$this->beginWidget('CActiveForm', array(
                 'id'=>'register-form',
                 'enableClientValidation'=>true,
                 'enableAjaxValidation'=>true,
                 'clientOptions'=>array(
-                        'validateOnSubmit'=>true,
-                ),
-        )); ?>
-        <p class="note">Fields with <span class="required">*</span> are required.</p>
+                        'validateOnSubmit'=>false)
+              )); ?>
+      
         <div class="form-group has-feedback">
-            <?php echo $form->labelEx($model,'username'); ?>
-            <?php echo $form->textField($model,'username', array ('class' => 'form-control','placeholder'=>'Digite nombre de usuario')); ?>
+            <?php echo $form->labelEx($model,'usuario'); ?>
+            <?php echo $form->textField($model,'username', array ('class' => 'form-control','placeholder'=>'Digite el nombre de usuario')); ?>
             <?php echo $form->error($model,'username'); ?>
         </div>
         <div class="form-group has-feedback">
-            <?php echo $form->labelEx($model,'password'); ?>
-            <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite password')); ?>
+            <?php echo $form->labelEx($model,'contraseña'); ?>
+            <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite su contraseña')); ?>
             <?php echo $form->error($model,'password'); ?>
         </div>
         <div class="form-group has-feedback">
-            <?php echo $form->labelEx($model,'confirmPassword'); ?>
-            <?php echo $form->passwordField($model,'confirmPassword', array ('class' => 'form-control','placeholder'=>'Confirme password')); ?>
+            <?php echo $form->labelEx($model,'Confime contraseña'); ?>
+            <?php echo $form->passwordField($model,'confirmPassword', array ('class' => 'form-control','placeholder'=>'Confirme su contraseña')); ?>
             <?php echo $form->error($model,'confirmPassword'); ?>
         </div>
+
+        <div class="form-group has-feedback">
+            <?php echo $form->labelEx($model,'nombres'); ?>
+            <?php echo $form->textField($model,'nombres', array ('class' => 'form-control','placeholder'=>'nombres')); ?>
+            <?php echo $form->error($model,'nombres'); ?>
+        </div> 
+        <div class="form-group has-feedback">
+            <?php echo $form->labelEx($model,'apellidos'); ?>
+            <?php echo $form->textField($model,'apellidos', array ('class' => 'form-control','placeholder'=>'Apellidos')); ?>
+            <?php echo $form->error($model,'apellidos'); ?>
+        </div> 
+        <div class="form-group has-feedback">
+            <?php echo $form->labelEx($model,'email'); ?>
+            <?php echo $form->textField($model,'email', array ('class' => 'form-control','placeholder'=>'Correo')); ?>
+            <?php echo $form->error($model,'email'); ?>
+        </div>  
+
+        <div class="form-group has-feedback">
+            <?php echo $form->labelEx($model,'tipo_documento'); ?><br>
+            <?php 
+            $type_list=CHtml::listData(TipoDoc::model()->findAll(),'id_doc','doc_nombre');
+            echo $form->dropDownList($model,'tipo_documento', $type_list, array('class' => 'form-control','empty'=>'Seleccione') ) ?>
+            <?php echo $form->error($model,'tipo_documento'); ?>
+        </div> 
+        <div class="form-group has-feedback">
+            <?php echo $form->labelEx($model,'documento'); ?>
+            <?php echo $form->textField($model,'documento', array ('class' => 'form-control','placeholder'=>'Número de documento')); ?>
+            <?php echo $form->error($model,'documento'); ?>
+        </div> 
           <div class="row">
             <!-- /.col -->
             <div class="col-xs-4">
-              <?php
-                echo CHtml::submitButton('Registrar', array ('class' => 'btn btn-primary btn-block btn-flat')); 
-              ?>
+              <?php echo CHtml::submitButton('Register', array ('class' => 'btn btn-primary btn-block btn-flat')); ?>
             </div>
-            <!-- /.col -->
-          </div>    
-    <?php $this->endWidget();              
-    endif; ?>
+          
+          <!-- /.col -->
+        </div>    
+  <?php $this->endWidget(); ?>
 </div><!-- form -->
 </div>
   <!-- /.login-box-body -->
@@ -105,3 +127,4 @@ Yii::app()->clientScript->registerCoreScript('jquery.ui');
 </script>
 </body>
 </html>
+
