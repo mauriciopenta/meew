@@ -81,9 +81,11 @@
         </div>  
 
         <div class="form-group has-feedback">
-            <?php echo $form->labelEx($model,'tipo_documento'); ?><br>
+            <?php echo $form->labelEx($model,'tipo_ de documento'); ?><br>
             <?php 
-            $type_list=CHtml::listData(TipoDoc::model()->findAll(),'id_doc','doc_nombre');
+            $consulta=Parametros::model()->findAll( array('select'=>'codigo, nombre',
+            'condition'=> 'tipo=:tipo_doc','params'=> array(':tipo_doc'=>'tipo_documento')));
+            $type_list=CHtml::listData($consulta,'codigo','nombre');
             echo $form->dropDownList($model,'tipo_documento', $type_list, array('class' => 'form-control','empty'=>'Seleccione') ) ?>
             <?php echo $form->error($model,'tipo_documento'); ?>
         </div> 

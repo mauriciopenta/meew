@@ -1,0 +1,35 @@
+{
+  "name": "jquery-asIconPicker",
+  "version": "0.2.4",
+  "description": "A jquery plugin that for pick a icon.",
+  "main": "dist/jquery-asIconPicker.js",
+  "copyright": "amazingSurge",
+  "license": "LGPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "demo",
+    "gulp",
+    "CONTRIBUTING.md",
+    "manifest.json",
+    "karma.conf.js",
+    "config.js",
+    "package.json",
+    "gulpfile.babel.js",
+    "tests"
+  ],
+  "homepage": "https://github.com/amazingSurge/jquery-asIconPicker",
+  "authors": [
+    "amazingSurge <amazingSurge@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "dependencies": {
+    "jquery": ">=2.2.0",
+    "jquery-asScrollbar": "^0.5.4",
+    "jquery-asTooltip": "^0.4.2"
+  }
+}

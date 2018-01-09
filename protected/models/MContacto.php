@@ -5,10 +5,12 @@
  *
  * The followings are the available columns in table 'm_contacto':
  * @property integer $id_mcontacto
- * @property integer $id_emp
  * @property string $mcontacto_mensaje
+ * @property string $asunto
  * @property integer $aplicacion_idaplicacion
  * @property integer $aplicacion_usuario_id_usuario
+ * @property string $fecha
+ * @property string $respuesta
  */
 class MContacto extends CActiveRecord
 {
@@ -28,11 +30,13 @@ class MContacto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('mcontacto_mensaje, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'required'),
-			array('id_emp, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
+			array('mcontacto_mensaje, asunto, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'required'),
+			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
+			array('respuesta', 'length', 'max'=>1000),
+			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_mcontacto, id_emp, mcontacto_mensaje, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'safe', 'on'=>'search'),
+			array('id_mcontacto, mcontacto_mensaje, asunto, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, fecha, respuesta', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,13 +58,36 @@ class MContacto extends CActiveRecord
 	{
 		return array(
 			'id_mcontacto' => 'Id Mcontacto',
-			'id_emp' => 'Id Emp',
 			'mcontacto_mensaje' => 'Mcontacto Mensaje',
+			'asunto' => 'Asunto',
 			'aplicacion_idaplicacion' => 'Aplicacion Idaplicacion',
 			'aplicacion_usuario_id_usuario' => 'Aplicacion Usuario Id Usuario',
+			'fecha' => 'Fecha',
+			'respuesta' => 'Respuesta',
 		);
 	}
+	public function search_id_app()
+	{
+	
+		// @todo Please modify the following code to remove attributes that should not be searched.
 
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id_mcontacto',$this->id_mcontacto);
+		$criteria->compare('mcontacto_mensaje',$this->mcontacto_mensaje,true);
+		$criteria->compare('asunto',$this->asunto,true);
+		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		
+		$criteria->compare('aplicacion_idaplicacion',$aplicacionFromDb->idaplicacion,true);
+		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
+		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('respuesta',$this->respuesta,true);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
@@ -80,10 +107,12 @@ class MContacto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id_mcontacto',$this->id_mcontacto);
-		$criteria->compare('id_emp',$this->id_emp);
 		$criteria->compare('mcontacto_mensaje',$this->mcontacto_mensaje,true);
+		$criteria->compare('asunto',$this->asunto,true);
 		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('respuesta',$this->respuesta,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

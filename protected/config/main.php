@@ -16,8 +16,13 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'vendor.z_bodya.yii-image.*',
+        'vendor.z_bodya.yii-gallery-manager.*',
+        'vendor.z_bodya.yii-image-attachment.*',
+        'vendor.z_bodya.yii-gallery-manager.models.*',
+        'vendor.z_bodya.yii-tinymce.*',
+        'vendor.z_bodya.yii-elfinder.*',
 	),
-
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 		
@@ -29,29 +34,33 @@ return array(
 		),
 		
 	),
-        
-
-	// application components
+// application components
 	'components'=>array(
+
+		'image' => array(
+			'class' => 'CImageComponent',
+			'driver' => 'GD',
+		),	
+
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
             'session' => array(
                 'autoStart'=>true,
-            ),
-		// uncomment the following to enable URLs in path-format
+			),
+		
 		
 		'urlManager'=>array(
-                    'urlFormat'=>'path',
-                    'showScriptName'=>true,
-                    'caseSensitive'=>false,        
-                    'rules'=>array(
-                        '<controller:\w+>/<id:\d+>'=>'<controller>/view',
-                        '<controller:\w+>/<action:\w+>/<id:\d+>/*'=>'<controller>/<action>',
-                        '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-                    ),
+			'urlFormat'=>'path',
+			'rules'=>array(
+				'post/<id:\d+>/<title:.*?>'=>'post/view',
+				'posts/<tag:.*?>'=>'post/index',
+				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+			),
 		),
+
+
 		
 //		'db'=>array(
 //			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
@@ -111,11 +120,22 @@ return array(
 				'viewPath' => 'application.views.mail',
 				'logging' => true,
 				'dryRun' => false
-                    ),
+					),
+					
+				
+			
+		
+
+
+
                     'user'=>array(
                     // enable cookie-based authentication
                     'allowAutoLogin'=>true,
 		),
+        
+
+
+
 	),
 
 	// application-level parameters that can be accessed
@@ -123,5 +143,12 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+		'postsPerPage'=>10,
+		// maximum number of comments that can be displayed in recent comments portlet
+		'recentCommentCount'=>10,
+		// maximum number of tags that can be displayed in tag cloud portlet
+		'tagCloudCount'=>20,
+		// whether post comments need to be approved before published
+		'commentNeedApproval'=>true,
 	),
 );

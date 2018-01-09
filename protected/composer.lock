@@ -1,0 +1,203 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "89f1ad4304ed84edc48296acf4458cfe",
+    "packages": [
+        {
+            "name": "z_bodya/yii-elfinder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zxbodya/yii-elfinder.git",
+                "reference": "6bccfce12ae8a108cc46db7cd6c68eff91d82b46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zxbodya/yii-elfinder/zipball/6bccfce12ae8a108cc46db7cd6c68eff91d82b46",
+                "reference": "6bccfce12ae8a108cc46db7cd6c68eff91d82b46",
+                "shasum": ""
+            },
+            "type": "yii-extension",
+            "extra": {
+                "installer-name": "elFinder"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bogdan Savluk",
+                    "email": "savluk.bogdan@gmail.com"
+                }
+            ],
+            "description": "Extension to use elFinder 1.x file manager in yii application",
+            "keywords": [
+                "file manager",
+                "tinymce",
+                "widget"
+            ],
+            "time": "2015-12-26T23:26:37+00:00"
+        },
+        {
+            "name": "z_bodya/yii-gallery-manager",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zxbodya/yii-gallery-manager.git",
+                "reference": "85d4ddf401e67eb16f5c845c6791421fae22cc76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zxbodya/yii-gallery-manager/zipball/85d4ddf401e67eb16f5c845c6791421fae22cc76",
+                "reference": "85d4ddf401e67eb16f5c845c6791421fae22cc76",
+                "shasum": ""
+            },
+            "require": {
+                "z_bodya/yii-image": "dev-default"
+            },
+            "type": "yii-extension",
+            "extra": {
+                "installer-name": "galleryManager"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bogdan Savluk",
+                    "email": "savluk.bogdan@gmail.com"
+                }
+            ],
+            "description": "Extension for yii, that allows to manage image galleries",
+            "keywords": [
+                "gallery",
+                "image"
+            ],
+            "time": "2015-03-18T11:55:24+00:00"
+        },
+        {
+            "name": "z_bodya/yii-image",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zxbodya/yii-image.git",
+                "reference": "18344c7c7e9357ae5bce7a2203a550f97778bfb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zxbodya/yii-image/zipball/18344c7c7e9357ae5bce7a2203a550f97778bfb6",
+                "reference": "18344c7c7e9357ae5bce7a2203a550f97778bfb6",
+                "shasum": ""
+            },
+            "type": "yii-extension",
+            "extra": {
+                "installer-name": "image"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bogdan Savluk",
+                    "email": "savluk.bogdan@gmail.com"
+                }
+            ],
+            "description": "Port of Kohana Image Library to Yii",
+            "keywords": [
+                "image"
+            ],
+            "time": "2014-07-25T11:21:03+00:00"
+        },
+        {
+            "name": "z_bodya/yii-image-attachment",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/z_bodya/yii-image-attachment.git",
+                "reference": "abca655d7c56948c247ba68d6d594c9a0383d716"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/z_bodya/yii-image-attachment/get/abca655d7c56948c247ba68d6d594c9a0383d716.zip",
+                "reference": "abca655d7c56948c247ba68d6d594c9a0383d716",
+                "shasum": ""
+            },
+            "require": {
+                "z_bodya/yii-image": "*"
+            },
+            "type": "yii-extension",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bogdan Savluk",
+                    "email": "savluk.bogdan@gmail.com"
+                }
+            ],
+            "description": "Extension for yii, to handle images related to CActiveRecord",
+            "keywords": [
+                "Active Record",
+                "Behavior",
+                "image"
+            ],
+            "time": "2014-09-30T03:34:49+00:00"
+        },
+        {
+            "name": "z_bodya/yii-tinymce",
+            "version": "dev-tinymce4x",
+            "source": {
+                "type": "hg",
+                "url": "https://bitbucket.org/z_bodya/yii-tinymce",
+                "reference": "beaa3a56dc9c1e2df5aaccb2ea3cb3a582960126"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/z_bodya/yii-tinymce/get/beaa3a56dc9c1e2df5aaccb2ea3cb3a582960126.zip",
+                "reference": "beaa3a56dc9c1e2df5aaccb2ea3cb3a582960126",
+                "shasum": ""
+            },
+            "type": "yii-extension",
+            "extra": {
+                "installer-name": "tinymce"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bogdan Savluk",
+                    "email": "savluk.bogdan@gmail.com"
+                }
+            ],
+            "description": "Extension to use TinyMce with Compressor, SpellChecker and FileManager",
+            "keywords": [
+                "tinymce",
+                "wysiwyg"
+            ],
+            "time": "2014-03-20T11:04:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "z_bodya/yii-elfinder": 20,
+        "z_bodya/yii-tinymce": 20,
+        "z_bodya/yii-image": 20,
+        "z_bodya/yii-image-attachment": 20,
+        "z_bodya/yii-gallery-manager": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

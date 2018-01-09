@@ -27,9 +27,10 @@ class Parametros extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idparametros, codigo', 'required'),
+		
 			array('idparametros, codigo', 'numerical', 'integerOnly'=>true),
 			array('nombre, tipo', 'length', 'max'=>200),
+		   
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('idparametros, nombre, tipo, codigo', 'safe', 'on'=>'search'),

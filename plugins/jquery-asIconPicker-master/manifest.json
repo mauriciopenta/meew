@@ -1,0 +1,17 @@
+{
+  "dest": "examples",
+  "packages": {
+    "npm:jquery": true,
+    "npm:normalize.css": true,
+    "npm:prismjs":true,
+    "npm:font-awesome":{
+      "fonts": "fonts",
+      "css": "css/*.min.css"
+    },
+    "npm:jquery-asScrollbar":true,
+    "npm:jquery-asTooltip":{
+      "js": "dist/*.min.js",
+      "css": "dist/css/*.min.css"
+    }
+  }
+}

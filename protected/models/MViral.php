@@ -5,12 +5,12 @@
  *
  * The followings are the available columns in table 'm_viral':
  * @property integer $id_mviral
- * @property integer $id_emp
  * @property string $mviral_url_fb
  * @property string $mviral_url_tw
  * @property string $mviral_url_inst
  * @property integer $aplicacion_idaplicacion
  * @property integer $aplicacion_usuario_id_usuario
+ * @property string $correo_contacto
  */
 class MViral extends CActiveRecord
 {
@@ -31,11 +31,11 @@ class MViral extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'required'),
-			array('id_emp, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
-			array('mviral_url_fb, mviral_url_tw, mviral_url_inst', 'safe'),
+			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
+			array('mviral_url_fb, mviral_url_tw, mviral_url_inst, correo_contacto', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_mviral, id_emp, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'safe', 'on'=>'search'),
+			array('id_mviral, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, correo_contacto', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,12 +57,12 @@ class MViral extends CActiveRecord
 	{
 		return array(
 			'id_mviral' => 'Id Mviral',
-			'id_emp' => 'Id Emp',
 			'mviral_url_fb' => 'Mviral Url Fb',
 			'mviral_url_tw' => 'Mviral Url Tw',
 			'mviral_url_inst' => 'Mviral Url Inst',
 			'aplicacion_idaplicacion' => 'Aplicacion Idaplicacion',
 			'aplicacion_usuario_id_usuario' => 'Aplicacion Usuario Id Usuario',
+			'correo_contacto' => 'Correo Contacto',
 		);
 	}
 
@@ -85,12 +85,12 @@ class MViral extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id_mviral',$this->id_mviral);
-		$criteria->compare('id_emp',$this->id_emp);
 		$criteria->compare('mviral_url_fb',$this->mviral_url_fb,true);
 		$criteria->compare('mviral_url_tw',$this->mviral_url_tw,true);
 		$criteria->compare('mviral_url_inst',$this->mviral_url_inst,true);
 		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
+		$criteria->compare('correo_contacto',$this->correo_contacto,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

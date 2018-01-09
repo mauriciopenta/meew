@@ -33,7 +33,7 @@ class AplicacionConfigController extends Controller
      */
 	public function filters(){
         return array(
-                'enforcelogin  -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig',                      
+                'enforcelogin  -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig -admin',                      
         );
     }
 

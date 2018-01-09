@@ -1,0 +1,19 @@
+{
+    "name": "z_bodya/demo-blog",
+    "description": "",
+    "authors": [
+        {
+            "name": "johan gomez",
+            "email": "gohangom1@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii": "1.1.14",
+        
+        "z_bodya/yii-elfinder": "dev-default",
+        "z_bodya/yii-tinymce": "dev-tinymce4x",
+        "z_bodya/yii-image": "dev-default",
+        "z_bodya/yii-image-attachment": "dev-master",
+        "z_bodya/yii-gallery-manager": "dev-default"
+    }
+}

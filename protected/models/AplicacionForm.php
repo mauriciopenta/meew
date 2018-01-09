@@ -10,6 +10,8 @@ class AplicacionForm extends CFormModel
     
     public $nombre="";
     public $color="";
+    public $color_icon="";
+    
     public $url_fondo="";
     public $login_activo;
     public $login_facebook;
@@ -35,7 +37,7 @@ class AplicacionForm extends CFormModel
             {
              
                 return [
-                    ['nombre, id_plantilla', 'required', 'message' => 'Campo requerido'],
+                    ['nombre, id_plantilla, color_icon', 'required', 'message' => 'Campo requerido'],
                     ["login_activo, login_facebook, facebook, twitter, instagram, nombre_activo, apellido_activo, nombre_usuario_activo,  politicas_privacidad_activo,
                     politicas_privacidad_activo, celular_activo"  , "boolean"],
                     ['nombre', 'match', 'pattern' => "/^.{5,20}$/", 'message' => 'Mínimo 3 y máximo 20 caracteres'],
@@ -100,7 +102,8 @@ class AplicacionForm extends CFormModel
                     $table_aplicacion->nombre_usuario_activo=$this->nombre_usuario_activo;
                     $table_aplicacion->politicas_privacidad_activo=$this->politicas_privacidad_activo;
                     $table_aplicacion->celular_activo=$this->celular_activo;
-                   
+                    $table_aplicacion->color_icon=$this->color_icon;
+                    
                    
                    
                     $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));

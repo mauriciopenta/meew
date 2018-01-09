@@ -21,6 +21,10 @@
  * @property integer $celular_activo
  * @property integer $politicas_privacidad_activo
  * @property integer $nombre_usuario_activo
+ * @property string $color_icon
+ *
+ * The followings are the available model relations:
+ * @property TemaSoporte[] $temaSoportes
  */
 class Aplicacion extends CActiveRecord
 {
@@ -40,14 +44,14 @@ class Aplicacion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('usuario_id_usuario', 'required'),
+			array('usuario_id_usuario, estado_app, color_icon', 'required'),
 			array('login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>100),
-			array('color', 'length', 'max'=>7),
+			array('color, color_icon', 'length', 'max'=>7),
 			array('url_fondo', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo', 'safe', 'on'=>'search'),
+			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, color_icon', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,6 +63,7 @@ class Aplicacion extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'temaSoportes' => array(self::HAS_MANY, 'TemaSoporte', 'id_aplicacion'),
 		);
 	}
 
@@ -85,6 +90,7 @@ class Aplicacion extends CActiveRecord
 			'celular_activo' => 'Celular Activo',
 			'politicas_privacidad_activo' => 'Politicas Privacidad Activo',
 			'nombre_usuario_activo' => 'Nombre Usuario Activo',
+			'color_icon' => 'Color Icon',
 		);
 	}
 
@@ -123,6 +129,7 @@ class Aplicacion extends CActiveRecord
 		$criteria->compare('celular_activo',$this->celular_activo);
 		$criteria->compare('politicas_privacidad_activo',$this->politicas_privacidad_activo);
 		$criteria->compare('nombre_usuario_activo',$this->nombre_usuario_activo);
+		$criteria->compare('color_icon',$this->color_icon,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

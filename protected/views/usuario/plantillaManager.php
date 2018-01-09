@@ -54,9 +54,7 @@ $this->breadcrumbs=array(
                                             $estadoCode="Habilitar";
                                             $estadoActual="Inhabilitado";
                                         }
-                                    
                                     ?>
-                                    
                                         <tr>
                                             <td><?php if(!empty($persona["persona_doc"])){echo $persona["persona_doc"];}else{echo "NULL";} ?></td>
                                             <td><?php echo $persona["persona_nombre"];?></td>
@@ -65,8 +63,7 @@ $this->breadcrumbs=array(
                                             <td><?php echo $estadoActual?></td>
                                             <td><a href='javascript:Usuario.cambiaEstadoLogin("<?php echo $estado?>","<?php echo $persona["id_persona"]?>");'><?php echo $estadoCode;?></a></td>
                                         </tr>
-                                    
-                                <?php  endif;endforeach;
+                               <?php  endif; endforeach;
                             }
                         ?>
                     </tbody>

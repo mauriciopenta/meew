@@ -7,8 +7,10 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
+
+
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -30,7 +32,6 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- configuración ui general css -->
-  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
   <!-- css jquery ui -->
 
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jQueryUI/jquery-ui.css">
@@ -40,6 +41,24 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+ 
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/bootstrap.css">
+
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
+
+
+<?php
+/** @var CClientScript $cs */
+$cs = Yii::app()->clientScript;
+
+$cs->registerCoreScript('jquery');
+$cs->registerCoreScript('jquery.ui');
+$cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.min.js');
+
+?>
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <?php
@@ -229,6 +248,7 @@
                   <ul class="treeview-menu">
                     <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
                   </ul>
+                 
                 </li>
                
               </ul>
@@ -244,11 +264,30 @@
                 <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/aplicacionConfig"><i class="fa fa-circle-o"></i>Plantilla</a>
              </li>
                 <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>contenido</a></li>
-                  
+                <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-circle-o"></i>Variables</a></li>
+             
                
               </ul>  
                 
-                
+              <a >
+                <i class="fa fa-edit"></i> <span>Soporte</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li>
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/mContacto/admin"><i class="fa fa-circle-o"></i>Mensajes contacto</a>
+             </li>
+             <li>
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/temaSoporte/admin"><i class="fa fa-circle-o"></i>Tema Soporte</a>
+             </li>
+
+             <li>
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/soporteApp/admin"><i class="fa fa-circle-o"></i>Mensajes Soporte</a>
+             </li>
+
+              </ul>  
                 
                 
             </li>
@@ -560,19 +599,16 @@
 <!-- jQuery UI 1.11.4 -->
 
 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jquery/dist/jquery.min.js"></script>
-
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jQueryUI/jquery-ui.min.js"></script>
 
 
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
-<!-- Bootstrap 3.3.6 -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/bootstrap.min.js"></script>
 
+
+
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jQueryUI/jquery-ui.js"></script>
 <!-- Sparkline -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->
@@ -599,6 +635,9 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/notify.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.redirect.js"></script>
 <!-- Configuración general -->
+
+
+
 <?php 
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Meew.js");
 ?>
