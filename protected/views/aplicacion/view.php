@@ -7,13 +7,7 @@ $this->breadcrumbs=array(
 	$model->id_modulo_app,
 );
 
-$this->menu=array(
-	array('label'=>'List ModuloApp', 'url'=>array('index')),
-	array('label'=>'Create ModuloApp', 'url'=>array('create')),
-	array('label'=>'Update ModuloApp', 'url'=>array('update', 'id'=>$model->id_modulo_app)),
-	array('label'=>'Delete ModuloApp', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id_modulo_app),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage ModuloApp', 'url'=>array('admin')),
-);
+
 ?>
 
 <section class="content" >

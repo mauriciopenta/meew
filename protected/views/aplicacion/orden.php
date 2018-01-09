@@ -45,7 +45,7 @@
                     </div>
                     <br>
                     <div class="form-group has-feedback	" >
-                        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/aplicacionConfig#ordenModulo">
+                        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#ordenModulo">
                           <?php echo CHtml::submitButton('Guardar', array ('id'=>'save-reorder','class' => 'btn btn-info pull-right')); ?>
                        </a>
 			

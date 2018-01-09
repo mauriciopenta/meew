@@ -41,7 +41,7 @@ class AplicacionForm extends CFormModel
                     ["login_activo, login_facebook, facebook, twitter, instagram, nombre_activo, apellido_activo, nombre_usuario_activo,  politicas_privacidad_activo,
                     politicas_privacidad_activo, celular_activo"  , "boolean"],
                     ['nombre', 'match', 'pattern' => "/^.{5,20}$/", 'message' => 'Mínimo 3 y máximo 20 caracteres'],
-                    ['color', 'match', 'pattern' => "/^.{7}$/", 'message' => 'No es un color valido'],
+                    ['color', 'match', 'pattern' => "/^.{7,30}$/", 'message' => 'No es un color valido'],
                     ['imageFile', 'file','types'=>'jpg, jpeg, png', 'maxSize'=>1024 * 1024 * 50,'allowEmpty'=>true, 'on'=>'update','message' => 'No es una imagen']
                     
                 ];

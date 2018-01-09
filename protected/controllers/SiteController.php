@@ -19,8 +19,8 @@ class SiteController extends Controller
             }
         }
         else{
-            Yii::app()->user->returnUrl = array("site/index");          
-            $this->redirect(Yii::app()->user->returnUrl);
+          //  Yii::app()->user->returnUrl = array("site/index");          
+           // $this->redirect(Yii::app()->user->returnUrl);
         }
         $filterChain->run();
     }
@@ -29,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig',                      
+                'enforcelogin -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig -Config',                      
         );
     }
 	/**

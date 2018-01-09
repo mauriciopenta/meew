@@ -47,7 +47,6 @@ class Aplicacion extends CActiveRecord
 			array('usuario_id_usuario, estado_app, color_icon', 'required'),
 			array('login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>100),
-			array('color, color_icon', 'length', 'max'=>7),
 			array('url_fondo', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

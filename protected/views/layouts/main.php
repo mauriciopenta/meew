@@ -232,94 +232,72 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
         <li class="header">MENÚ PRINCIPAL</li>
         <?php if(Yii::app()->user->getState('nombreRole')=="ADMINISTRADOR"):?>
             <li class="treeview">
-              <a href="#">
-                <i class="fa fa-edit"></i> <span>Gestión</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li>
-                  <a ><i class="fa fa-circle-o"></i> Usuarios
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
-                  </ul>
-                 
-                </li>
-               
-              </ul>
-                
-               <a >
-                <i class="fa fa-edit"></i> <span>configuración</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li>
-                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/aplicacionConfig"><i class="fa fa-circle-o"></i>Plantilla</a>
-             </li>
-                <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>contenido</a></li>
-                <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-circle-o"></i>Variables</a></li>
-             
-               
-              </ul>  
-                
-              <a >
-                <i class="fa fa-edit"></i> <span>Soporte</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li>
-                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/mContacto/admin"><i class="fa fa-circle-o"></i>Mensajes contacto</a>
-             </li>
-             <li>
-                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/temaSoporte/admin"><i class="fa fa-circle-o"></i>Tema Soporte</a>
-             </li>
-
-             <li>
-                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/soporteApp/admin"><i class="fa fa-circle-o"></i>Mensajes Soporte</a>
-             </li>
-
-              </ul>  
-                
-                
-            </li>
-
-            
-         <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTEPRINCIPAL"):?>
-            <?php
-                $modelEntityPerson=  EntityPerson::model();
-                $services=$modelEntityPerson->searchServiceByEntity();
-                //echo Yii::app()->user->getId();
-            ?>
-            <li class="treeview">
                 <a href="#">
-                  <i class="fa fa-edit"></i> <span>Servicios</span>
+                  <i class="fa fa-edit"></i> <span>Usuarios</span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                    <?php foreach($services as $service):
-                        $serviceUrl="";
-                        if($service["service_code"]=="AVL"):
-                            $serviceUrl="avl";
-                        elseif($service["service_code"]=="TELEMEDICION"):
-                            $serviceUrl="telemedicion";
-                        elseif($service["service_code"]=="TELECONTROL"):
-                            $serviceUrl="telecontrol";
-                        endif;
-                    ?>
-                        <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/service/<?php echo $serviceUrl?>"><i class="fa fa-circle-o"></i><?php echo $service["service_name"]?></a></li>
-                   <?php  endforeach;?>
-              </ul>
+                  <li>
+                    <a ><i class="fa fa-circle-o"></i> Gestionar Usuarios
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
+                    </ul>
+                  
+                  </li>
+                
+                </ul>
+                
+                <a>
+                  <i class="fa fa-edit"></i> <span>configuración de Variables</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-circle-o"></i>Variables</a></li>
+                </ul>  
+           
+        </li>
+
+            
+         <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTE"):?>
+        
+            <li class="treeview">
+                <a>
+                  <i class="fa fa-edit"></i> <span>configuración</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config"><i class="fa fa-circle-o"></i>Aplicación</a>
+                  </li>
+                </ul>  
+                <a>
+                  <i class="fa fa-edit"></i> <span>Soporte</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                      <li>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/mContacto/admin"><i class="fa fa-circle-o"></i>Mensajes contacto</a>
+                      </li>
+                      <li>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/temaSoporte/admin"><i class="fa fa-circle-o"></i>Tema Soporte</a>
+                      </li>
+                      <li>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/soporteApp/admin"><i class="fa fa-circle-o"></i>Mensajes Soporte</a>
+                      </li>
+                </ul>  
             </li>
          <?php endif;?> 
       </ul>
@@ -340,50 +318,9 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
 
     <!-- Main content -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        
-        <!-- ./col -->
-<!--        <div class="col-lg-3 col-xs-6">
-           small box 
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-              <p>Bounce Rate</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>-->
-        <!-- ./col -->
-<!--        <div class="col-lg-3 col-xs-6">
-           small box 
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>44</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>-->
-        <!-- ./col -->
-        
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-      <!-- Main row -->
       <div class="row">
             <?php echo $content; ?>
       </div>
-      <!-- /.row (main row) -->
-
     </section>
     <!-- /.content -->
   </div>
@@ -616,12 +553,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/knob/jquery.knob.js"></script>
-<!-- daterangepicker -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="<?php // echo Yii::app()->request->baseUrl; ?>/plugins/daterangepicker/daterangepicker.js"></script>
- datepicker -->
-<!--<script src="<?php // echo Yii::app()->request->baseUrl; ?>/plugins/datepicker/bootstrap-datepicker.js"></script>-->
-<!-- Bootstrap WYSIHTML5 -->
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/slimScroll/jquery.slimscroll.min.js"></script>

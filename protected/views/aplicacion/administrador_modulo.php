@@ -60,9 +60,9 @@ $('.search-form form').submit(function(){
         ),
 		array(
 			'class'=>'CButtonColumn',
-			'viewButtonUrl'=>'Yii::app()->controller->createUrl("usuario/view",array("id"=>$data["id_modulo_app"]))',
-			'updateButtonUrl'=>'Yii::app()->controller->createUrl("usuario/update",array("id"=>$data["id_modulo_app"]))',
-			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("usuario/delete",array("id"=>$data["id_modulo_app"]))',
+			'viewButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/view",array("id"=>$data["id_modulo_app"]))',
+			'updateButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/update",array("id"=>$data["id_modulo_app"]))',
+			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/delete",array("id"=>$data["id_modulo_app"]))',
 			'deleteConfirmation'=>"js:'Esta seguro de eliminar el modulo?' "
 			)
 	    ))); 
