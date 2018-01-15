@@ -29,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig -Config',                      
+                'enforcelogin -dataContentSlider -dataContent -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig',                      
         );
     }
 	/**
@@ -186,12 +186,55 @@ class SiteController extends Controller
     
     
         
+        public function actionDataContent(){
+            $idmod=Yii::app()->request->getPost("idmod");
+            $conn=Yii::app()->db;
+            $sql="SELECT * FROM modulo_app WHERE id_contenido=:idcontenido";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":idcontenido", $idmod);
+            $read=$query->query();
+            $res=$read->read();
+            $read->close();
+            $response["content"]=$res;
+            echo CJSON::encode($response);
+        }
+        public function actionDataContentSlider(){
+            $idmods=Yii::app()->request->getPost("idmods");
+//            print_r($idmods);exit();
+            if(!empty($idmods)){
+                $conn=Yii::app()->db;
+                $sql="SELECT texto_html FROM modulo_app WHERE id_contenido=:idcontenido";
+                $response=array();
+                foreach($idmods as $pk=>$idmod){
+                    $query=$conn->createCommand($sql);
+                    $query->bindParam(":idcontenido", $idmod);
+                    $read=$query->query();
+                    $res=$read->read();
+                    $read->close();
+                    $response["content"][$pk]=$res["texto_html"];
+                }
+                $response["status"]="exito";
+            }
+            echo CJSON::encode($response);
+        }
+    
+    
+        
         public function actionLoginPlatformMovile(){
             $modeloUsuario= Usuario::model();
 //            $modeloPersona= Persona::model();
             $datos=Yii::app()->request->getPost("Usuario");
             $modeloUsuario->attributes=$datos;
-            
+            $modelApp=  Aplicacion::model()->findByAttributes(array("idaplicacion"=>$datos["id_app"]));
+            $criteria = new CDbCriteria(array('order'=>'orden ASC'));
+            if($modelApp["id_plantilla"]==1){
+                $tipoMenu=2;
+            }
+            else if($modelApp["id_plantilla"]==2){
+                $tipoMenu=1;
+            }
+            $modeloModulApp= ModuloApp::model()->findAllByAttributes(array("aplicacion_idaplicacion"=>$datos["id_app"],'tipo_menu'=>$tipoMenu),$criteria);
+//            print_r($modelApp["id_plantilla"]);
             $model=new LoginForm;
             $model->username=$modeloUsuario->usuario;
             $model->password=$datos["password"];
@@ -200,7 +243,9 @@ class SiteController extends Controller
                 $response["status"]="exito";
                 $response["usuario"]["email"]=Persona::model()->persona_correo;
                 $response["usuario"]["token"]="lkjd02kd0lksksdfAAsld9E";
+                $response["idplantilla"]=$modelApp["id_plantilla"];
                 $response["msg"]="";
+                $response["contplantilla"]=$modeloModulApp;
             }
             else{
                 $response["status"]="nexito";
