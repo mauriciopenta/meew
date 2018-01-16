@@ -15,6 +15,8 @@ class AplicacionForm extends CFormModel
     public $url_fondo="";
     public $login_activo;
     public $login_facebook;
+    public $modulo_viral;
+    
     public $facebook;
     public $twitter;
     public $instagram;
@@ -27,6 +29,8 @@ class AplicacionForm extends CFormModel
     public $nombre_usuario_activo;
     public $politicas_privacidad_activo;
     public $celular_activo;
+    public $genero;
+    public $rango_edad;
     public $aplicacion_existe=false;
     public $campos_existe=false;
     public $idaplicacion;
@@ -39,7 +43,7 @@ class AplicacionForm extends CFormModel
                 return [
                     ['nombre, id_plantilla, color_icon', 'required', 'message' => 'Campo requerido'],
                     ["login_activo, login_facebook, facebook, twitter, instagram, nombre_activo, apellido_activo, nombre_usuario_activo,  politicas_privacidad_activo,
-                    politicas_privacidad_activo, celular_activo"  , "boolean"],
+                    politicas_privacidad_activo, celular_activo,modulo_viral, genero, rango_edad "  , "boolean"],
                     ['nombre', 'match', 'pattern' => "/^.{5,20}$/", 'message' => 'Mínimo 3 y máximo 20 caracteres'],
                     ['color', 'match', 'pattern' => "/^.{7,30}$/", 'message' => 'No es un color valido'],
                     ['imageFile', 'file','types'=>'jpg, jpeg, png', 'maxSize'=>1024 * 1024 * 50,'allowEmpty'=>true, 'on'=>'update','message' => 'No es una imagen']
@@ -54,19 +58,51 @@ class AplicacionForm extends CFormModel
              ];
             }
 
+           public function uploadS3(){
+
+
+
+          }
+
 
             public function guardar()
             {
-                $imagen="";
-                 $rnd = rand(0,9999);  // generate random number between 0-9999
-                 
-                   $uploadedFile=CUploadedFile::getInstance($this,'imageFile');
-                   if(isset($uploadedFile)){  
-                   $fileName = "{$rnd}-{$uploadedFile}";  // random number + file name
-                   $uploadedFile->saveAs(Yii::app()->basePath.'/uploads/'.$fileName);
-                   $imagen='/uploads/'.$fileName;
-                 }
 
+                $imagen="";
+                $rnd = rand(0,9999);  // generate random number between 0-9999
+            
+                $uploadedFile=CUploadedFile::getInstance($this,'imageFile');
+                if(isset($uploadedFile)){  
+  
+                  $tmp = $uploadedFile->tempName;
+  
+                  $fileName = "fondo-".Yii::app()->user->getState('id_usuario');  // random number + file name
+                  
+                  $S3_BUCKET = 'meew/Imagenes/'.Yii::app()->user->getState('id_usuario');
+                  
+                  $s3file='http://s3.amazonaws.com/'.$S3_BUCKET.'/'.$fileName;
+                  
+                  $S3_KEY = 'AKIAI77TVSZ7KWTFPWMQ';
+                  $S3_SECRET = '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';
+                
+                  $S3_URL = 'http://s3.amazonaws.com/';
+         
+                  // expiration date of query
+                        $s3 = new A2S3(array(
+                                      'key'    => $S3_KEY,
+                                      'secret' => $S3_SECRET));
+  
+                          $s3->putObject(array(
+                              'Bucket' => $S3_BUCKET,
+                              'Key'    => $fileName,
+                              'SourceFile'=>$tmp,
+                              'ACL'    => 'public-read',
+                              'x-amz-storage-class' => 'REDUCED_REDUNDANCY',
+                          ));
+
+                          $imagen= $s3file;
+                }
+            
 
                  $table_aplicacion = new Aplicacion;
                 
@@ -102,16 +138,11 @@ class AplicacionForm extends CFormModel
                     $table_aplicacion->nombre_usuario_activo=$this->nombre_usuario_activo;
                     $table_aplicacion->politicas_privacidad_activo=$this->politicas_privacidad_activo;
                     $table_aplicacion->celular_activo=$this->celular_activo;
+                    $table_aplicacion->modulo_viral=$this->modulo_viral;
                     $table_aplicacion->color_icon=$this->color_icon;
-                    
-                   
-                   
+                    $table_aplicacion->genero=$this->genero;
+                    $table_aplicacion->rango_edad=$this->rango_edad;
                     $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
-                   
-                   
-                   
-                   
-                   
                     //validacion para creacion o actualizacion de tabla
                     if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
                   

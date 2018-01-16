@@ -35,12 +35,12 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/style_form.c
 
 
 
-	<div class="form-group has-feedback">
+    <div class="form-group has-feedback">
             <?php echo $form->labelEx($model,'tipo'); ?><br>
             <?php 
-            echo $form->dropDownList($model,'tipo',  array('estado_app'=>'estado app','grupo_contenido'=>'grupo contenido', "tipo_contenido"=>"tipo contenido",'tipo_documento'=>'Tipo de documento','tipo_menu'=>'tipo menu','modulo'=>'Modulo' ), array('class' => 'form-control','empty'=>'Seleccione') ) ?>
+            echo $form->dropDownList($model,'tipo',  array('estado_app'=>'estado app','grupo_contenido'=>'grupo contenido', "tipo_contenido"=>"tipo contenido",'tipo_documento'=>'Tipo de documento','tipo_menu'=>'tipo menu','modulo'=>'Modulo', 'rango_edad'=>'rango_edad' ), array('class' => 'form-control','empty'=>'Seleccione') ) ?>
             <?php echo $form->error($model,'tipo'); ?>
-   </div>
+    </div>
 
 
 	<div class="form-group has-feedback">

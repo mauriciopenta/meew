@@ -19,6 +19,10 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/dist/css/skins/_all-skins.min.css">
+
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/dist/css/skins/skin-meew.css">
+
+
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/iCheck/flat/blue.css">
   <!-- Morris chart -->
@@ -60,7 +64,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
 
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-meew sidebar-mini">
 <?php
     if(!Yii::app()->user->isGuest):
 ?>
@@ -70,9 +74,12 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
     <!-- Logo -->
     <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>M</b>W</span>
+   
+      <span class="logo-mini">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/logo.png',"",['class'=>'logo_meew_min']); ?></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Meew</b>Admin</span>
+      <span class="logo-lg">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/logo.png',"" ,['class'=>'logo_meew'] ); ?>
+										</span>
+   
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -271,31 +278,45 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
         
             <li class="treeview">
                 <a>
-                  <i class="fa fa-edit"></i> <span>configuración</span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
+                  <i class="fa fa-cogs"></i> <span>configuración</span>
+                     <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config"><i class="fa fa-circle-o"></i>Aplicación</a>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config"><i class="fa fa-eye"></i> Estilo Aplicación</a>
                   </li>
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#estilo"><i class="fa fa-mobile"></i> Estructura Aplicación</a>
+                  </li>
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#viral"><i class="fa fa-info-circle"></i> Información de Contacto</a>
+                  </li>
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#modulos"><i class="fa fa-trello"></i> Módulos</a>
+                  </li>
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#ordenModulo"><i class="fa fa-sort"></i> Orden Módulos</a>
+                  </li>
+
+                  
                 </ul>  
                 <a>
-                  <i class="fa fa-edit"></i> <span>Soporte</span>
+                  <i class="fa fa-support"></i> <span>Soporte</span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
                       <li>
-                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/mContacto/admin"><i class="fa fa-circle-o"></i>Mensajes contacto</a>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/mContacto/admin"><i class="fa fa-envelope"></i>Mensajes contacto</a>
                       </li>
                       <li>
-                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/temaSoporte/admin"><i class="fa fa-circle-o"></i>Tema Soporte</a>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/temaSoporte/admin"><i class="fa fa-ticket"></i>Tema Soporte</a>
                       </li>
                       <li>
-                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/soporteApp/admin"><i class="fa fa-circle-o"></i>Mensajes Soporte</a>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/soporteApp/admin"><i class="fa fa-comments-o"></i>Mensajes Soporte</a>
                       </li>
                 </ul>  
             </li>
@@ -310,10 +331,10 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
     <!-- Content Header (Page header) -->
     <section class="content-header">
      
-      <ol class="breadcrumb">
+      <!--ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
-      </ol>
+      </ol!-->
     </section>
 
     <!-- Main content -->
@@ -567,7 +588,6 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/notify.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.redirect.js"></script>
 <!-- Configuración general -->
-
 
 
 <?php 

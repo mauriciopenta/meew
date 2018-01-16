@@ -11,6 +11,7 @@
  * @property string $fecha_modificacion
  * @property integer $id_tema
  * @property integer $id_aplicacion
+ * @property integer $id_usuario
  *
  * The followings are the available model relations:
  * @property TemaSoporte $idTema
@@ -34,11 +35,11 @@ class SoporteApp extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('mensaje, fecha_creacion, id_tema, id_aplicacion', 'required'),
-			array('id_tema, id_aplicacion', 'numerical', 'integerOnly'=>true),
+			array('id_tema, id_aplicacion, id_usuario', 'numerical', 'integerOnly'=>true),
 			array('respuesta, fecha_modificacion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idsoporte_app, mensaje, respuesta, fecha_creacion, fecha_modificacion, id_tema, id_aplicacion', 'safe', 'on'=>'search'),
+			array('idsoporte_app, mensaje, respuesta, fecha_creacion, fecha_modificacion, id_tema, id_aplicacion, id_usuario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +68,7 @@ class SoporteApp extends CActiveRecord
 			'fecha_modificacion' => 'Fecha Modificacion',
 			'id_tema' => 'Id Tema',
 			'id_aplicacion' => 'Id Aplicacion',
+			'id_usuario' => 'Id Usuario',
 		);
 	}
 
@@ -95,6 +97,7 @@ class SoporteApp extends CActiveRecord
 		$criteria->compare('fecha_modificacion',$this->fecha_modificacion,true);
 		$criteria->compare('id_tema',$this->id_tema);
 		$criteria->compare('id_aplicacion',$this->id_aplicacion);
+		$criteria->compare('id_usuario',$this->id_usuario);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -122,9 +125,6 @@ class SoporteApp extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
-
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

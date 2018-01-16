@@ -36,6 +36,7 @@
 		<?php echo $form->textField($model,'id_aplicacion'); ?>
 	</div>
 
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

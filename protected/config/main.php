@@ -8,6 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'meew',
+	'sourceLanguage'=>'en',
 	'language'=>'es',
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -17,11 +18,10 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'vendor.z_bodya.yii-image.*',
-        'vendor.z_bodya.yii-gallery-manager.*',
         'vendor.z_bodya.yii-image-attachment.*',
-        'vendor.z_bodya.yii-gallery-manager.models.*',
         'vendor.z_bodya.yii-tinymce.*',
-        'vendor.z_bodya.yii-elfinder.*',
+		'vendor.z_bodya.yii-elfinder.*',
+		'vendor.2amigos.yii-aws.components.*',
 	),
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
@@ -36,6 +36,9 @@ return array(
 	),
 // application components
 	'components'=>array(
+		'messages'=>array(
+			'basePath'=>dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'messages',
+		),
 
 		'image' => array(
 			'class' => 'CImageComponent',

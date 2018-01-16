@@ -134,9 +134,7 @@ class ModuloApp extends CActiveRecord
 
 	public function behaviors()
     {
-
         return array(
-
 			'coverBehavior' => array(
                 'class' => 'ImageAttachmentBehavior',
                 'previewHeight' => 200,
@@ -162,9 +160,13 @@ class ModuloApp extends CActiveRecord
                     )
                 ),
                 'name' => true,
-                'description' => false,
-            ),
-			'tiendaBehavior' => array(
+				'description' => true,
+				'precio_text'=>false,
+				'precio'=>false,
+				'unidades'=>false,
+				'url_video'=>true,
+			),
+     		'tiendaBehavior' => array(
                 'class' => 'GalleryBehavior',
                 'idAttribute' => 'id_contenido',
                 'versions' => array(
@@ -176,8 +178,13 @@ class ModuloApp extends CActiveRecord
                     )
                 ),
                 'name' => true,
-                'description' => true,
-            ),
+				'description' => true,
+				'precio_text'=>true,
+				'precio'=>true,
+				'unidades'=>true,
+				'url_video'=>true,
+				
+			),
         );
     }
 	/**

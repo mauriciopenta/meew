@@ -19,14 +19,6 @@ class ModuloAppController extends Controller
 	}
 
 
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -105,7 +97,7 @@ class ModuloAppController extends Controller
 			$model->attributes=$_POST['ModuloApp'];
 			if($model->save()){
 			  
-				Yii::app()->user->returnUrl = array("/usuario/aplicacionConfig#modulos");                                                          
+				Yii::app()->user->returnUrl = array("/aplicacion/aplicacionConfig#modulos");                                                          
 				$this->redirect(Yii::app()->user->returnUrl); 
 			
 			}	

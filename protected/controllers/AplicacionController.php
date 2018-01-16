@@ -154,13 +154,25 @@ class AplicacionController extends Controller
                     //  var_dump($moduloApp->id_modulo_app);die;
                         if( $moduloApp->tipo_modulo==1 || $moduloApp->tipo_modulo==2 ){
                             $gallery=Gallery::model()->findByPk($moduloApp->id_contenido);
-                            $gallery->name = true;
-                            if( $moduloApp->tipo_modulo ==1){
-                                $gallery->description = false;
-                            }else if( $moduloApp->tipo_modulo ==2){
-                                $gallery->description = true;
-                            }
-                            $gallery->save();
+                       
+                                if( $moduloApp->tipo_modulo ==1){
+                                    $gallery->name = true;
+                                    $gallery->description = true;
+                                    $gallery->precio = false;
+                                    $gallery->precio_text = false;
+                                    $gallery->unidades = false;
+                                    $gallery->url_video = true;
+                                }else if( $moduloApp->tipo_modulo ==2){
+                                    $gallery->description = true;
+                                    $gallery->precio = true;
+                                    $gallery->precio_text = true;
+                                    $gallery->unidades = true;
+                                    $gallery->url_video = true;
+                                }
+                                $gallery->save();
+                           
+ 
+
                       }
                       
                       if($moduloApp->tipo_modulo!=4 && $moduloApp->tipo_modulo!=5){
@@ -208,7 +220,10 @@ class AplicacionController extends Controller
                 $model->nombre_usuario_activo= $aplicacionFromDb->nombre_usuario_activo;
                 $model->politicas_privacidad_activo= $aplicacionFromDb->politicas_privacidad_activo;
                 $model->celular_activo= $aplicacionFromDb->celular_activo;
+                $model->modulo_viral= $aplicacionFromDb->modulo_viral;
                 $model->color_icon= $aplicacionFromDb->color_icon;
+                $model->genero= $aplicacionFromDb->genero;
+                $model->rango_edad= $aplicacionFromDb->rango_edad;
                 
                 $mviralFromDb= MViral::model()->findByAttributes(array('aplicacion_idaplicacion'=>$aplicacionFromDb->idaplicacion));
                 //var_dump(json_encode($mviralFromDb->attributes));die;

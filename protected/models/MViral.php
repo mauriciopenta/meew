@@ -11,6 +11,10 @@
  * @property integer $aplicacion_idaplicacion
  * @property integer $aplicacion_usuario_id_usuario
  * @property string $correo_contacto
+ * @property string $telefono
+ * @property string $direccion
+ * @property string $latitud
+ * @property string $longitud
  */
 class MViral extends CActiveRecord
 {
@@ -32,10 +36,12 @@ class MViral extends CActiveRecord
 		return array(
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'required'),
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
-			array('mviral_url_fb, mviral_url_tw, mviral_url_inst, correo_contacto', 'safe'),
+			array('telefono', 'length', 'max'=>11),
+			array('latitud, longitud', 'length', 'max'=>45),
+			array('mviral_url_fb, mviral_url_tw, mviral_url_inst, correo_contacto, direccion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_mviral, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, correo_contacto', 'safe', 'on'=>'search'),
+			array('id_mviral, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, correo_contacto, telefono, direccion, latitud, longitud', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +69,10 @@ class MViral extends CActiveRecord
 			'aplicacion_idaplicacion' => 'Aplicacion Idaplicacion',
 			'aplicacion_usuario_id_usuario' => 'Aplicacion Usuario Id Usuario',
 			'correo_contacto' => 'Correo Contacto',
+			'telefono' => 'Telefono',
+			'direccion' => 'Direccion',
+			'latitud' => 'Latitud',
+			'longitud' => 'Longitud',
 		);
 	}
 
@@ -91,6 +101,10 @@ class MViral extends CActiveRecord
 		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
 		$criteria->compare('correo_contacto',$this->correo_contacto,true);
+		$criteria->compare('telefono',$this->telefono,true);
+		$criteria->compare('direccion',$this->direccion,true);
+		$criteria->compare('latitud',$this->latitud,true);
+		$criteria->compare('longitud',$this->longitud,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

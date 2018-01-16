@@ -50,6 +50,8 @@ $('.search-form form').submit(function(){
 							'fecha_creacion',
 							'fecha_modificacion',
 							'id_tema',
+							'id_usuario',
+							
 							/*
 							'id_aplicacion',
 							*/

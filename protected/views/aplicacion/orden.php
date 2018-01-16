@@ -12,7 +12,7 @@
                             <div class=" with-border">
                                 <h5 class="box-title"> MENÚ PRINCIPAL</h5>
                             </div>
-                            <?php echo " <div  class='row' style='text-align:center; width: 350px; margin:0 auto; background: ".$model['color']."'>"; ?>
+                            <?php echo " <div  class='row' style='text-align:center; width: 350px; margin:0 auto; background-image: url(".$model->imageFile."); no-repeat center center fixed; background-size: 100% auto;'>"; ?>
                            
                             <ul id="sortable" >
                                     <?php 
@@ -30,7 +30,8 @@
                             <div class=" with-border">
                                     <h5 class="box-title">MENÚ TABS</h5>
                             </div>
-                            <?php echo " <div  class='row' style='text-align:center; width: 350px; margin:0 auto; background: ".$model['color']."'>"; ?>
+                            <?php echo " <div  class='row' style='text-align:center; width: 350px; margin:0 auto; background-image: url(".$model->imageFile."); background-size: 100% auto; filter:brightness(0.4);
+  background-color: rgba(0,0,0,0.8);  background-position: bottom; '>"; ?>
                              
                             <ul id="sortable2" >
                                     <?php 

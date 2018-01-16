@@ -22,6 +22,9 @@
  * @property integer $politicas_privacidad_activo
  * @property integer $nombre_usuario_activo
  * @property string $color_icon
+ * @property integer $modulo_viral
+ * @property integer $genero
+ * @property integer $rango_edad
  *
  * The followings are the available model relations:
  * @property TemaSoporte[] $temaSoportes
@@ -45,12 +48,13 @@ class Aplicacion extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('usuario_id_usuario, estado_app, color_icon', 'required'),
-			array('login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo', 'numerical', 'integerOnly'=>true),
+			array('login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, modulo_viral, genero, rango_edad', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>100),
+			array('color, color_icon', 'length', 'max'=>30),
 			array('url_fondo', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, color_icon', 'safe', 'on'=>'search'),
+			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, color_icon, modulo_viral, genero, rango_edad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -90,6 +94,9 @@ class Aplicacion extends CActiveRecord
 			'politicas_privacidad_activo' => 'Politicas Privacidad Activo',
 			'nombre_usuario_activo' => 'Nombre Usuario Activo',
 			'color_icon' => 'Color Icon',
+			'modulo_viral' => 'Modulo Viral',
+			'genero' => 'Genero',
+			'rango_edad' => 'Rango Edad',
 		);
 	}
 
@@ -129,6 +136,9 @@ class Aplicacion extends CActiveRecord
 		$criteria->compare('politicas_privacidad_activo',$this->politicas_privacidad_activo);
 		$criteria->compare('nombre_usuario_activo',$this->nombre_usuario_activo);
 		$criteria->compare('color_icon',$this->color_icon,true);
+		$criteria->compare('modulo_viral',$this->modulo_viral);
+		$criteria->compare('genero',$this->genero);
+		$criteria->compare('rango_edad',$this->rango_edad);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
