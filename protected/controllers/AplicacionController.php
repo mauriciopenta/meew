@@ -25,28 +25,19 @@ class AplicacionController extends Controller
          */
         public function accessRules()
         {
-
-            
-
-
-
             return array(
                 array('allow',  // allow all users to access 'index' and 'view' actions.
                    
-                    'users'=>array('*'),
+                    'users'=>array('@'),
                 ),
                 array('allow', 
-                'actions' => array('admin', 'delete'),
+                'actions' => array('admin', 'delete','aplicaciones','download_resources'),
                 'users' => array('admin')
                 ),
                 array('deny',  // deny all users
                     'users'=>array('*'),
                 ),
             );
-
-
-
-
         }
     
     public function actionSort()
@@ -84,8 +75,10 @@ class AplicacionController extends Controller
 	public function actionConfig()
 	{
             $model=new AplicacionForm;
+            $modelAplicacion=new Aplicacion;
             $modelViral=new MViral;
             $moduloApp= new ModuloApp;
+            $render=true;
             if(isset($_POST['ajax']) && $_POST['ajax']==='aplicacionConfig-form')
             {
                 echo CActiveForm::validate($model);
@@ -100,14 +93,21 @@ class AplicacionController extends Controller
 
             if(isset($_POST['AplicacionForm'])){
                 $model->attributes=$_POST['AplicacionForm'];
-                //var_dump(json_encode($model ));die;
-                if($model->validate() && $model->guardar() )
+                
+                if($model->validate() && $model->guardar())
                 {
                     Yii::app()->user->returnUrl = array("/aplicacion/config#estilo");                                                          
                     $this->redirect(Yii::app()->user->returnUrl);  
+                }else{
+
+                    $render=false;
+                 //var_dump("swiqhwbdiqbduyhbqwhybq");die;
                 }
             }else if(isset($_POST['MViral']))
             {
+
+
+
                     $modelViral->attributes=$_POST['MViral'];
                  //   var_dump(json_encode($_POST));die;
                    // $modelViral->aplicacion_idaplicacion= $model->idaplicacion;
@@ -117,7 +117,6 @@ class AplicacionController extends Controller
                      {    
                          $modelViral->aplicacion_idaplicacion=$aplicacionFromDb->idaplicacion;
                          $mviralFromDb= MViral::model()->findByAttributes(array('aplicacion_idaplicacion'=>$aplicacionFromDb->idaplicacion));
-                            //var_dump(json_encode($mviralFromDb->attributes));die;
                             if(is_object($mviralFromDb) && isset($mviralFromDb->id_mviral)){
                                 $modelViral->id_mviral=$mviralFromDb->id_mviral;
                                 $modelViral->attributes=$_POST['MViral'];
@@ -141,7 +140,7 @@ class AplicacionController extends Controller
                 //var_dump(json_encode($_POST));die;
                 $moduloApp->attributes=$_POST['ModuloApp'];
                 $moduloApp->texto_html=$_POST['ModuloApp']['texto_html'];
-                 $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+                $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
                 
                 
                 if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre))
@@ -204,7 +203,7 @@ class AplicacionController extends Controller
                 $model->nombre= $aplicacionFromDb->nombre;
                 $model->color= $aplicacionFromDb->color;
                 $model->url_fondo= $aplicacionFromDb->url_fondo;
-                $model->imageFile= $aplicacionFromDb->url_fondo;
+                $model->imageFile=Yii::app()->request->baseUrl . $aplicacionFromDb->url_fondo;
                 $model->login_activo= $aplicacionFromDb->login_activo;
                 $model->login_facebook= $aplicacionFromDb->login_facebook;
                 $model->facebook= $aplicacionFromDb->facebook;
@@ -225,6 +224,10 @@ class AplicacionController extends Controller
                 $model->genero= $aplicacionFromDb->genero;
                 $model->rango_edad= $aplicacionFromDb->rango_edad;
                 
+                $model->imagen_splash= $aplicacionFromDb->imagen_splash;
+                $model->imagen_icon= $aplicacionFromDb->imagen_icon;
+                $model->icon_interno= $aplicacionFromDb->icon_interno;
+     
                 $mviralFromDb= MViral::model()->findByAttributes(array('aplicacion_idaplicacion'=>$aplicacionFromDb->idaplicacion));
                 //var_dump(json_encode($mviralFromDb->attributes));die;
                 $moduloApp->aplicacion_idaplicacion=$aplicacionFromDb->idaplicacion;
@@ -244,7 +247,8 @@ class AplicacionController extends Controller
                 }
             }
             $moduloSearch= new ModuloApp;
-            $this->render('config',array('model'=>$model,'modelViral'=>$modelViral,'moduloApp'=>$moduloApp ,'moduloSearch'=>$moduloSearch));
+           
+            $this->render('config',array('model'=>$model,'modelViral'=>$modelViral,'moduloApp'=>$moduloApp ,'moduloSearch'=>$moduloSearch, 'modelAplicacion'=>$aplicacionFromDb));
       }
 
 
@@ -267,8 +271,155 @@ class AplicacionController extends Controller
         echo $return; // it's array 
     }
 
+    public function actionUpload_resource($idaplicacion = null, $type = null)
+    {
+        
+     
+        $model=Aplicacion::model()->find('idaplicacion='.$idaplicacion);
+
+		if($model===null){
+			throw new CHttpException(404,'The requested page does not exist.');
+        }else{
+
+            $imageFile = CUploadedFile::getInstanceByName('file');
+           
+                          
+                 //   $tmp = $uploadedFile->tempName;
+                //  var_dump(dirname(Yii::app()->request->scriptFile));die;
+                    if($type=='splash'){
+                        try {
+                            $fileName = "splash-" . $idaplicacion . ".".$imageFile->getExtensionName(); 
+                      
+                        } catch (Exception $e) {
+                            $fileName = "splash-" . $idaplicacion .$uploadedFile->tempName; 
+                        }
+                       
+                       
+                        $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
+                        $model->imagen_splash= '/uploads/'.$fileName; 
+                    }else if($type=='icon'){
+                        $fileName = "icon-".$idaplicacion.".".$imageFile->getExtensionName(); 
+                        $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
+                        $model->imagen_icon= '/uploads/'.$fileName; 
+                    }else if($type=='icon_header'){
+                        $fileName = "iconfeader-".$idaplicacion.".".$imageFile->getExtensionName(); 
+                        $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
+                     
+                        $model->icon_interno= '/uploads/'.$fileName; 
+                    }
+                    $model->save();
+                    
+                    header("Content-Type: text/html");
+                    echo CJSON::encode(
+                        array(
+                            'idaplicacion' =>$idaplicacion,
+                            'imagen_splash' => Yii::app()->request->baseUrl.$model->imagen_splash,
+                            'imagen_icon' =>Yii::app()->request->baseUrl. $model->imagen_icon,
+                            'imagen_icon_int' =>Yii::app()->request->baseUrl. $model->icon_interno,
+                            'type'=> $type
+                        ));
+           
+        }    
+    }
+   public function createZip($files = array(), $destination = '', $overwrite = false) {
 
 
+        if(file_exists($destination) && !$overwrite) { return false; }
+     
+     
+        $validFiles = [];
+        if(is_array($files)) {
+           foreach($files as $file) {
+              if(file_exists($file)) {
+                 $validFiles[] = $file;
+              }
+           }
+        }
+     
+     
+        if(count($validFiles)) {
+           $zip = new ZipArchive();
+           if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+              return false;
+           }
+     
+     
+           foreach($validFiles as $file) {
+              $zip->addFile($file,$file);
+           }
+     
+     
+           $zip->close();
+           return file_exists($destination);
+        }else{
+           return false;
+        }
+     }
+
+    public function actionDownload_resources($idaplicacion = null)
+    {
+
+        $model=Aplicacion::model()->find('idaplicacion='.$idaplicacion);
+        if($model===null){
+			throw new CHttpException(404,'The requested page does not exist.');
+        }else{
+        
+            $files =array();
+            if($model->imagen_splash!=''){
+              $files[0]=dirname (Yii::app()->request->scriptFile).$model->imagen_splash;
+            }
+
+            if($model->imagen_icon!=''){
+                $files[1]=dirname (Yii::app()->request->scriptFile).$model->imagen_icon;
+            }
+            if($model->icon_interno!=''){
+                $file[2]=dirname (Yii::app()->request->scriptFile).$model->icon_interno;
+            }
+            $rnd = rand(0,9999);
+           
+            $destination=dirname (Yii::app()->request->scriptFile)."/uploads/".$idaplicacion.$rnd.".zip";
+            $validFiles = [];
+            if(is_array($files)) {
+               foreach($files as $file) {
+                  if(file_exists($file)) {
+                     $validFiles[] = $file;
+                  }
+               }
+            }
+         
+         $result=false;
+            if(count($validFiles)) {
+               $zip = new ZipArchive();
+               $ret =$zip->open($destination,ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+               $dir = '/recursos';
+      
+
+              if($ret){
+                    foreach($validFiles as $file) {
+                        $lastIndex = strripos($file, "/");
+                        $name=substr($file,$lastIndex+1);
+                        $zip->addFile($file,$dir."/".$name);
+                    }
+                
+                
+                    $zip->close();
+                    $result= file_exists($destination);
+              }
+            }else{
+                $result=false;
+            }
+
+
+            header("Content-Disposition: attachment; filename=\"" .$idaplicacion.$rnd.".zip"."\"");
+            header("Content-Length: ".filesize($destination));
+            readfile($destination);
+          
+          
+           
+
+        }
+
+   }
 
       public function actionCreateModulo()
       {
@@ -383,6 +534,37 @@ class AplicacionController extends Controller
 
         
     }
+
+
+
+	public function actionAplicaciones()
+	{
+        
+        $model=new Aplicacion('search_app');
+        $model->unsetAttributes();  // clear any default values
+       // var_dump(json_encode( $model));die;
+
+        if(isset($_GET['Aplicacion'])){
+            $model->idaplicacion=$_GET['Aplicacion']['idaplicacion'];
+            $model->nombre=$_GET['Aplicacion']['nombre'];
+            $model->id_plantilla=$_GET['Aplicacion']['id_plantilla'];
+            $model->paquete=$_GET['Aplicacion']['paquete'];
+		
+        }
+          
+
+		$this->render('aplicaciones',array(
+			'model'=>$model,
+        ));
+        
+
+
+
+	}
+
+
+
+
     // Uncomment the following methods and override them if needed
     /*
     public function filters()
@@ -420,7 +602,7 @@ class AplicacionController extends Controller
         //var_dump("save   moduleeee");die;
        
 		$model=$this->loadModelModulo($id);
-
+         
         // Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
     
@@ -442,9 +624,11 @@ class AplicacionController extends Controller
             }          
             
 		}else{
+            $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
            
             $this->render('update',array(
                 'model'=>$model,
+                'model_aplicacion'=>$aplicacionFromDb
             ));
         }
 	}

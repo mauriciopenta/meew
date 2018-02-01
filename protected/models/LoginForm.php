@@ -8,7 +8,7 @@
 class LoginForm extends CFormModel
 {
 	public $username;
-	public $password='80760766';
+	public $password; 
 	public $rememberMe;
 	
 	private $_identity;

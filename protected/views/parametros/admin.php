@@ -62,6 +62,7 @@ $('.search-form form').submit(function(){
 
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'id'=>'parametros-grid',
+					'itemsCssClass' => 'table table-bordered table-striped dataTable',
 					'dataProvider'=>$model->search(),
 					'filter'=>$model,
 					'columns'=>array(
@@ -72,6 +73,10 @@ $('.search-form form').submit(function(){
 						
 						array(
 							'class'=>'CButtonColumn',
+							'updateButtonImageUrl'=>Yii::app()->baseUrl.'/img/edit.png',
+		   	     			'deleteButtonImageUrl'=>Yii::app()->baseUrl.'/img/delete.png',
+							'viewButtonImageUrl'=>Yii::app()->baseUrl.'/img/view.png',
+							
 						),
 					),
 				)); ?>

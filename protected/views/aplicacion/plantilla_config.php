@@ -4,7 +4,7 @@
 			'id'=>'aplicacionConfig-form',
 			"method" => "post",
 			'enableClientValidation'=>true,
-			'enableAjaxValidation'=>false,
+			'enableAjaxValidation'=>true,
 			'htmlOptions' => array(
 				'enctype' => 'multipart/form-data'),
 			'clientOptions'=>array(
@@ -20,7 +20,8 @@
             <div class="box-body">
             <div class="row">
             <div class="col-md-12">
-			<label>Seleccione una plantilla</label><br>
+			<p class="note">Seleccione una plantilla</p>
+			<br>
 				<div class="row">
 							<?php
 								$type_list=Plantilla::model()->findAll();
@@ -63,7 +64,7 @@
 						<?php echo $form->error($model,'nombre'); ?>
 				</div>
 				<div class="form-group">
-					<label>Color fondo:</label>
+					<label>Color Header:</label>
 
 					<div class="input-group my-colorpicker2">
 					<?php 
@@ -137,9 +138,12 @@
 			<div class="row">
 					<div class="col-md-6">
 							
-				        	<p class="note">Modulos</p>
-                         
+				        	<p class="note"><b>Modulos</b></p>
+						    <p>Selecciona los módulos que deseas ver en tu aplicación móvil. <p>
+							<br>
+								
 							<div class="form-group has-feedback">
+						
 								<label>
 							    	<?php echo $form->label($model,'Login'); ?>
 									<?php echo $form->checkBox($model,'login_activo', array('class' => 'minimal') ); ?>
@@ -185,7 +189,8 @@
 					</div>
 					<div class="col-md-6">
 					
-					<p class="note">Campos Registro</p>
+					<p class="note"><b>Campos Registro</b></p>
+					<p>Selecciona los campos que deseas que tus usuarios completen en el momento de realizar el registro en tu aplicación móvil.</p>
 							<div class="form-group has-feedback">
 							<label>
 							    <?php echo $form->label($model,'nombre_activo'); ?>
@@ -250,3 +255,14 @@
 	   <?php $this->endWidget(); ?>
 	 </div>
 	</div>
+
+	<?php
+		$this->widget('ImageManager', array(
+			'aplicacion' => $modelAplicacion,
+			'controllerRoute'=>'RecursosController'
+			)); 
+	?>
+
+
+	</div>
+

@@ -42,15 +42,27 @@ var Modulo = function(){
      */
     function setDefaults(){
        var estadoGuarda ;
+
+
+     
         //Inicializa datatable
         var modulo = $("#tipo_modulo").val();
-        var modulo = $("#tipo_modulo").val();
-
-
-
+       
+        var tipo_menu = $("#tipo_menu").val();
+        console.log("tipo menu "+tipo_menu);
+       if(tipo_menu==2){
+         $("#option_slider").css("display","block");
+       }else{
+         $("#option_slider").css("display","none");
+       }
+        
         if(modulo !=3 )
         {  
             $("#articulo").css("display","none");
+        }else{
+
+            CKEDITOR.replace('html_text');
+            $('.textarea').wysihtml5();
         }
         if( modulo !=1){
             $("#multimedia").css("display","none");
@@ -70,11 +82,25 @@ var Modulo = function(){
         //bootstrap WYSIHTML5 - text editor
       //  $('.textarea').wysihtml5();
 
+         $("#tipo_menu").change(function() {
+                var tipo_menu = $("#tipo_menu").val();
+                console.log(tipo_menu);
+                if(tipo_menu==2){
+                    $("#option_slider").css("display","block");
+                }else{
+                    $("#option_slider").css("display","none");
+                }
+
+         });
+
 
         $("#tipo_modulo").change(function() {
             $("#articulo").css("display","none");
             $("#multimedia").css("display","none");
             $("#tienda").css("display","none");
+
+
+
             var modulo = $("#tipo_modulo").val();
                 console.log(modulo);
                 if(modulo ==3){
@@ -100,7 +126,7 @@ var Modulo = function(){
                 }
         });
     
-
+      
        
 //       
     };    

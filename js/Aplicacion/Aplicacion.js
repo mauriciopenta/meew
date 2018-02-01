@@ -52,12 +52,31 @@ var Aplicacion = function(){
         var estadoGuarda ;
         //Inicializa datatable
       
-        $( "#sortable" ).sortable();
+        $( "#sortable" ).sortable({
+        start: function(event, ui) {
+
+        },
+        update: function(event, ui) {
+            var postdata=  $( "#sortable" ).sortable('toArray');
+
+            for (i = 0; i < postdata.length; i++) { 
+                 console.log("#slide_"+postdata[i]  ); 
+                 $("#slide_"+postdata[i]).text((i+1));
+            }
+        },
+        change: function(event, ui) {
+
+           
+        
+        }
+    });
+
+
+
         $( "#sortable" ).disableSelection();
         $( "#sortable2" ).sortable();
         $( "#sortable2" ).disableSelection();
-        
-
+      
         $(document).on('click','#save-reorder',function(){
             var postdata=  $( "#sortable" ).sortable('toArray');
             var postdata2=  $( "#sortable2" ).sortable('toArray');
@@ -167,6 +186,30 @@ var Aplicacion = function(){
            codeAddress();
            return false;
         });
+
+
+        var pais = document.getElementById('pais');
+        var telf = document.getElementById('telf');
+
+        pais.onchange = function(e) {
+                telf.value = escape("+")+this.value;
+                if((this.value).trim() != '') {
+                    telf.disabled = false;
+            } else {
+                    telf.disabled = true
+            }
+        }
+
+        telf.onkeyup = function(e) {
+                var nums_v = this.value.match(/\d+/g);
+            if (nums_v != null) {
+                this.value = escape("+")+((nums_v).toString().replace(/\,/, ''));
+            } else { 
+                    this.value = escape("+")+pais.value;
+                }
+        }
+
+
         initialize();
             
     };    
@@ -209,10 +252,16 @@ var Aplicacion = function(){
            //creamos el marcador en el mapa
            marker = new google.maps.Marker({
                map: map,//el mapa creado en el paso anterior
+               raiseOnDrag: true,
+               title: "Mueva el marcador a la posición.",
+            
                position: latLng,//objeto con latitud y longitud
                draggable: true //que el marcador se pueda arrastrar
            });
-           
+           google.maps.event.addListener(marker, 'dragend', function(){
+            
+            updatePosition(marker.getPosition(),true);
+          });
           //función que actualiza los input del formulario con las nuevas latitudes
           //Estos campos suelen ser hidden
            updatePosition(latLng);
@@ -233,15 +282,24 @@ var Aplicacion = function(){
                //centro el mapa en las coordenadas obtenidas
                map.setCenter(results[0].geometry.location);
                //coloco el marcador en dichas coordenadas
+             
+              
                marker.setPosition(results[0].geometry.location);
+
                //actualizo el formulario      
-               updatePosition(results[0].geometry.location);
+               updatePosition(results[0].geometry.location,false);
                 
                //Añado un listener para cuando el markador se termine de arrastrar
                //actualize el formulario con las nuevas coordenadas
+
+
                google.maps.event.addListener(marker, 'dragend', function(){
-                   updatePosition(marker.getPosition());
+                 
+                   updatePosition(marker.getPosition(),true);
                });
+
+
+
          } else {
              //si no es OK devuelvo error
              alert("No podemos encontrar la direcci&oacute;n, error: " + status);
@@ -250,15 +308,25 @@ var Aplicacion = function(){
      }
       
      //funcion que simplemente actualiza los campos del formulario
-     function updatePosition(latLng)
+     function updatePosition(latLng,update_addres)
      {
-          
+       
+        document.getElementById("lat").value=latLng.lat();
+        document.getElementById("long").value=latLng.lng();
           $('#lat').val(latLng.lat());
           $('#long').val(latLng.lng());
+       if(update_addres){
+          geocoder.geocode({'latLng': latLng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+            var address=results[0]['formatted_address'];
+            $('#direccion').val(address);
+            document.getElementById("direccion").value=address;
+           
+            }
+            });
+        }
       
      }
-
-
 
 };
 $(document).ready(function() {

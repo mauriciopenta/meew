@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="login_header" >
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +17,7 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/iCheck/square/blue.css">
 
+  <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -27,16 +28,17 @@
 
 
 
-<body class="hold-transition login-page">
+<body >
     <?php
     $this->pageTitle=Yii::app()->name . ' - Login';
     $this->breadcrumbs=array(
             'Login',
     );
-?>
+    ?>
+
 <div class="login-box">
   <div class="login-logo">
-      <a href="../../index2.html"><b>Meew</b></a>
+      <a href="../../index2.html">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew-letra.png',"" ,['class'=>'logo_meew'] ); ?></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -80,19 +82,19 @@
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 
-    <div class="social-auth-links text-center">
+    <!--div class="social-auth-links text-center">
       <p>- O -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
         Facebook</a>
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
         Google+</a>
-    </div>
+    </div-->
     <!-- /.social-auth-links -->
 
     <a href="#">Olvido su contraseña?</a><br>
     
    
-    <?php echo CHtml::link('Registrar Usuario',array('site/register')); ?>
+    <!--?php echo CHtml::link('Registrar Usuario',array('site/register')); ?-->
   </div>
   <!-- /.login-box-body -->
 
@@ -116,5 +118,6 @@ Yii::app()->clientScript->registerCoreScript('jquery.ui');
     });
   });
 </script>
+
 </body>
 </html>

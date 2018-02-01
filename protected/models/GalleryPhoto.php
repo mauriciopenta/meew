@@ -160,10 +160,9 @@ class GalleryPhoto extends CActiveRecord
     public function setImage($path)
     {
         //save image in original size
-        Yii::app()->image->load($path)->save(Yii::getPathOfAlias('webroot') . '/' . $this->galleryDir . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+        Yii::app()->image->load($path)->save(Yii::getPathOfAlias('webroot') . '/' . $this->galleryDir . '/' . $this->file_name);
         //create image preview for gallery manager
-        Yii::app()->image->load($path)->resize(300, null)->save(Yii::getPathOfAlias('webroot') . '/' . $this->galleryDir . '/_' . $this->getFileName('') . '.' . $this->galleryExt);
-
+    
         $this->updateImages();
     }
 

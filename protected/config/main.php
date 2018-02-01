@@ -17,6 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'vendor.lib.*',
 		'vendor.z_bodya.yii-image.*',
         'vendor.z_bodya.yii-image-attachment.*',
         'vendor.z_bodya.yii-tinymce.*',
@@ -145,7 +146,7 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'johan.gomez@zonesoftware.com',
 		'postsPerPage'=>10,
 		// maximum number of comments that can be displayed in recent comments portlet
 		'recentCommentCount'=>10,

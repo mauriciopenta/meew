@@ -19,8 +19,8 @@ class SiteController extends Controller
             }
         }
         else{
-          //  Yii::app()->user->returnUrl = array("site/index");          
-           // $this->redirect(Yii::app()->user->returnUrl);
+           Yii::app()->user->returnUrl = array("usuario/home");          
+            $this->redirect(Yii::app()->user->returnUrl);
         }
         $filterChain->run();
     }
@@ -29,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -dataContentSlider -dataContent -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile -plantillaManager -aplicacionConfig',                      
+                'enforcelogin -dataContentSlider -dataContent -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile  -aplicacionConfig',                      
         );
     }
 	/**
@@ -65,8 +65,9 @@ class SiteController extends Controller
                 $user=Yii::app()->user->name;
 //                $service=  Service::model()->searchServiceByUsername($user);
 //                $modelEntity=  Entity::model();
-//                $modelEntityPerson=  EntityPerson::model();
-                $this->render('index');
+                //                $modelEntityPerson=  EntityPerson::model();
+                Yii::app()->user->returnUrl = array("usuario/home");          
+                $this->redirect(Yii::app()->user->returnUrl);
             }
 	}
         
@@ -158,7 +159,7 @@ class SiteController extends Controller
                         $model->attributes=$_POST['LoginForm'];
                         // validate user input and redirect to the previous page if valid
                         if($model->validate() && $model->login()){
-                            Yii::app()->user->returnUrl = array("site/index");                                                          
+                            Yii::app()->user->returnUrl = array("usuario/home");          
                             $this->redirect(Yii::app()->user->returnUrl);
                         }
                 }
@@ -314,39 +315,6 @@ class SiteController extends Controller
             }
         }
         
-        public function actionRegister(){
-            if(Yii::app()->user->isGuest){
-                $model=new RegisterForm;
-                //print_r($_POST);
-                // if it is ajax validation request
-                if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
-                {
-                        print_r( CActiveForm::validate($model));
-//                        
-                    Yii::app()->end();
-                }
-                
-                // collect user input data
-                if(isset($_POST['RegisterForm'])){
-                        $model->attributes=$_POST['RegisterForm'];
-                        // validate user input and redirect to the previous page if valid
-                        if($model->validate() && $model->register()){
-                          //  Yii::app()->user->returnUrl = array("site/index");                                                          
-                           // $this->redirect(Yii::app()->user->returnUrl);
-                            $messageType = 'success';
-                            $message = "<div class='alert alert-info alert-dismissable'>Se envío un email, para confirmar tu correo.</div>";
-                            Yii::app()->user->setFlash($messageType, $message);
-            
-                        }
-                }
-                // display the login form
-//                Yii::app()->user->setFlash('success', "Data1 saved!");
-                $this->render('register',array("model"=>$model));
-            }
-            else{
-                 $this->redirect(Yii::app()->user->returnUrl);
-            }    
-        }
 
         public function actionRegister2()
         {

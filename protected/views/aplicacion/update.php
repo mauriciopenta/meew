@@ -8,12 +8,6 @@ $this->breadcrumbs=array(
 	'Update',
 );
 
-$this->menu=array(
-	array('label'=>'List ModuloApp', 'url'=>array('index')),
-	array('label'=>'Create ModuloApp', 'url'=>array('create')),
-	array('label'=>'View ModuloApp', 'url'=>array('view', 'id'=>$model->id_modulo_app)),
-	array('label'=>'Manage ModuloApp', 'url'=>array('admin')),
-);
 ?>
 <section class="content" >
  <div class="row">
@@ -25,7 +19,7 @@ $this->menu=array(
             <div class="box-body">
 			<h1>Editar Modulo </h1>
 
-                <?php $this->renderPartial('createModulo', array('model'=>$model)); ?>
+                <?php $this->renderPartial('createModulo', array('model'=>$model,'model_aplicacion'=>$model_aplicacion)); ?>
 
       </div>
      </div>

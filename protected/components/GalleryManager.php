@@ -65,7 +65,8 @@ class GalleryManager extends CWidget
                 'url_video' => (string)$photo->url_video,
                 'preview_video' => "https://www.youtube.com/embed/" . $photo->url_video,
                 'tipo_contenido' => (string) $photo->tipo_contenido,
-                'preview' => $photo->file_name,
+                'preview' => Yii::app()->request->baseUrl.$photo->file_name,
+
             );
         }
 

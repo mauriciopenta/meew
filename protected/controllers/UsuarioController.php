@@ -25,17 +25,14 @@ class UsuarioController extends Controller{
 	{
 		return array(
 			array('allow',  // allow all users to access 'index' and 'view' actions.
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
+				'actions'=>array('index','view','home'),
+				'users'=>array('@'),
 			),
             array('allow', 
-            'actions' => array('admin', 'delete'),
+            'actions' => array('admin', 'delete','userManager','update','agregar'),
             'users' => array('admin')
             ),
-            
-
-
-			array('deny',  // deny all users
+            array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
@@ -63,7 +60,20 @@ class UsuarioController extends Controller{
         $modeloPersona=new Persona();
         $personas=$modeloPersona->model()->findAll();
         $dataTipoLogin= TipoLogin::model()->findAll();
-        $this->render('plantillaManager',array(
+        $this->render('userManager',array(
+            "modeloUsuario"=>$modeloUsuario,
+            "modeloPersona"=>$modeloPersona,
+            "personas"=>$personas,
+            "dataTipoLogin"=>$dataTipoLogin
+        ));
+    }
+
+	public function actionHome(){
+        $modeloUsuario=new Usuario();
+        $modeloPersona=new Persona();
+        $personas=$modeloPersona->model()->findAll();
+        $dataTipoLogin= TipoLogin::model()->findAll();
+        $this->render('home',array(
             "modeloUsuario"=>$modeloUsuario,
             "modeloPersona"=>$modeloPersona,
             "personas"=>$personas,
@@ -90,14 +100,56 @@ class UsuarioController extends Controller{
     }
 
     
+	public function actionAgregar(){
+		
+			$model=new RegisterForm;
+			//print_r($_POST);
+			// if it is ajax validation request
+			if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
+			{
+					print_r( CActiveForm::validate($model));
+//                        
+				Yii::app()->end();
+			}
+			
+			// collect user input data
+			if(isset($_POST['RegisterForm'])){
+					$model->attributes=$_POST['RegisterForm'];
+					// validate user input and redirect to the previous page if valid
+					if($model->validate() && $model->register()){
+					  //  Yii::app()->user->returnUrl = array("site/index");                                                          
+					   // $this->redirect(Yii::app()->user->returnUrl);
+						$messageType = 'success';
+						$message = "<div class='alert alert-info alert-dismissable'>Se envío un email, para confirmar tu correo.</div>";
+						Yii::app()->user->setFlash($messageType, $message);
+		
+					}
+			}
+		
+		//	require_once Yii::app()->getBasePath() . '/extensions/payu-php-sdk-4.5.6/lib/PayU.php';
+		    $acceso_api=  Api::model()->findByAttributes(array("tipo"=>'payu'));
+      		PayU::$language = SupportedLanguages::ES; //Seleccione el idioma.
+			PayU::$isTest = true; //Dejarlo True cuando sean pruebas.
+			PayU::$apiKey = $acceso_api->key; //Ingrese aquí su propio apiKey.
+            PayU::$apiLogin = $acceso_api->login; //Ingrese aquí su propio apiLogin.
+            PayU::$merchantId = $acceso_api->id_prod; //Ingrese aquí su Id de Comercio.
+			LoggerUtil.setLogLevel(Level.ALL); //Incluirlo únicamente si desea ver toda la traza del log; si solo se desea ver la respuesta, se puede eliminar.
 
-      public function loadModel($id)
-      {
-          $model=MViral::model()->findByPk($id);
-          if($model===null)
-              throw new CHttpException(404,'The requested page does not exist.');
-          return $model;
-      }
+				// URL de Pagos
+			Environment::setPaymentsCustomUrl("https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi");
+				// URL de Consultas
+			Environment::setReportsCustomUrl("https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi");
+				// URL de Suscripciones para Pagos Recurrentes
+			Environment::setSubscriptionsCustomUrl("https://sandbox.api.payulatam.com/payments-api/rest/v4.3/");
+
+		
+
+			// display the login form
+//                Yii::app()->user->setFlash('success', "Data1 saved!");
+			$this->render('agregar',array("model"=>$model));
+	  
+	}
+
 
       public function actionParametrosConfig()
       {
@@ -153,33 +205,117 @@ class UsuarioController extends Controller{
 
         
     }
- 
-	public function actionView($id)
+
+    public function actionView($id)
 	{
+		$this->render('view',array(
+			'model'=>$this->loadModel($id),
+		));
+	}
 
-        $this->render('view',array(
-			'model'=>$this->loadModelModulo($id),
-        ));
-        
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionCreate()
+	{
+		$model=new Usuario;
 
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
 
-    }
+		if(isset($_POST['Usuario']))
+		{
+			$model->attributes=$_POST['Usuario'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id_usuario));
+		}
 
+		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Usuario']))
+		{
+			$model->attributes=$_POST['Usuario'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id_usuario));
+		}
+
+		$this->render('update',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionDelete($id)
+	{
+		$this->loadModel($id)->delete();
+
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
+	/**
+	 * Lists all models.
+	 */
+	public function actionIndex()
+	{
+		$dataProvider=new CActiveDataProvider('Usuario');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+
+	/**
+	 * Manages all models.
+	 */
+	public function actionAdmin()
+	{
+		$model=new Usuario('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Usuario']))
+			$model->attributes=$_GET['Usuario'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return ModuloApp the loaded model
+	 * @return Usuario the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadModelModulo($id)
+	public function loadModel($id)
 	{
-		$model=ModuloApp::model()->findByPk($id);
+		$model=Usuario::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+
 
 	/**
 	 * Performs the AJAX validation.
@@ -193,6 +329,7 @@ class UsuarioController extends Controller{
 			Yii::app()->end();
 		}
 	}
+
 
 
 

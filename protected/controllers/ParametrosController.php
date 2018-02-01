@@ -134,7 +134,11 @@ class ParametrosController extends Controller
 	public function actionAdmin()
 	{
 		$model=new Parametros('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();
+		
+		
+		
+		// clear any default values
 		if(isset($_GET['Parametros']))
 			$model->attributes=$_GET['Parametros'];
 

@@ -128,15 +128,16 @@ class RegisterForm extends CFormModel
               $body .= "<a href='http://yii.local/index.php/site/confirm&id=".$id."'>Confirmar</a>";
            
 
-            /*  $message = new YiiMailMessage;;
+              $message = new YiiMailMessage;;
               //this points to the file test.php inside the view path
               $message->subject =  $subject;
               $message->setBody($body);
               $message->addTo($this->email);
               $message->from = Yii::app()->params['adminEmail'];
               Yii::app()->mail->send($message);
+              
             
-             */
+             
 /*
 
               //Enviamos el correo

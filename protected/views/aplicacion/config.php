@@ -36,7 +36,7 @@ $this->breadcrumbs=array(
 
 <div class="form">
 <section class="content" id="divAplicacion">
-   <?php $this->renderPartial('plantilla_config', array('model'=>$model)); ?>
+   <?php $this->renderPartial('plantilla_config', array('model'=>$model,'modelAplicacion'=>$modelAplicacion)); ?>
 	<?php $this->renderPartial('info_contacto', array('modelViral'=>$modelViral)); ?>
 		<div class="box box-info" id="modulos" action="#modulos">
 					<div class="box-header">
@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
 					<div class="row">
 						<div class="col-md-12" >
 							<?php $this->renderPartial('administrador_modulo', array('model'=>$moduloSearch)); ?>
-							<?php $this->renderPartial('createModulo', array('model'=>$moduloApp)); ?>
+							<?php $this->renderPartial('createModulo', array('model'=>$moduloApp,'model_aplicacion'=>$model)); ?>
 						</div>
 				</div>
 			</div>

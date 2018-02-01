@@ -19,20 +19,43 @@ class GalleryController extends CController
         );
     }
 
-    /**
-     * Removes image with ids specified in post request.
-     * On success returns 'OK'
-     */
+
+
     public function actionDelete()
     {
         $id = $_POST['id'];
         /** @var $photos GalleryPhoto[] */
         $photos = GalleryPhoto::model()->findAllByPk($id);
         foreach ($photos as $photo) {
+            if ($photo !== null) $photo->delete();
+            else throw new CHttpException(400, 'Photo, not found');
+        }
+        echo 'OK';
+    }
+
+
+    /**
+     * Removes image with ids specified in post request.
+     * On success returns 'OK'
+     */
+   /* public function actionDelete()
+    {
+        $id = $_POST['id'];
+        $photos = GalleryPhoto::model()->findAllByPk($id);
+        foreach ($photos as $photo) {
             if ($photo !== null) {
               if($photo->tipo_contenido==1){
-                    $S3_KEY = 'AKIAI77TVSZ7KWTFPWMQ';
-                    $S3_SECRET = '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';
+                    
+                $sql1 = "select codigo, nombre from parametros b where  b.tipo='s3_credential' and b.codigo=1";
+			
+				$consulta_key = Yii::app()->db->createCommand($sql1)->queryAll();
+                $sql2 = "select codigo, nombre from parametros b where  b.tipo='s3_credential' and b.codigo=2";
+			
+				$consulta_key_s = Yii::app()->db->createCommand($sql2)->queryAll();
+			
+                    
+                    $S3_KEY = $consulta_key[0]['nombre'];
+                    $S3_SECRET = $consulta_key_s[0]['nombre'];
                     $S3_URL = 'http://s3.amazonaws.com/';
                     // expiration date of query
                     $s3 = new A2S3(array(
@@ -57,7 +80,7 @@ class GalleryController extends CController
             else throw new CHttpException(400, 'Photo, not found');
         }
         echo 'OK';
-    }
+    }*/
 
     /**
      * Method to handle file upload thought XHR2
@@ -65,6 +88,10 @@ class GalleryController extends CController
      * @param $gallery_id string Gallery Id to upload images
      * @throws CHttpException
      */
+
+
+
+     /*
     public function actionAjaxUpload($gallery_id = null)
     {
         $model = new GalleryPhoto();
@@ -84,8 +111,16 @@ class GalleryController extends CController
           
           $s3file='http://s3.amazonaws.com/'.$S3_BUCKET.'/'.$fileName;
           
-          $S3_KEY = 'AKIAI77TVSZ7KWTFPWMQ';
-          $S3_SECRET = '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';
+            $sql1 = "select codigo, nombre from parametros b where  b.tipo='s3_credential' and b.codigo=1";
+			
+				$consulta_key = Yii::app()->db->createCommand($sql1)->queryAll();
+                $sql2 = "select codigo, nombre from parametros b where  b.tipo='s3_credential' and b.codigo=2";
+			
+				$consulta_key_s = Yii::app()->db->createCommand($sql2)->queryAll();
+			
+                    
+                    $S3_KEY = $consulta_key[0]['nombre'];
+                    $S3_SECRET = $consulta_key_s[0]['nombre'];
         
           $S3_URL = 'http://s3.amazonaws.com/';
  
@@ -122,6 +157,45 @@ class GalleryController extends CController
                 'preview_video' => "https://www.youtube.com/embed/" . $model->url_video,
                 'tipo_contenido'=>1,
                 'preview' => (string)$model->file_name,
+            ));
+    }*/
+
+
+    public function actionAjaxUpload($gallery_id = null)
+    {
+  
+     
+        $model = new GalleryPhoto();
+        $model->gallery_id = $gallery_id;
+        
+        $imageFile = CUploadedFile::getInstanceByName('image');
+        $rnd = rand(0,9999);
+        $fileName = "{$rnd}-{$imageFile}";
+
+        $tmp = $uploadedFile->tempName;
+       // echo Yii::app()->baseUrl.'/protected/uploads/'.$fileName;die;
+        $imageFile->saveAs(dirname (Yii::app()->request->scriptFile).'/uploads/'.$fileName);
+        $imagen='/uploads/'.$fileName; 
+ 
+        $model->file_name = $imagen;
+       
+        $model->save();
+
+
+         header("Content-Type: application/json");
+        echo CJSON::encode(
+            array(
+                'id' => $model->id,
+                'rank' => $model->rank,
+                'name' => (string)$model->name,
+                'description' => (string)$model->description,
+                'precio_text' => (string)$model->precio_txt,
+                'precio' => (int)$model->precio,
+                'unidades' => (int)$model->unidades,
+                'url_video' => (string)$model->url_video,
+                'preview_video' => "https://www.youtube.com/embed/" . $model->url_video,
+                'tipo_contenido'=>1,
+                'preview' => Yii::app()->request->baseUrl.$model->file_name,
             ));
     }
 

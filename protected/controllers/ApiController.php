@@ -30,17 +30,16 @@ class ApiController extends Controller
     public function actions()
     {
         return array(
-            'saveImageAttachment' => 'vendor.z_bodya.yii-image-attachment.ImageAttachmentAction',
+            'saveImageAttachment_imagen_splash' => 'vendor.z_bodya.yii-image-attachment.ImageAttachmentAction',
             'elFinderConnector' => array(
                 'class' => 'ElFinderConnectorAction',
                 'settings' => array(
-                    'root' => Yii::getPathOfAlias('webroot') . '/uploads/',
-                    'URL' => Yii::app()->baseUrl . '/uploads/',
+                    'root' => Yii::app()->baseUrl . '/protected/uploads/',
+                    'URL' => Yii::app()->baseUrl . '/protected/uploads/',
                     'rootAlias' => 'Home',
                     'mimeDetect' => 'none'
                 )
             ),
-
             'tinyMceCompressor' => array(
                 'class' => 'TinyMceCompressorAction',
                 'settings' => array(

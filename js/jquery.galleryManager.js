@@ -107,7 +107,7 @@
         }
 
 
-        function createVideoElement(id, src,preview_video, name, description, tipo_contenido, precio, precio_text,unidades,url_video ) {
+        function createVideoElement(id, src,preview_video, name, description, tipo_contenido,  precio, precio_text, unidades, url_video ) {
             var html = '<div class="box box-info padding_dialog">' +
                             '<div class="row padding_dialog">'+
                                 '<div class="div50 padding_dialog">'+
@@ -130,7 +130,7 @@
                                 
                                 
                                 '<label for="photo_url_video' + id + '">' + opts.url_video_label + ': ingrese el codigo del video (https://www.youtube.com/embed/{codigo})</label>' +
-                                '<input type="text" name="photo[' + id + '][url_video]" class="input-xlarge" value="' + htmlEscape(url_video) + '" id="photo_url_video_' + id + '"/>'
+                                '<input type="text" name="photo[' + id + '][url_video]" class="input-xlarge" value="' + url_video + '" id="photo_url_video_' + id + '"/>'
                                 + '<span id="validacion"></span>'+
                                 '<a  class="btn btn-primary" id="btn_cargar">Cargar Video</a>'
 
@@ -243,7 +243,7 @@
                    var unidades ="";
                    var url_video ="";
                    var tipo_contenido= 2;
-                   form.append(createVideoElement("0", src, name, description, tipo_contenido, precio, precio_text,unidades,url_video ) );
+                   form.append(createVideoElement("0", src, name, description, tipo_contenido, precio, precio_text,unidades, url_video ) );
                     
              $editorModal.modal('show');
 
@@ -259,10 +259,7 @@
          $('#video_frame').attr('src','https://www.youtube.com/embed/'+ video);
   
        }
-/*
-https://www.youtube.com/embed/PtlroS-LJbI
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PtlroS-LJbI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-*/
+
 
         function removePhotos(ids) {
             $.ajax({
@@ -676,6 +673,7 @@ https://www.youtube.com/embed/PtlroS-LJbI
 
     // The actual plugin
     $.fn.galleryManager = function (options) {
+        console.log(JSON.stringify(options));
         if (this.length) {
             this.each(function () {
                 galleryManager(this, options);

@@ -11,6 +11,7 @@
  * @property integer $aplicacion_idaplicacion
  * @property integer $aplicacion_usuario_id_usuario
  * @property string $correo_contacto
+ * @property string $codigo_telefonico
  * @property string $telefono
  * @property string $direccion
  * @property string $latitud
@@ -36,12 +37,12 @@ class MViral extends CActiveRecord
 		return array(
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'required'),
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario', 'numerical', 'integerOnly'=>true),
+			array('codigo_telefonico, latitud, longitud', 'length', 'max'=>45),
 			array('telefono', 'length', 'max'=>11),
-			array('latitud, longitud', 'length', 'max'=>45),
 			array('mviral_url_fb, mviral_url_tw, mviral_url_inst, correo_contacto, direccion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_mviral, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, correo_contacto, telefono, direccion, latitud, longitud', 'safe', 'on'=>'search'),
+			array('id_mviral, mviral_url_fb, mviral_url_tw, mviral_url_inst, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, correo_contacto, codigo_telefonico, telefono, direccion, latitud, longitud', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,6 +70,7 @@ class MViral extends CActiveRecord
 			'aplicacion_idaplicacion' => 'Aplicacion Idaplicacion',
 			'aplicacion_usuario_id_usuario' => 'Aplicacion Usuario Id Usuario',
 			'correo_contacto' => 'Correo Contacto',
+			'codigo_telefonico' => 'Codigo Telefonico',
 			'telefono' => 'Telefono',
 			'direccion' => 'Direccion',
 			'latitud' => 'Latitud',
@@ -101,6 +103,7 @@ class MViral extends CActiveRecord
 		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
 		$criteria->compare('correo_contacto',$this->correo_contacto,true);
+		$criteria->compare('codigo_telefonico',$this->codigo_telefonico,true);
 		$criteria->compare('telefono',$this->telefono,true);
 		$criteria->compare('direccion',$this->direccion,true);
 		$criteria->compare('latitud',$this->latitud,true);

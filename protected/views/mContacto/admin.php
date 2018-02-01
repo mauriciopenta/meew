@@ -56,6 +56,7 @@ $('.search-form form').submit(function(){
 
 			<?php $this->widget('zii.widgets.grid.CGridView', array(
 				'id'=>'mcontacto-grid',
+				'itemsCssClass' => 'table table-bordered table-striped dataTable',
 				'dataProvider'=>$model->search_id_app(),
 				'filter'=>$model,
 				'columns'=>array(
@@ -67,6 +68,12 @@ $('.search-form form').submit(function(){
 					'respuesta',
 					array(
 						'class'=>'CButtonColumn',
+						'updateButtonImageUrl'=>Yii::app()->baseUrl.'/img/edit.png',
+		   
+						'deleteButtonImageUrl'=>Yii::app()->baseUrl.'/img/delete.png',
+						
+						'viewButtonImageUrl'=>Yii::app()->baseUrl.'/img/view.png',
+					
 					),
 				),
 			)); ?>

@@ -38,11 +38,33 @@
 					<?php echo $form->textField($modelViral,'correo_contacto',array('class' => 'form-control','rows'=>6, 'cols'=>50)); ?>
 					<?php echo $form->error($modelViral,'correo_contacto'); ?>
 				</div>
-				<div class="form-group has-feedback	">
+
+
+				<div class="form-group ">
+				<div class="row">
+					<div class="col-sm-6">
+					    <?php echo $form->labelEx($modelViral,'Pais'); ?>
+						<?php 
+						$consultapais=Paises::model()->findAll(array('order'=>'pais'));
+						$type_listpais=CHtml::listData($consultapais,'codigo','pais');
+						echo $form->dropDownList($modelViral,'codigo_telefonico', $type_listpais, array('id'=>'pais', 'class' =>'form-control','style'=>'height:26px;','empty'=>'Seleccione') ); 
+						?>
+					</div>	
+				  <div class="col-sm-2">  
+				     <?php echo $form->labelEx($modelViral,'Codigo'); ?>
+					 <?php  echo "<input 'class'='form-control' style='width:50px !important; margin-right:10px;' type='text' id='telf' disabled='disabled' value='+".$modelViral->codigo_telefonico."' />"; ?>
+			      </div> 
+				  <div class="col-sm-4">
+				   <div class="form-group has-feedback	">
 					<?php echo $form->labelEx($modelViral,'Teléfono'); ?>
 					<?php echo $form->textField($modelViral,'telefono',array('class' => 'form-control')); ?>
 					<?php echo $form->error($modelViral,'telefono'); ?>
-				</div>
+				   </div> 
+				</div> 
+                </div> 
+				</div> 
+              
+				
 				<div class="form-group has-feedback	">
 						<?php echo $form->labelEx($modelViral,'url facebook'); ?>
 						<?php echo $form->textField($modelViral,'mviral_url_fb',array('class' => 'form-control','rows'=>6, 'cols'=>50)); ?>

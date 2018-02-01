@@ -6,9 +6,20 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit115e91484f112c5e95593437cd2478ff
 {
+    public static $prefixesPsr0 = array (
+        'M' => 
+        array (
+            'Mandrill' => 
+            array (
+                0 => __DIR__ . '/..' . '/mandrill/mandrill/src',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixesPsr0 = ComposerStaticInit115e91484f112c5e95593437cd2478ff::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

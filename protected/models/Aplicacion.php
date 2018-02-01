@@ -25,12 +25,21 @@
  * @property integer $modulo_viral
  * @property integer $genero
  * @property integer $rango_edad
+ * @property string $imagen_splash
+ * @property string $imagen_icon
+ * @property string $icon_interno
  *
  * The followings are the available model relations:
  * @property TemaSoporte[] $temaSoportes
  */
 class Aplicacion extends CActiveRecord
 {
+const STATUS_DRAFT=1;
+const STATUS_PUBLISHED=2;
+const STATUS_ARCHIVED=3;
+public $paquete;
+
+private $_oldTags;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -44,17 +53,15 @@ class Aplicacion extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('usuario_id_usuario, estado_app, color_icon', 'required'),
 			array('login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, modulo_viral, genero, rango_edad', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>100),
 			array('color, color_icon', 'length', 'max'=>30),
-			array('url_fondo', 'length', 'max'=>200),
+			array('url_fondo, imagen_splash, imagen_icon, icon_interno', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, color_icon, modulo_viral, genero, rango_edad', 'safe', 'on'=>'search'),
+			array('idaplicacion, nombre, color, url_fondo, login_activo, login_facebook, facebook, twitter, instagram, usuario_id_usuario, id_plantilla, estado_app, nombre_activo, apellido_activo, celular_activo, politicas_privacidad_activo, nombre_usuario_activo, color_icon, modulo_viral, genero, rango_edad, imagen_splash, imagen_icon, icon_interno', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,6 +104,9 @@ class Aplicacion extends CActiveRecord
 			'modulo_viral' => 'Modulo Viral',
 			'genero' => 'Genero',
 			'rango_edad' => 'Rango Edad',
+			'imagen_splash' => 'Imagen Splash',
+			'imagen_icon' => 'Imagen Icon',
+			'icon_interno' => 'Icon Interno',
 		);
 	}
 
@@ -139,10 +149,83 @@ class Aplicacion extends CActiveRecord
 		$criteria->compare('modulo_viral',$this->modulo_viral);
 		$criteria->compare('genero',$this->genero);
 		$criteria->compare('rango_edad',$this->rango_edad);
+		$criteria->compare('imagen_splash',$this->imagen_splash,true);
+		$criteria->compare('imagen_icon',$this->imagen_icon,true);
+		$criteria->compare('icon_interno',$this->icon_interno,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+
+	public function search_app()
+	{
+       
+		$sql = "select a.idaplicacion as idaplicacion, a.nombre as nombre, a.id_plantilla as id_plantilla,  b.restricted_package_name as paquete from aplicacion a, push_parametros b where b.id_aplicacion = a.idaplicacion";
+	    if($this->idaplicacion!='' && preg_match('/^([0-9])*$/',$this->idaplicacion)){
+			$sql=$sql.sprintf(" and a.idaplicacion=%s", (int)$this->idaplicacion);
+	
+		}
+		if($this->nombre!=''){
+		$sql.=" and a.nombre LIKE '%". $this->nombre."%'";
+		}
+		if($this->id_plantilla!='' && preg_match('/^([0-9])*$/',$this->id_plantilla)){
+			$sql=$sql.sprintf(" and a.id_plantilla=%s", $this->id_plantilla);
+		}
+		
+		if($this->paquete!=''){
+			$sql.=" and b.restricted_package_name LIKE '%".$this->paquete."%'";
+        }
+
+
+    	$sql.="	order by a.idaplicacion asc";
+	//	var_dump($sql);die;
+		$consulta = Yii::app()->db->createCommand($sql)->queryAll();
+		$total = count($consulta);
+		$dataProvider = new CSqlDataProvider($sql, array(
+				'totalItemCount'=>$total,
+				'keyField' => 'idaplicacion',
+				'sort'=>array(
+					'attributes'=>array(
+						 'idaplicacion','nombre')
+				),
+				'pagination'=>array(
+					'pageSize'=>10,
+				)
+		));
+		return $dataProvider;
+	}
+
+
+	public function behaviors()
+	{
+
+
+		return array(
+			'preview' => array(
+				'class' => 'vendor.z_bodya.yii-image-attachment.ImageAttachmentBehavior',
+				// size for image preview in widget
+				'previewHeight' => 200,
+				'previewWidth' => 300,
+				// extension for image saving, can be also tiff, png or gif
+				'extension' => 'jpg',
+				// folder to store images
+				'directory' => Yii::getPathOfAlias('webroot') . '/uploads/',
+				// url for images folder
+				'url' => Yii::getPathOfAlias('webroot') . '/uploads/',
+				// image versions
+				'versions' => array(
+					'small' => array(
+						'resize' => array(200, null),
+					),
+					'medium' => array(
+						'resize' => array(800, null),
+					)
+				)
+			)
+		);
+
 	}
 
 	/**

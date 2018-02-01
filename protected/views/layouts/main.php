@@ -77,8 +77,9 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
    
       <span class="logo-mini">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/logo.png',"",['class'=>'logo_meew_min']); ?></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/logo.png',"" ,['class'=>'logo_meew'] ); ?>
+      <span class="logo-lg">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew-letra.png',"" ,['class'=>'logo_meew'] ); ?>
 										</span>
+   
    
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -91,7 +92,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
+          <!--li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
               <span class="label label-success">1</span>
@@ -99,9 +100,8 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
             <ul class="dropdown-menu">
               <li class="header">You have 1 messages</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li><!-- start message -->
+                  <li>
                     <a href="#">
                       <h4>
                         Support Team
@@ -110,13 +110,14 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                       <p>Why not buy a new awesome theme?</p>
                     </a>
                   </li>
-                  <!-- end message -->
+                
                 </ul>
               </li>
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
           </li>
-          <!-- Notifications: style can be found in dropdown.less -->
+          
+          
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
@@ -125,7 +126,6 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
                     <a href="#">
@@ -136,19 +136,18 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               </li>
               <li class="footer"><a href="#">View all</a></li>
             </ul>
-          </li>
+          </li-->
           <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown tasks-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <!--a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
               <span class="label label-danger">9</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li><!-- Task item -->
+                  <li>
                     <a href="#">
                       <h3>
                         Design some buttons
@@ -161,14 +160,14 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
+                 
                 </ul>
               </li>
               <li class="footer">
                 <a href="#">View all tasks</a>
               </li>
             </ul>
-          </li>
+          </li-->
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -178,7 +177,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
-                  <div class="col-xs-4 text-center">
+                  <!--div class="col-xs-4 text-center">
                     <a href="#">Followers</a>
                   </div>
                   <div class="col-xs-4 text-center">
@@ -186,25 +185,25 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">Friends</a>
-                  </div>
+                  </div-->
                 </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
                 </div>
               </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
+          <!--li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+          </li-->
         </ul>
       </div>
     </nav>
@@ -238,45 +237,41 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
       <ul class="sidebar-menu">
         <li class="header">MENÚ PRINCIPAL</li>
         <?php if(Yii::app()->user->getState('nombreRole')=="ADMINISTRADOR"):?>
-            <li class="treeview">
+            <li class="treeview active">
                 <a href="#">
-                  <i class="fa fa-edit"></i> <span>Usuarios</span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
+                    <i class="fa fa-users"></i> <span>Usuarios</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a ><i class="fa fa-circle-o"></i> Gestionar Usuarios
-                      <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                      <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
-                    </ul>
-                  
-                  </li>
-                
+            
+                <ul class="treeview-menu treeview active  menu-open ">
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager"><i class="fa fa-circle-o"></i>Gestión usuario</a></li>
                 </ul>
-                
+        </li>       
+        <li class="treeview active">
                 <a>
-                  <i class="fa fa-edit"></i> <span>configuración de Variables</span>
+                  <i class="fa fa-edit"></i> <span>Administracion</span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                
-                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-circle-o"></i>Variables</a></li>
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-adjust"></i>Parámetros</a></li>
                 </ul>  
+                <ul class="treeview-menu">
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/plan/admin"><i class="fa fa-cube"></i>Planes</a></li>
+                </ul>
+                <ul class="treeview-menu">
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/aplicaciones"><i class="fa fa-cube"></i>Aplicaciones</a></li>
+                </ul>
            
         </li>
 
             
          <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTE"):?>
         
-            <li class="treeview">
+            <li class="treeview active">
                 <a>
                   <i class="fa fa-cogs"></i> <span>configuración</span>
                      <span class="pull-right-container">
@@ -301,7 +296,9 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                   </li>
 
                   
-                </ul>  
+                </ul> 
+            </li>  
+            <li class="treeview active"> 
                 <a>
                   <i class="fa fa-support"></i> <span>Soporte</span>
                   <span class="pull-right-container">
@@ -320,8 +317,24 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                       </li>
                 </ul>  
             </li>
+            <li class="treeview active"> 
+                <a>
+                  <i class="fa fa-support"></i> <span>Notificaciones</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                      <li>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/admin"><i class="fa fa-envelope"></i>Historial</a>
+                      </li>
+                      <li>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/create"><i class="fa fa-ticket"></i>Crear Notificación</a>
+                      </li>
+                </ul>  
+            </li>
          <?php endif;?> 
-      </ul>
+      
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -330,40 +343,31 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-     
-      <!--ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol!-->
+  
+
+
     </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="row">
             <?php echo $content; ?>
-      </div>
+    </div>
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.3.8
-    </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-    reserved.
+ 
   </footer>
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
+  <!--aside class="control-sidebar control-sidebar-dark">
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
       <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
-    <!-- Tab panes -->
     <div class="tab-content">
-      <!-- Home tab content -->
       <div class="tab-pane" id="control-sidebar-home-tab">
         <h3 class="control-sidebar-heading">Recent Activity</h3>
         <ul class="control-sidebar-menu">
@@ -412,8 +416,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
             </a>
           </li>
         </ul>
-        <!-- /.control-sidebar-menu -->
-
+      
         <h3 class="control-sidebar-heading">Tasks Progress</h3>
         <ul class="control-sidebar-menu">
           <li>
@@ -465,14 +468,11 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
             </a>
           </li>
         </ul>
-        <!-- /.control-sidebar-menu -->
-
+    
       </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
+    
       <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
+    
       <div class="tab-pane" id="control-sidebar-settings-tab">
         <form method="post">
           <h3 class="control-sidebar-heading">General Settings</h3>
@@ -487,8 +487,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               Some information about this general settings option
             </p>
           </div>
-          <!-- /.form-group -->
-
+        
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Allow mail redirect
@@ -499,8 +498,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               Other sets of options are available
             </p>
           </div>
-          <!-- /.form-group -->
-
+         
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Expose author name in posts
@@ -511,8 +509,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               Allow the user to show his name in blog posts
             </p>
           </div>
-          <!-- /.form-group -->
-
+     
           <h3 class="control-sidebar-heading">Chat Settings</h3>
 
           <div class="form-group">
@@ -521,32 +518,28 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               <input type="checkbox" class="pull-right" checked>
             </label>
           </div>
-          <!-- /.form-group -->
-
+     
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Turn off notifications
               <input type="checkbox" class="pull-right">
             </label>
           </div>
-          <!-- /.form-group -->
-
+     
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Delete chat history
               <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
             </label>
           </div>
-          <!-- /.form-group -->
         </form>
       </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
+     </div>
+  </aside-->
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+  <!--div class="control-sidebar-bg"></div-->
 </div>
 <!-- ./wrapper -->
 
@@ -576,6 +569,7 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/knob/jquery.knob.js"></script>
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
 <!-- Slimscroll -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->

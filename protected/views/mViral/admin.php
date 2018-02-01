@@ -43,6 +43,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'mviral-grid',
 	'dataProvider'=>$model->search(),
+	'itemsCssClass' => 'table table-bordered table-striped dataTable',
+					
 	'filter'=>$model,
 	'columns'=>array(
 		'id_mviral',
@@ -56,6 +58,12 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		*/
 		array(
 			'class'=>'CButtonColumn',
+			'updateButtonImageUrl'=>Yii::app()->baseUrl.'/img/edit.png',
+		   
+			'deleteButtonImageUrl'=>Yii::app()->baseUrl.'/img/delete.png',
+			
+			'viewButtonImageUrl'=>Yii::app()->baseUrl.'/img/view.png',
+		
 		),
 	),
 )); ?>

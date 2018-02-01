@@ -6,7 +6,7 @@
   background-color: #155067;
 }
 .skin-meew .main-header .navbar .nav > li > a {
-  color: #ffffff;
+  color: #fff;
 }
 .skin-meew .main-header .navbar .nav > li > a:hover,
 .skin-meew .main-header .navbar .nav > li > a:active,
@@ -29,7 +29,7 @@
   color: #fff;
 }
 .skin-meew .main-header .navbar .sidebar-toggle:hover {
-  background-color: #ddd;
+  background-color: #134255;
 }
 @media (max-width: 767px) {
   .skin-meew .main-header .navbar .dropdown-menu li.divider {
@@ -43,12 +43,12 @@
   }
 }
 .skin-meew .main-header .logo {
-  background-color: #ddd;
+  background-color: rgb(147, 150, 55);
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-meew .main-header .logo:hover {
-  background-color: rgb(147, 150, 55);
+  background-color: rgb(122, 124, 45);
 }
 .skin-meew .main-header li.user-header {
   background-color: #ddd;
@@ -140,3 +140,4 @@
 .box.box-info {
   border-top-color: #155067 !important;
 }
+
