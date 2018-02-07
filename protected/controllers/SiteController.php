@@ -296,11 +296,13 @@ class SiteController extends Controller
             $criteria = new CDbCriteria(array('order'=>'orden ASC'));
 //            if($modelApp["id_plantilla"]==1){
                 $tipoMenu=2;
+                $tipoMenB=1;
 //            }
 //            else if($modelApp["id_plantilla"]==2){
 //                $tipoMenu=1;
 //            }
             $modeloModulApp= ModuloApp::model()->findAllByAttributes(array("aplicacion_idaplicacion"=>$datos["id_app"],'tipo_menu'=>$tipoMenu),$criteria);
+            $menuBottom=ModuloApp::model()->findAllByAttributes(array("aplicacion_idaplicacion"=>$datos["id_app"],'tipo_menu'=>$tipoMenB),$criteria);
 //            print_r($modelApp["id_plantilla"]);
             $model=new LoginForm;
             $model->username=$modeloUsuario->usuario;
@@ -318,6 +320,7 @@ class SiteController extends Controller
                 $response["image"]=$modelApp["url_fondo"];
                 $response["msg"]="";
                 $response["contplantilla"]=$modeloModulApp;
+                $response["contmb"]=$menuBottom;
             }
             else{
                 $response["status"]="nexito";
