@@ -190,32 +190,98 @@ class SiteController extends Controller
         public function actionDataContent(){
             $idmod=Yii::app()->request->getPost("idmod");
             $conn=Yii::app()->db;
-            $sql="SELECT * FROM modulo_app WHERE id_contenido=:idcontenido";
+            $sql="SELECT * FROM modulo_app WHERE id_modulo_app=:idmodapp";
             $query=$conn->createCommand($sql);
-            $query->bindParam(":idcontenido", $idmod);
+            $query->bindParam(":idmodapp", $idmod);
             $read=$query->query();
             $res=$read->read();
             $read->close();
-            $response["content"]=$res;
+            switch($res["tipo_modulo"]){
+                case 1:
+                   $response["content"]=$this->consultaGallery($res["id_contenido"]);
+                break;
+                case 2:
+                    $response["content"]=$this->consultaGallery($res["id_contenido"]);
+                break;
+                case 3:
+                    $response["content"]=$res["texto_html"];
+                break;
+                case 4:
+                    $response["content"]="";
+                break;
+                case 5:
+                    $response["content"]=$this->consultaTemaSoporte($res["aplicacion_idaplicacion"]);
+                break;
+            }
+//            $response["content"]=$res;
             echo CJSON::encode($response);
         }
+        
+        public function consultaGallery($galeriid){
+            $conn=Yii::app()->db;
+            $sql="SELECT * FROM gallery_photo WHERE gallery_id=:galleryid";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":galleryid", $galeriid);
+            $read=$query->query();
+            $res=$read->readAll();
+            $read->close();
+            return $res;
+        }
+        public function consultaTemaSoporte($idaplicacion){
+            $conn=Yii::app()->db;
+            $sql="SELECT * FROM tema_soporte WHERE id_aplicacion=:idaplicacion";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":idaplicacion", $idaplicacion);
+            $read=$query->query();
+            $res=$read->readAll();
+            $read->close();
+            return $res;
+        }
         public function actionDataContentSlider(){
-            $idmods=Yii::app()->request->getPost("idmods");
-//            print_r($idmods);exit();
-            if(!empty($idmods)){
-                $conn=Yii::app()->db;
-                $sql="SELECT texto_html FROM modulo_app WHERE id_contenido=:idcontenido";
-                $response=array();
-                foreach($idmods as $pk=>$idmod){
-                    $query=$conn->createCommand($sql);
-                    $query->bindParam(":idcontenido", $idmod);
-                    $read=$query->query();
-                    $res=$read->read();
-                    $read->close();
-                    $response["content"][$pk]=$res["texto_html"];
-                }
-                $response["status"]="exito";
+//            $idmods=Yii::app()->request->getPost("idmods");
+////            print_r($idmods);exit();
+//            if(!empty($idmods)){
+//                $conn=Yii::app()->db;
+//                $sql="SELECT texto_html FROM modulo_app WHERE id_contenido=:idcontenido";
+//                $response=array();
+//                foreach($idmods as $pk=>$idmod){
+//                    $query=$conn->createCommand($sql);
+//                    $query->bindParam(":idcontenido", $idmod);
+//                    $read=$query->query();
+//                    $res=$read->read();
+//                    $read->close();
+//                    $response["content"][$pk]=$res["texto_html"];
+//                }
+//                $response["status"]="exito";
+//            }
+//            echo CJSON::encode($response);
+            $idmod=Yii::app()->request->getPost("idmod");
+            $conn=Yii::app()->db;
+            $sql="SELECT * FROM modulo_app WHERE id_modulo_app=:idmodapp";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":idmodapp", $idmod);
+            $read=$query->query();
+            $res=$read->read();
+            $read->close();
+            $response["status"]="noexito";
+            switch($res["tipo_modulo"]){
+                case 1:
+                   $response["content"]=$this->consultaGallery($res["id_contenido"]);
+                break;
+                case 2:
+                    $response["content"]=$this->consultaGallery($res["id_contenido"]);
+                break;
+                case 3:
+                    $response["content"]=$res["texto_html"];
+                break;
+                case 4:
+                    $response["content"]="";
+                break;
+                case 5:
+                    $response["content"]=$this->consultaTemaSoporte($res["aplicacion_idaplicacion"]);
+                break;
             }
+//            $response["content"]=$res;
             echo CJSON::encode($response);
         }
     
@@ -228,12 +294,12 @@ class SiteController extends Controller
             $modeloUsuario->attributes=$datos;
             $modelApp=  Aplicacion::model()->findByAttributes(array("idaplicacion"=>$datos["id_app"]));
             $criteria = new CDbCriteria(array('order'=>'orden ASC'));
-            if($modelApp["id_plantilla"]==1){
+//            if($modelApp["id_plantilla"]==1){
                 $tipoMenu=2;
-            }
-            else if($modelApp["id_plantilla"]==2){
-                $tipoMenu=1;
-            }
+//            }
+//            else if($modelApp["id_plantilla"]==2){
+//                $tipoMenu=1;
+//            }
             $modeloModulApp= ModuloApp::model()->findAllByAttributes(array("aplicacion_idaplicacion"=>$datos["id_app"],'tipo_menu'=>$tipoMenu),$criteria);
 //            print_r($modelApp["id_plantilla"]);
             $model=new LoginForm;
@@ -241,10 +307,15 @@ class SiteController extends Controller
             $model->password=$datos["password"];
             
             if($model->login()){
+                $modeloUsuario=$modeloUsuario->findByAttributes(array("usuario"=>$modeloUsuario->usuario));
+                $modeloPersona= Persona::model()->findByPk($modeloUsuario->id_persona);
                 $response["status"]="exito";
-                $response["usuario"]["email"]=Persona::model()->persona_correo;
+                $response["usuario"]["email"]=$modeloPersona["persona_correo"];
+                $response["usuario"]["personid"]=$modeloPersona["id_persona"];
+                $response["usuario"]["nombre"]=$modeloPersona["persona_nombre"]." ".$modeloPersona["persona_apellidos"];
                 $response["usuario"]["token"]="lkjd02kd0lksksdfAAsld9E";
                 $response["idplantilla"]=$modelApp["id_plantilla"];
+                $response["image"]=$modelApp["url_fondo"];
                 $response["msg"]="";
                 $response["contplantilla"]=$modeloModulApp;
             }
