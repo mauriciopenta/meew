@@ -64,19 +64,13 @@ class AplicacionForm extends CFormModel
                 ];
             
             }
+
             public function attributeLabels()
             {
              return [
               'file' => 'Seleccionar archivos:',
              ];
             }
-
-           public function uploadS3(){
-
-
-
-          }
-
 
             public function guardar()
             {
@@ -162,25 +156,40 @@ class AplicacionForm extends CFormModel
                     $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
                     //validacion para creacion o actualizacion de tabla
                     if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
-                       
                         if($table_aplicacion->save()){
                         $uploadedFile=CUploadedFile::getInstance($this,'imageFile');
                       
                           if(isset($uploadedFile)){  
-                            $fileName = "fondo-".$table_aplicacion->idaplicacion.".".$uploadedFile->getExtensionName(); 
-                        
+
+                           
+                            $rnd = rand(0,9999);
+                            $fileName = "fondo-".$table_aplicacion->idaplicacion. $rnd .".".$uploadedFile->getExtensionName(); 
                             // random number + file name
-                            $uploadedFile->saveAs(dirname (Yii::app()->request->scriptFile).'/uploads/'.$fileName);
+                  
+                            
+                            $uploadedFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
                             $imagen='/uploads/'.$fileName;
+                            if($model->url_fondo!=''){
+                                   $file_old= dirname(Yii::app()->request->scriptFile). $table_aplicacion->url_fondo;
+                                if (file_exists($file_old) ){
+                                    unlink($file_old);
+                                } else {
+                                    // File not found.
+                                }
+                            }
                             $table_aplicacion->url_fondo=$imagen;
-                            $table_aplicacion->save();
+                            if($table_aplicacion->save()){
+                                return true;
+                            }else{
+                                return false;
+                            }
 
                           } 
                         }
 
 
 
-                         return true;
+                        
                     }else{ 
                         if($table_aplicacion->insert()){
                             $uploadedFile=CUploadedFile::getInstance($this,'imageFile');

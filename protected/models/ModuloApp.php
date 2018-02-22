@@ -40,7 +40,7 @@ class ModuloApp extends CActiveRecord
 		return array(
 			array('aplicacion_idaplicacion, aplicacion_usuario_id_usuario, tipo_menu', 'required'),
 			array('tipo_modulo, aplicacion_idaplicacion, aplicacion_usuario_id_usuario, id_contenido, tipo_menu, orden', 'numerical', 'integerOnly'=>true),
-			array('texto_descripcion', 'length', 'max'=>100),
+			array('texto_descripcion', 'length', 'max'=>140, 'message' => 'Maximo 140 caracteres'),
 			array('nombre_modulo, texto_html, texto_button, icon', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -122,8 +122,7 @@ class ModuloApp extends CActiveRecord
 		$sql = "select a.orden as orden, (SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.tipo_menu AND c.tipo='tipo_menu') as tipo_menu, a.id_modulo_app as id_modulo_app , a.icon as icon , a.nombre_modulo as Nombre, b.nombre as Tipo  from modulo_app a, parametros b where a.tipo_modulo=b.codigo AND b.tipo='modulo' AND a.aplicacion_usuario_id_usuario=".Yii::app()->user->getState('id_usuario')." order by tipo_menu, a.orden asc";
 		$consulta = Yii::app()->db->createCommand($sql)->queryAll();
 		$total = count($consulta);
-
-		$dataProvider = new CSqlDataProvider($sql, array(
+         $dataProvider = new CSqlDataProvider($sql, array(
 				'totalItemCount'=>$total,
 				'keyField' => 'id_modulo_app',
 				'sort'=>array(
@@ -135,6 +134,8 @@ class ModuloApp extends CActiveRecord
 					'pageSize'=>10,
 				),
 		));
+
+
 		return $dataProvider;
 	}
 

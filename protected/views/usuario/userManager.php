@@ -36,6 +36,7 @@ $this->breadcrumbs=array(
                                 <th>Persona Apellidos</th>
                                 <th>Persona correo</th>
                                 <th>Estado usuario</th>
+                                <th>Suscripcion</th>
                                 <th>Acción</th>
                             </tr>
                         </thead>
@@ -45,6 +46,10 @@ $this->breadcrumbs=array(
                                     foreach($personas as $persona):
                                         if($persona["id_persona"]!=Yii::app()->user->getId()):
                                             $usuario=  Usuario::model()->findByAttributes(array("id_persona"=>$persona["id_persona"]));
+                                          
+                                            $plan=  Plan::model()->findByAttributes(array("plan_code"=>$usuario["codigo_plan"]));
+                                          
+                                          
                                             if($usuario->usuario_activo==1){
                                                 $estado=2;
                                                 $estadoCode="Deshabilitar";
@@ -62,6 +67,8 @@ $this->breadcrumbs=array(
                                                 <td><?php echo $persona["persona_apellidos"];?></td>
                                                 <td><?php echo $persona["persona_correo"]?></td>
                                                 <td><?php echo $estadoActual?></td>
+                                                <td><?php echo $plan["plan_nombre"]?></td>
+                                              
                                                 <td><a href='javascript:Usuario.cambiaEstadoLogin("<?php echo $estado?>","<?php echo $persona["id_persona"]?>");'><?php echo $estadoCode;?></a></td>
                                             </tr>
                                     <?php  endif;endforeach;

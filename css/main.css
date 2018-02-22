@@ -952,3 +952,81 @@ ul.yiiPager{
   width: 30px;
   white-space: nowrap;
 }
+
+.color_text_marcador{
+  color:#155067;
+  font-weight: bold;
+  font-size: 18px;
+}
+.plan{
+  
+  height: 300px;
+  color: #000;
+  border-radius: 8px;
+  transition-timing-function: ease-out;
+  transition-duration: .15s;
+  transform: translateY(0);
+  -webkit-box-shadow: 0 0 8px rgba(0,0,0,.2);
+  box-shadow: 0 0 8px rgba(0,0,0,.2);
+  background-color: #fff;
+  padding: 10px 22px;
+  width: 100%;
+  margin-top: 24px;
+
+}
+
+
+.plan .titulo{
+  font-size: 1.8em;
+  font-weight: bold;
+  color:#155067 !important;
+  text-transform:uppercase; 
+}
+
+.plan .valor{
+
+  font-size: 1.3em !important;
+  font-weight: 600;
+  
+}
+
+.plan .periodo{
+
+  font-size: 1.4em;
+  font-weight: 600;
+  
+}
+.plan .notificaciones{
+
+  font-size: 1.2em;
+  font-weight: 800;
+  
+}
+.plan .descripcion{
+
+  font-size: 1.2em;
+  font-weight: 500;
+  
+}
+
+.listplan{
+  list-style-image: url(img/check_icon.png);
+  text-align: left !important;
+  color: #000;
+  margin-left: -8px;
+}
+
+.listplan li{
+  text-align: initial;
+  padding-top: 0px !important;
+  padding-bottom: 5px;
+}
+
+.ui-widget-header{
+    background: #155067 !important;
+    color: #fff !important;
+
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  background: #fff !important;
+}

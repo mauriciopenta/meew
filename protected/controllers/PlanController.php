@@ -65,30 +65,38 @@ class PlanController extends Controller
 		$model= new PlanForm;
 	  if(isset($_POST['PlanForm']))
 		{
+			//var_dump(json_encode($_POST));die;
     		$model->attributes=$_POST['PlanForm'];
 			$modelplan= new Plan;
 			$modelplan->plan_nombre=$model->plan_nombre;
 			$modelplan->plan_codigo=$model->plan_codigo;
 			$modelplan->valor_text=$model->valor_text;
 			$modelplan->valor=$model->valor;
-			$modelplan->mensajes_push=$model->mensajes_push;
-			
+			$modelplan->moneda = $model->moneda;
+		    $modelplan->mensajes_push=$model->mensajes_push;
+			$modelplan->periodo_plan=$model->periodo_plan;
 			$modelplan->descripcion=$model->descripcion;
-			if($model->validate() && $modelplan->save()){
-                 foreach( $_POST['Modulos'] as $value){
-					if($value!=0){
-						
-					    $planHasParametros =new PlanHasParametros;
-						
-						$planHasParametros->plan_id_plan=$modelplan->id_plan;
-						$planHasParametros->parametros_idparametros=$value;
-						$planHasParametros->save();
+			$rnd = rand(0,9999999999);
+			$modelplan->plan_code="{$rnd}";
+            if($model->validate()){
+			  $pago=new Pago;
+			  $response = $pago->crear_plan($modelplan->plan_nombre, $modelplan->plan_code, $modelplan->periodo_plan, $modelplan->moneda, $modelplan->valor );
+              if($response){
+				$modelplan->id_payu=$response->id;
+				if($modelplan->insert()){
+					foreach( $_POST['Modulos'] as $value){
+						if($value!=0){
+							$planHasParametros =new PlanHasParametros;
+							$planHasParametros->plan_id_plan=$modelplan->id_plan;
+							$planHasParametros->parametros_idparametros=$value;
+							$planHasParametros->save();
+						}
 					}
-				 }
-
-				$this->redirect(array('view','id'=>$modelplan->id_plan));
-			}
+                  	$this->redirect(array('view','id'=>$modelplan->id_plan));
+				}
+	    	}
 		}
+	  }
 		$sql = "select idparametros ,codigo, nombre, (SELECT count(1) FROM plan_has_parametros a WHERE a.parametros_idparametros=b.idparametros AND a.plan_id_plan=0) as estado  from parametros b where  b.tipo='modulo'";
 
 		$consulta1 = Yii::app()->db->createCommand($sql)->queryAll();
@@ -115,80 +123,75 @@ class PlanController extends Controller
 		// $this->performAjaxValidation($model);
 		if(isset($_POST['PlanForm']))
 		{
+			
 			$model->attributes=$_POST['PlanForm'];
 			$model_plan->plan_nombre=$model->plan_nombre;
 			$model_plan->plan_codigo=$model->plan_codigo;
 			$model_plan->valor_text=$model->valor_text;
 			$model_plan->valor=$model->valor;
+		
 			$model_plan->mensajes_push=$model->mensajes_push;
-		  	if($model_plan->save()){
-				
+			$pago=new Pago;
+			$response = $pago->editar_plan($modelplan->plan_nombre, $model_plan->plan_code, $model_plan->moneda, $modelplan->valor );
+			if($response){
+         	 	if($model_plan->save()){
 	             $sql = "select idparametros ,codigo, nombre from parametros b where  b.tipo='modulo'";
 			     $consulta1 = Yii::app()->db->createCommand($sql)->queryAll();
-			//	 echo json_encode($_POST['Modulos'])."<br>";
-			//	 die;
-				// echo json_encode($consulta1);
-			      
 				 for( $i=0; $i<count($consulta1);$i++){
-					
-                  //  echo json_encode($consulta1[$i]);
-				//	echo json_encode($_POST['Modulos'][$i]);
 				    if (!in_array($consulta1[$i]['idparametros'] , $_POST['Modulos'], true )) {
-					
 						$criteria = new CDbCriteria();
 						$criteria->select = 'parametros_idparametros, plan_id_plan, id_plan_has_parametroscol';
 						$criteria->condition = 'parametros_idparametros=:parametros_idparametros AND plan_id_plan=:plan_id_plan';
 						$criteria->params = array(':parametros_idparametros'=>$consulta1[$i]['idparametros'], ':plan_id_plan'=>$model_plan->id_plan);
 						$plan_has_par=PlanHasParametros::model()->find($criteria);
 						if($plan_has_par->plan_id_plan!=null){
-						
 							$plan_has_par->delete();
-						
 						}
-
 					}else{
 						$criteria = new CDbCriteria();
 						$criteria->select = 'parametros_idparametros, plan_id_plan, id_plan_has_parametroscol';
-					
 						$criteria->condition = 'parametros_idparametros=:parametros_idparametros AND plan_id_plan=:plan_id_plan';
 						$criteria->params = array(':parametros_idparametros'=>$consulta1[$i]['idparametros'], ':plan_id_plan'=>$model_plan->id_plan);
 						$plan_has_par=PlanHasParametros::model()->find($criteria);
 					
 						if($plan_has_par->plan_id_plan==null) {
-						 //	var_dump("no existe............");
 							$planHasParametros=new PlanHasParametros;
 							$planHasParametros->plan_id_plan=$model_plan->id_plan;
 							$planHasParametros->parametros_idparametros=$consulta1[$i]['idparametros'];
-							//var_dump($consulta1[$i]['idparametros']);
 							$planHasParametros->save();
 						}
 				
 					}
                     
 			      	}
-		//  die;
-
 				$this->redirect(array('update','id'=>$model_plan->id_plan));	
 			
 			}
-		}else{
+		}
 
-	          $model->plan_nombre=$model_plan->plan_nombre;
-			  $model->plan_codigo=$model_plan->plan_codigo;
-			  $model->valor_text=$model_plan->valor_text;
-			  $model->valor=$model_plan->valor;
-			  $model->mensajes_push=$model_plan->mensajes_push;
-			  $model->descripcion=$model_plan->descripcion;
-			  $model->isNewRecord=false;
-			  $sql = "select idparametros ,codigo, nombre, (SELECT count(1) FROM plan_has_parametros a WHERE a.parametros_idparametros=b.idparametros AND a.plan_id_plan=".$model_plan->id_plan.") as estado  from parametros b where  b.tipo='modulo'";
-  		      $consulta1 = Yii::app()->db->createCommand($sql)->queryAll();
-		      $model->modulos=$consulta1;
-		      $this->render('update',array(
-				'model'=>$model
-		      ));
+	       
 
 
-     	}
+		 
+		 
+		}
+		$model->plan_nombre=$model_plan->plan_nombre;
+		$model->plan_codigo=$model_plan->plan_codigo;
+		$model->valor_text=$model_plan->valor_text;
+		$model->valor=$model_plan->valor;
+
+		$model->periodo_plan=$model_plan->periodo_plan;
+		$model->moneda=$model_plan->moneda;
+		
+		$model->mensajes_push=$model_plan->mensajes_push;
+		$model->descripcion=$model_plan->descripcion;
+		$model->isNewRecord=false;
+		$sql = "select idparametros ,codigo, nombre, (SELECT count(1) FROM plan_has_parametros a WHERE a.parametros_idparametros=b.idparametros AND a.plan_id_plan=".$model_plan->id_plan.") as estado  from parametros b where  b.tipo='modulo'";
+		  $consulta1 = Yii::app()->db->createCommand($sql)->queryAll();
+		$model->modulos=$consulta1;
+		$this->render('update',array(
+		  'model'=>$model
+		));
 	}
 
 	/**
@@ -198,11 +201,15 @@ class PlanController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		$pago=new Pago;
+		$response = $pago->eliminar_plan($this->loadModel($id)->plan_code);
+	    if($response) {
+        	$this->loadModel($id)->delete();
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax'])){
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			}
+    	}
 	}
 
 

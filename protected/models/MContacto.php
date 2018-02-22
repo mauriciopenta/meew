@@ -14,6 +14,7 @@
  */
 class MContacto extends CActiveRecord
 {
+	public $usuario="";
 	/**
 	 * @return string the associated database table name
 	 */
@@ -57,11 +58,11 @@ class MContacto extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_mcontacto' => 'Id Mcontacto',
-			'mcontacto_mensaje' => 'Mcontacto Mensaje',
+			'id_mcontacto' => 'Id Mensaje',
+			'mcontacto_mensaje' => 'Mensaje',
 			'asunto' => 'Asunto',
 			'aplicacion_idaplicacion' => 'Aplicacion Idaplicacion',
-			'aplicacion_usuario_id_usuario' => 'Aplicacion Usuario Id Usuario',
+			'aplicacion_usuario_id_usuario' => 'Id Usuario',
 			'fecha' => 'Fecha',
 			'respuesta' => 'Respuesta',
 		);
@@ -72,18 +73,44 @@ class MContacto extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		$criteria->alias = 'a';
+
+		$this->usuario = $_GET['MContacto']['usuario'];
+		
+         
+
+        if($this->usuario==""){		
+		  $criteria->join='INNER JOIN usuario c ON (c.id_usuario=a.aplicacion_usuario_id_usuario)';
+		  //var_dump("1");die;
+		}else{
+		 $criteria->join="INNER JOIN usuario c ON (c.id_usuario=a.aplicacion_usuario_id_usuario and c.usuario like '%".$this->usuario."%' )";
+		 //var_dump("2");die;
+		}
+
+       
+
 
 		$criteria->compare('id_mcontacto',$this->id_mcontacto);
 		$criteria->compare('mcontacto_mensaje',$this->mcontacto_mensaje,true);
 		$criteria->compare('asunto',$this->asunto,true);
 		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
 		
-		$criteria->compare('aplicacion_idaplicacion',$aplicacionFromDb->idaplicacion,true);
-		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
+		
+		$criteria->compare('aplicacion_idaplicacion',$aplicacionFromDb->idaplicacion);
+		
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('respuesta',$this->respuesta,true);
-		
+	
+
+		$criteria->select='a.id_mcontacto, a.mcontacto_mensaje, a.asunto, a.aplicacion_usuario_id_usuario, a.fecha, a.respuesta, c.usuario as usuario ';
+
+
+		$criteria->together=true;
+
+
+	
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -104,15 +131,40 @@ class MContacto extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+	$criteria=new CDbCriteria;
+		$criteria->alias = 'a';
+
+		
+        if($this->usuario==""){		
+		  $criteria->join='INNER JOIN Usuario c ON (c.id_usuario=a.aplicacion_usuario_id_usuario)';
+		}else{
+		 $criteria->join="INNER JOIN Usuario c ON c.id_usuario=a.aplicacion_usuario_id_usuario ON c.usuario like %'".$this->usuario."'% ";
+	
+		}
+
+ 
+
 
 		$criteria->compare('id_mcontacto',$this->id_mcontacto);
 		$criteria->compare('mcontacto_mensaje',$this->mcontacto_mensaje,true);
 		$criteria->compare('asunto',$this->asunto,true);
+		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		
+		$criteria->compare('aplicacion_idaplicacion',$aplicacionFromDb->idaplicacion,true);
 		$criteria->compare('aplicacion_idaplicacion',$this->aplicacion_idaplicacion);
 		$criteria->compare('aplicacion_usuario_id_usuario',$this->aplicacion_usuario_id_usuario);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('respuesta',$this->respuesta,true);
+		$criteria->compare('c.usuario',$this->usuario);
+		
+	
+		$criteria->select='a.id_mcontacto, a.mcontacto_mensaje, a.asunto, a.aplicacion_usuario_id_usuario, a.fecha, a.respuesta, c.usuario as usuario ';
+
+
+		$criteria->together=true;
+
+
+	
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

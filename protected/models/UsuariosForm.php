@@ -30,9 +30,6 @@ class UsuarioForm extends CFormModel
     public $telefono="";
     public $edad="";
     public $genero="";
-    public $contrasena="";
-    public $contrasena2="";
-
 
     public $metodo_pago="";
     public $numero_tarjeta="";

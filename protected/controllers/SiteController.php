@@ -29,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -dataContentSlider -dataContent -login -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile  -aplicacionConfig',                      
+                'enforcelogin -dataContentSlider -dataContent -selectpais -login -recover -reset -registropago -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile  -aplicacionConfig',                      
         );
     }
 	/**
@@ -72,25 +72,24 @@ class SiteController extends Controller
 	}
         
         public function actionSearchservices(){
-//            $headers=getallheaders();
-//            print_r($headers["oauthtoken"]);
-            $user=Yii::app()->user->name;
-            $services=  Service::model()->searchServiceByUsername($user);
-            if(!empty($services)){
-                foreach($services as $pk=>$service){
-                    $objectAnchoraged=  EntityDevice::model()->searchObjectAnchorage($service["id_service"]);
-                    if(empty($objectAnchoraged)){
-                        $services[$pk]["anchorage"]=2;
-                    }
-                    else{
-                        $services[$pk]["anchorage"]=1;
-                        foreach($objectAnchoraged as $pkobj=>$object){
-                            $services[$pk]["objects"][$pkobj]=$object;
-                            if(empty($object["data"])){
-                                $services[$pk]["objects"][$pkobj]["data"]="null";
+            
+                $user=Yii::app()->user->name;
+                $services=  Service::model()->searchServiceByUsername($user);
+                if(!empty($services)){
+                    foreach($services as $pk=>$service){
+                        $objectAnchoraged=  EntityDevice::model()->searchObjectAnchorage($service["id_service"]);
+                        if(empty($objectAnchoraged)){
+                            $services[$pk]["anchorage"]=2;
+                        }
+                        else{
+                            $services[$pk]["anchorage"]=1;
+                            foreach($objectAnchoraged as $pkobj=>$object){
+                                $services[$pk]["objects"][$pkobj]=$object;
+                                if(empty($object["data"])){
+                                    $services[$pk]["objects"][$pkobj]["data"]="null";
+                                }
                             }
                         }
-                    }
                 }
             }
             echo CJSON::encode($services);
@@ -157,8 +156,11 @@ class SiteController extends Controller
                 // collect user input data
                 if(isset($_POST['LoginForm'])){
                         $model->attributes=$_POST['LoginForm'];
+
                         // validate user input and redirect to the previous page if valid
                         if($model->validate() && $model->login()){
+                              
+                           
                             Yii::app()->user->returnUrl = array("usuario/home");          
                             $this->redirect(Yii::app()->user->returnUrl);
                         }
@@ -172,20 +174,198 @@ class SiteController extends Controller
             }
 
 	}
+	public function actionRecover()
+	{
+       
+          
+        if(Yii::app()->user->isGuest){
+                $model=new RecoverForm;
+                //print_r($_POST);
+                // if it is ajax validation request
+                if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+                {
+                        print_r( CActiveForm::validate($model));
+//                        
+                    Yii::app()->end();
+                }
+                
+                // collect user input data
+                if(isset($_POST['RecoverForm'])){
+                        $model->attributes=$_POST['RecoverForm'];
+                        // validate user input and redirect to the previous page if valid
+                        if($model->validate() && $model->recover()){
 
-	/**
-	 * Logs out the current user and redirect to homepage.
-	 */
-	public function actionLogout(){
-            Yii::app()->user->logout();
+                            $this->render('recover',array("model"=>$model,"dialog"=>true));
+                        
+                        }
+                }else{
+                // display the login form
+//                Yii::app()->user->setFlash('success', "Data1 saved!");
+                $this->render('recover',array("model"=>$model,"dialog"=>false));
+                }
+            }
+            else{
+                 $this->redirect(Yii::app()->user->returnUrl);
+            }
+
+    }
+
+
+    public function actionReset($codigo)
+	{
+
+
+        $modelPersona=Persona::model()->find("codigo_reset='".$codigo."'");
+
+
+        $date1 = new DateTime($modelPersona->fecha_reset);
+		$date2 = date_create('now');
+        $diff = $date1->diff($date2);
+	
+        if($modelPersona!=null && $diff->h<3 && $diff->m==0 && $diff->d==0 && $diff->y==0 && Yii::app()->user->isGuest){
+                $modelUsuario=Usuario::model()->find("id_persona=".$modelPersona->id_persona);
+               
+               
+                $model=new PasswordFormex;
+                   
+                if(isset($_POST['PasswordFormex']))
+                {
+                    $model->attributes=$_POST['PasswordFormex'];  
+                    
+                if($model->validate()){
+                            $opciones = [
+                                'cost' => 10
+                            ];
+                            $password=password_hash($model->PasswordNew, PASSWORD_BCRYPT, $opciones);
+                            $modelUsuario->password=$password;
+                            if($modelUsuario->save()){
+                           
+                                $modelPersona->codigo_reset="";
+                                if($modelPersona->save()){
+                                    $model_login=new LoginForm;
+                                    $model_login->username=$modelUsuario->usuario;
+                                    $model_login->password=$model->PasswordNew;
+                                    $model_login->rememberMe=0;
+                                     if($model_login->validate() && $model_login->login()){
+                                                  
+                                               
+                                                Yii::app()->user->returnUrl = array("usuario/home");          
+                                                $this->redirect(Yii::app()->user->returnUrl);
+                                     }
+                                  
+                                }
+                            }
+                        
+                }
+                }
+            $this->render('formPassword',array(
+                'model'=>$model
+            ));
+       
+       
+        }else{
+
             Yii::app()->user->returnUrl = array("site/login");                                                          
             $this->redirect(Yii::app()->user->returnUrl);
-	}
-        
+        }
      
+          
+	}
+
+
+
+    public function actionRegistroPago($codigo){
+
+
+
+        $modelUsuario=Usuario::model()->find("codigo_registro='".$codigo."'");
+
+       if( $modelUsuario!=null && $modelUsuario->usuario_activo==2){
+       
+		$modelPersona=Persona::model()->findByPk($modelUsuario->id_persona);
+        $model=new UsuarioFormEdit;
+         
+
+        if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
+        {
+                print_r( CActiveForm::validate($model));
+//                        
+            Yii::app()->end();
+        }
+
+      	if(isset($_POST['UsuarioFormEdit']))
+		{
+            //var_dump(json_encode($_POST));die;
+            $model->attributes=$_POST['UsuarioFormEdit'];
+         	if($model->save($modelUsuario, $modelPersona)){
+                $model_login=new LoginForm;
+                $model_login->username=$modelUsuario->usuario;
+                $model_login->password=$model->password;
+                $model_login->rememberMe=0;
+                 if($model_login->validate() && $model_login->login()){
+                              
+                           
+                            Yii::app()->user->returnUrl = array("usuario/home");          
+                            $this->redirect(Yii::app()->user->returnUrl);
+                 }
+
+            }
+		}else{
+            $model->id_usuario=$modelUsuario->id_usuario;
+            $model->usuario=$modelUsuario->usuario;
+
+            $model->id_persona=$modelPersona->id_persona;
+            $model->persona_nombre=$modelPersona->persona_nombre;
+            $model->persona_apellidos=$modelPersona->persona_apellidos;
+            $model->id_doc=$modelPersona->id_doc;
+            $model->persona_doc=$modelPersona->persona_doc;
+            $model->persona_correo=$modelPersona->persona_correo;
+            $model->ubicacion=$modelPersona->persona_ubicacion;
+            $model->region=$modelPersona->persona_ciudad;
+            $model->telefono=$modelPersona->persona_telefono;
+
+        }
+
+        $paises=array();
+        if($model->ubicacion!=""){
+
+            $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$model->region)));
+            $paises=CHtml::listData($consulta,'idCiudades','Ciudad');
+
+        }
+            $this->render('registropago',array(
+                'model'=>$model,
+                'paises'=>$paises
+            ));
+       }else{
+
+        Yii::app()->user->returnUrl = array("site/login");                                                          
+        $this->redirect(Yii::app()->user->returnUrl);
+       }
+	}
+
+
+    public function actionSelectPais() {
+       
+        $codigo = $_POST ['UsuarioFormEdit']['ubicacion'];
+
+        $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
+        $ciudades=CHtml::listData($consulta,'idCiudades','Ciudad');
     
-    
-    
+        echo CHtml::tag('option', array('value'=>''), 'Seleccione', true);
+
+        foreach ($ciudades as $valor=>$Ciudad) {
+            echo CHtml::tag('option', array('value'=>$valor), CHtml::encode($Ciudad), true);
+        }
+    }
+        /**
+         * Logs out the current user and redirect to homepage.
+         */
+        public function actionLogout(){
+                Yii::app()->user->logout();
+                Yii::app()->user->returnUrl = array("site/login");                                                          
+                $this->redirect(Yii::app()->user->returnUrl);
+        }
         
         public function actionDataContent(){
             $idmod=Yii::app()->request->getPost("idmod");
@@ -314,6 +494,9 @@ class SiteController extends Controller
                 }
             }
         }
+        
+
+
         
 
         public function actionRegister2()

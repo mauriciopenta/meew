@@ -34,12 +34,14 @@
 											<label>
 												<?php echo CHtml::image(Yii::app()->request->baseUrl.'/'.$plantilla['url_imagen'], $plantilla['nombre']); ?>
 												<br>
+												
 												<?php	
 												echo $form->radioButton($model, 'id_plantilla', array(
 													'class'=>'minimal',
 													'value'=>$plantilla['idplantilla'],
 													'uncheckValue'=>null
 												));
+												echo "<br><br>".$plantilla['nombre'];
 												  ?>
 												
 												

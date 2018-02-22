@@ -47,6 +47,7 @@ $('.search-form form').submit(function(){
 					'filter'=>$model,
 					'columns'=>array(
 						'idtema_soporte',
+						
 						'titulo',
 						'descripcion',
 						'fecha',

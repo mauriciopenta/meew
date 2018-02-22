@@ -64,13 +64,19 @@
     </div>
       <div class="row">
         <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-                <?php echo $form->checkBox($model,'rememberMe'); ?>
-              <?php echo $form->label($model,'rememberMe'); ?>
-              <?php echo $form->error($model,'rememberMe'); ?>
-            </label>
+          <div class="form-group">
+              
           </div>
+
+          <div class="form-group has-feedback">
+						
+								<div>
+                
+                  <?php echo $form->checkBox($model,'rememberMe', array('style' => 'float:left;')); ?>
+                  <?php echo $form->label($model,'rememberMe', array('style' => 'float:left;')); ?>
+              
+                </div>
+					</div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
@@ -79,6 +85,8 @@
         
         <!-- /.col -->
       </div>    
+      <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/recover" style="color:#1c6a8a;">Olvido su contraseña?</a><br>
+  
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 
@@ -91,7 +99,6 @@
     </div-->
     <!-- /.social-auth-links -->
 
-    <a href="#">Olvido su contraseña?</a><br>
     
    
     <!--?php echo CHtml::link('Registrar Usuario',array('site/register')); ?-->

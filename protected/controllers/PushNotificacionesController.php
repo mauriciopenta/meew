@@ -79,6 +79,7 @@ class PushNotificacionesController extends Controller
 		$params=array();
 		$conditions.="id_aplicacion=:id_aplicacion";
 		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		
 		$params[':id_aplicacion']=$aplicacionFromDb->idaplicacion;
 
 		$consulta=array('select'=>'*',
@@ -159,7 +160,6 @@ class PushNotificacionesController extends Controller
 				$conditions.=" and id_rango_edad=:id_rango_edad";
 				$params[':id_rango_edad']=$model->edad;
 			}
-			
 			$consulta=array('select'=>'*',
 			'condition'=> $conditions
 			,'params'=> $params);
@@ -233,16 +233,6 @@ class PushNotificacionesController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('PushNotificaciones');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
 
 	/**
 	 * Manages all models.

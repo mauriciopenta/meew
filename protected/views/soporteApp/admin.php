@@ -45,17 +45,15 @@ $('.search-form form').submit(function(){
 						'dataProvider'=>$model->search_app(),
 						'filter'=>$model,
 						'columns'=>array(
+							'usuario',
 							'idsoporte_app',
+							
+							'tema',
+							'subtema',
 							'mensaje',
 							'respuesta',
 							'fecha_creacion',
 							'fecha_modificacion',
-							'id_tema',
-							'id_usuario',
-							
-							/*
-							'id_aplicacion',
-							*/
 							array(
 								'class'=>'CButtonColumn',
 								'updateButtonImageUrl'=>Yii::app()->baseUrl.'/img/edit.png',

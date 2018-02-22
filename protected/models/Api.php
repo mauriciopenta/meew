@@ -6,9 +6,11 @@
  * The followings are the available columns in table 'api':
  * @property integer $id_api
  * @property string $key
+ * @property string $public_key
  * @property string $login
  * @property string $id_prod
  * @property string $tipo
+ * @property string $cuenta
  */
 class Api extends CActiveRecord
 {
@@ -29,11 +31,11 @@ class Api extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('key, login, id_prod, tipo', 'required'),
-			array('key, login, id_prod', 'length', 'max'=>250),
-			array('tipo', 'length', 'max'=>45),
+			array('key, public_key, login, id_prod', 'length', 'max'=>250),
+			array('tipo, cuenta', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_api, key, login, id_prod, tipo', 'safe', 'on'=>'search'),
+			array('id_api, key, public_key, login, id_prod, tipo, cuenta', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,9 +58,11 @@ class Api extends CActiveRecord
 		return array(
 			'id_api' => 'Id Api',
 			'key' => 'Key',
+			'public_key' => 'Public Key',
 			'login' => 'Login',
 			'id_prod' => 'Id Prod',
 			'tipo' => 'Tipo',
+			'cuenta' => 'Cuenta',
 		);
 	}
 
@@ -82,9 +86,11 @@ class Api extends CActiveRecord
 
 		$criteria->compare('id_api',$this->id_api);
 		$criteria->compare('key',$this->key,true);
+		$criteria->compare('public_key',$this->public_key,true);
 		$criteria->compare('login',$this->login,true);
 		$criteria->compare('id_prod',$this->id_prod,true);
 		$criteria->compare('tipo',$this->tipo,true);
+		$criteria->compare('cuenta',$this->cuenta,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

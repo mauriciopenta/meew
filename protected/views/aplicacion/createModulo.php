@@ -87,19 +87,18 @@
 	
 	    if( $model_aplicacion->id_plantilla==2){ ?>
 			<div id="option_slider">
+	   		        <div class="form-group has-feedback" id="descripcion">
+				    	<?php echo $form->labelEx($model,'Descripcion del Modulo (slider) (máximo 140 caracteres)'); ?>
+						<?php echo $form->textField($model,'texto_descripcion',array('class' => 'form-control', 'cols'=>140)); ?>
+						<?php echo $form->error($model,'texto_descripcion'); ?>
+					</div>
+
 					<div class="form-group has-feedback">
 						<?php echo $form->labelEx($model,'Texto boton de enlace (slider)'); ?>
 						<?php echo $form->textField($model,'texto_button',array('class' => 'form-control')); ?>
 						<?php echo $form->error($model,'texto_button'); ?>
 					</div>
-					<div class="form-group has-feedback" id="descripcion">
-
-
-				    	<?php echo $form->labelEx($model,'Descripcion del Modulo (slider)'); ?>
-						<?php echo $form->textField($model,'texto_descripcion',array('class' => 'form-control')); ?>
-						<?php echo $form->error($model,'texto_descripcion'); ?>
 					
-					</div>
 			</div>
 		<?php } ?>
 		<?php if(!$model->isNewRecord){ ?>

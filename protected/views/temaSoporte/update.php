@@ -19,13 +19,23 @@ $this->breadcrumbs=array(
 	 <div class="col-md-12">
 	   <div class="box box-primary">
 		   <div class="box-header with-border">
-		     <h3>Actualizar Tema Soporte</h3>
+			 <h3>
+				 <?php  
+				 if($model->hijo=='0'){
+            echo "Editar tema soporte";
+				 }else{
+				  	echo "Editar subtema soporte";
+				 } 
+				 
+				 ?>
+				 </h3>
          
 		   </div>
 		   <div class="box-body">
-
+        
 		     
-				<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+				<?php 
+			    	$this->renderPartial('_form', array('model'=>$model,'subtema'=>$subtema,'model_table'=>$model_table)); ?>
 
 			  </div>
      </div>

@@ -9,8 +9,12 @@
  * @property string $plan_codigo
  * @property string $valor_text
  * @property integer $valor
+ * @property integer $periodo_plan
  * @property string $descripcion
- * @property integer $mensajes_push
+ * @property string $mensajes_push
+ * @property string $id_payu
+ * @property string $moneda
+ * @property string $plan_code
  */
 class Plan extends CActiveRecord
 {
@@ -31,12 +35,13 @@ class Plan extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('plan_nombre, valor_text, valor, descripcion, mensajes_push', 'required'),
-			array('valor, mensajes_push', 'numerical', 'integerOnly'=>true),
+			array('valor', 'numerical', 'integerOnly'=>true),
 			array('plan_nombre, plan_codigo', 'length', 'max'=>50),
-			array('valor_text', 'length', 'max'=>45),
+			array('valor_text, moneda, periodo_plan', 'length', 'max'=>45),
+			array('mensajes_push, id_payu, plan_code', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_plan, plan_nombre, plan_codigo, valor_text, valor, descripcion, mensajes_push', 'safe', 'on'=>'search'),
+			array('id_plan, plan_nombre, plan_codigo, valor_text, valor, periodo_plan, descripcion, mensajes_push, id_payu, moneda, plan_code', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,8 +67,12 @@ class Plan extends CActiveRecord
 			'plan_codigo' => 'Plan Codigo',
 			'valor_text' => 'Valor Text',
 			'valor' => 'Valor',
+			'periodo_plan' => 'Periodo Plan',
 			'descripcion' => 'Descripcion',
 			'mensajes_push' => 'Mensajes Push',
+			'id_payu' => 'Id Payu',
+			'moneda' => 'Moneda',
+			'plan_code' => 'Plan Code',
 		);
 	}
 
@@ -90,14 +99,15 @@ class Plan extends CActiveRecord
 		$criteria->compare('plan_codigo',$this->plan_codigo,true);
 		$criteria->compare('valor_text',$this->valor_text,true);
 		$criteria->compare('valor',$this->valor);
+		$criteria->compare('periodo_plan',$this->periodo_plan);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('mensajes_push',$this->mensajes_push);
+		$criteria->compare('mensajes_push',$this->mensajes_push,true);
+		$criteria->compare('id_payu',$this->id_payu,true);
+		$criteria->compare('moneda',$this->moneda,true);
+		$criteria->compare('plan_code',$this->plan_code,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-			'pagination'=>array(
-				'pageSize'=>5,
-		     ),
 		));
 	}
 

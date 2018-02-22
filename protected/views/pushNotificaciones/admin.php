@@ -49,12 +49,31 @@ $('.search-form form').submit(function(){
 						'dataProvider'=>$model->search(),
 						'filter'=>$model,
 						'columns'=>array(
-							'idpush_notificaciones',
-							'titulo',
-							'cuerpo',
-							'genero',
-							'edad',
-							'id_aplicacion',
+							array(
+						
+								'header' => 'Id notificación',
+								'name' => 'idpush_notificaciones'
+							),
+							array(
+						
+								'header' => 'Titulo',
+								'name' => 'titulo'
+							),
+							array(
+						
+								'header' => 'Mensaje',
+								'name' => 'cuerpo'
+							),
+							array(
+						
+								'header' => 'Filtro Genero',
+								'name' => 'genero'
+							),
+							array(
+						
+								'header' => 'Filtro edad',
+								'name' => 'edad'
+							),
 							array(
 								'class'=>'CButtonColumn',
 								'template'=>'{ver}',

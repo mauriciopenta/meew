@@ -12,14 +12,13 @@
  * @property string $usuario
  * @property string $password
  * @property integer $usuario_activo
- *
- * The followings are the available model relations:
- * @property MContacto[] $mContactos
- * @property MSoporte[] $mSoportes
- * @property Empresa $idEmpresa
- * @property Persona $idPersona
- * @property Rol $idRol
- * @property TipoLogin $idTipologin
+ * @property string $token_push
+ * @property string $id_cliente_payu
+ * @property string $id_suscripcion
+ * @property string $codigo_plan
+ * @property string $id_tarjeta
+ * @property string $codigo_registro
+ * @property string $fecha_suscripcion
  */
 class Usuario extends CActiveRecord
 {
@@ -42,10 +41,12 @@ class Usuario extends CActiveRecord
 			array('id_persona, usuario_activo', 'required'),
 			array('id_tipologin, id_persona, id_rol, id_empresa, usuario_activo', 'numerical', 'integerOnly'=>true),
 			array('usuario', 'length', 'max'=>50),
-			array('password', 'safe'),
+			array('token_push', 'length', 'max'=>300),
+			array('id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro', 'length', 'max'=>200),
+			array('password, fecha_suscripcion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password, usuario_activo', 'safe', 'on'=>'search'),
+			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password, usuario_activo, token_push, id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro, fecha_suscripcion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,12 +58,6 @@ class Usuario extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'mContactos' => array(self::HAS_MANY, 'MContacto', 'id_usuario'),
-			'mSoportes' => array(self::HAS_MANY, 'MSoporte', 'id_usuario'),
-			'idEmpresa' => array(self::BELONGS_TO, 'Empresa', 'id_empresa'),
-			'idPersona' => array(self::BELONGS_TO, 'Persona', 'id_persona'),
-			'idRol' => array(self::BELONGS_TO, 'Rol', 'id_rol'),
-			'idTipologin' => array(self::BELONGS_TO, 'TipoLogin', 'id_tipologin'),
 		);
 	}
 
@@ -80,6 +75,13 @@ class Usuario extends CActiveRecord
 			'usuario' => 'Usuario',
 			'password' => 'Password',
 			'usuario_activo' => 'Usuario Activo',
+			'token_push' => 'Token Push',
+			'id_cliente_payu' => 'Id Cliente Payu',
+			'id_suscripcion' => 'Id Suscripcion',
+			'codigo_plan' => 'Codigo Plan',
+			'id_tarjeta' => 'Id Tarjeta',
+			'codigo_registro' => 'Codigo Registro',
+			'fecha_suscripcion' => 'Fecha Suscripcion',
 		);
 	}
 
@@ -109,6 +111,13 @@ class Usuario extends CActiveRecord
 		$criteria->compare('usuario',$this->usuario,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('usuario_activo',$this->usuario_activo);
+		$criteria->compare('token_push',$this->token_push,true);
+		$criteria->compare('id_cliente_payu',$this->id_cliente_payu,true);
+		$criteria->compare('id_suscripcion',$this->id_suscripcion,true);
+		$criteria->compare('codigo_plan',$this->codigo_plan,true);
+		$criteria->compare('id_tarjeta',$this->id_tarjeta,true);
+		$criteria->compare('codigo_registro',$this->codigo_registro,true);
+		$criteria->compare('fecha_suscripcion',$this->fecha_suscripcion,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

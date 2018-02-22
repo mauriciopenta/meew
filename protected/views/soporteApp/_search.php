@@ -50,6 +50,8 @@
 		<?php echo $form->textField($model,'id_usuario'); ?>
 	</div>
 
+
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

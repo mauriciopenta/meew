@@ -67,7 +67,6 @@ class TemaSoporteController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-	
 		if(isset($_POST['TemaSoporte']))
 		{
 			$model->attributes=$_POST['TemaSoporte'];
@@ -76,14 +75,18 @@ class TemaSoporteController extends Controller
 			$model->id_aplicacion=$aplicacionFromDb->idaplicacion;
 
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->idtema_soporte));
+				$this->redirect(array('update','id'=>$model->idtema_soporte));
 		}
 		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
 		
 		$model->id_aplicacion=$aplicacionFromDb->idaplicacion;
 	
+	
+
+
 		$this->render('create',array(
 			'model'=>$model,
+			'subtemas'=>array()
 		));
 	}
 
@@ -94,21 +97,65 @@ class TemaSoporteController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$model=TemaSoporte::model()->find("idtema_soporte=".$id);
+		
+         if($_POST['yt1']=="Agregar"){
+			
+			if(isset($_POST['TemaSoporte']))
+			{
+                  
 
-		if(isset($_POST['TemaSoporte']))
-		{
-			$model->attributes=$_POST['TemaSoporte'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->idtema_soporte));
+				$model_add= new TemaSoporte;
+				$model_add->titulo= $_POST['TemaSoporte']['titulo_agregar'];
+				$model_add->descripcion= $_POST['TemaSoporte']['descripcion_agregar'];
+				$model_add->id_aplicacion= $model->id_aplicacion;
+				$model_add->id_padre= $model->idtema_soporte;
+				$model_add->hijo=1;
+		    	if($model_add->save()){
+					
+					Yii::app()->user->returnUrl = array("/TemaSoporte/update?id=".$id."#subtema");                                                          
+					$this->redirect(Yii::app()->user->returnUrl);  
+				 
+				}
+
+
+			}
+			
+			
+
+		 }else if($_POST['yt0']=="Guardar"){ //var_dump($model);
+
+       	
+			if(isset($_POST['TemaSoporte']))
+			{
+               if($_POST['TemaSoporte']['titulo']!=''){
+				 $model->titulo=$_POST['TemaSoporte']['titulo'];
+			   }
+			   if($_POST['TemaSoporte']['descripcion']!=''){
+				$model->descripcion=$_POST['TemaSoporte']['descripcion'];
+			   }
+				if($model->save())
+					$this->redirect(array('update','id'=>$model->idtema_soporte));
+			}
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+
+
+			$sql = "select * from tema_soporte where id_padre=".$id;
+			$consulta = Yii::app()->db->createCommand($sql)->queryAll();
+			$total = count($consulta);
+		
+			$model_table= new TemaSoporte;
+
+			
+			$this->render('update',array(
+				'model'=>$model,
+				'subtema'=>$total,
+				'model_table'=>$model_table,
+
+			));
+	  
 	}
 
 	/**

@@ -35,7 +35,11 @@
 		<?php echo $form->label($model,'aplicacion_usuario_id_usuario'); ?>
 		<?php echo $form->textField($model,'aplicacion_usuario_id_usuario'); ?>
 	</div>
-
+	<div class="row">
+		<?php echo $form->label($model,'usuario'); ?>
+		<?php echo $form->textField($model,'usuario'); ?>
+	</div>
+	
 	<div class="row">
 		<?php echo $form->label($model,'fecha'); ?>
 		<?php echo $form->textField($model,'fecha'); ?>

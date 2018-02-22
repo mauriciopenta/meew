@@ -10,8 +10,7 @@ class LoginForm extends CFormModel
 	public $username;
 	public $password; 
 	public $rememberMe;
-	
-	private $_identity;
+	private $_identity=null;
 
 	/**
 	 * Declares the validation rules.
@@ -66,12 +65,16 @@ class LoginForm extends CFormModel
 			$this->_identity=new UserIdentity($this->username,$this->password);
 			$this->_identity->authenticate();
 		}
+
 		if($this->_identity->errorCode===UserIdentity::ERROR_NONE)
 		{
+			
 			$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
 			Yii::app()->user->login($this->_identity,$duration);
+		
 			return true;
 		}
+		
 		else
 			return false;
 	}

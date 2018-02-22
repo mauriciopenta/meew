@@ -4,15 +4,22 @@
 
 
 class UsuarioController extends Controller{
+
+		/**
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='//layouts/column2';
+
       /**
     * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
     * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
     */
-
-    public function filters()
+	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -25,7 +32,7 @@ class UsuarioController extends Controller{
 	{
 		return array(
 			array('allow',  // allow all users to access 'index' and 'view' actions.
-				'actions'=>array('index','view','home'),
+				'actions'=>array('index','view','selectpais','home','update','updateuser','password','registropago'),
 				'users'=>array('@'),
 			),
             array('allow', 
@@ -57,10 +64,12 @@ class UsuarioController extends Controller{
 
     public function actionUserManager(){
         $modeloUsuario=new Usuario();
-        $modeloPersona=new Persona();
+		$modeloPersona=new Persona();
+		
         $personas=$modeloPersona->model()->findAll();
         $dataTipoLogin= TipoLogin::model()->findAll();
-        $this->render('userManager',array(
+	  
+		$this->render('userManager',array(
             "modeloUsuario"=>$modeloUsuario,
             "modeloPersona"=>$modeloPersona,
             "personas"=>$personas,
@@ -72,13 +81,79 @@ class UsuarioController extends Controller{
         $modeloUsuario=new Usuario();
         $modeloPersona=new Persona();
         $personas=$modeloPersona->model()->findAll();
-        $dataTipoLogin= TipoLogin::model()->findAll();
-        $this->render('home',array(
-            "modeloUsuario"=>$modeloUsuario,
-            "modeloPersona"=>$modeloPersona,
-            "personas"=>$personas,
-            "dataTipoLogin"=>$dataTipoLogin
-        ));
+		$dataTipoLogin= TipoLogin::model()->findAll();
+
+		$estadistica=array();
+		if(Yii::app()->user->getState('nombreRole')=="CLIENTE"){
+	
+		    $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+			if($aplicacionFromDb->idaplicacion!=""){
+				$sql = "select 
+				SUM(CASE WHEN id_persona > 0 THEN 1 ELSE 0 END) usuarios,
+				SUM(CASE WHEN id_genero = 2 THEN 1 ELSE 0 END) usuarios_hombres,
+				SUM(CASE WHEN id_genero = 1 THEN 1 ELSE 0 END) usuarios_mujeres,
+				SUM(CASE WHEN id_genero = 3 THEN 1 ELSE 0 END) usuarios_otro,
+					SUM(CASE WHEN id_rango_edad = 1 THEN 1 ELSE 0 END) usuarios_1824,
+					SUM(CASE WHEN id_rango_edad = 2 THEN 1 ELSE 0 END) usuarios_2534,
+					SUM(CASE WHEN id_rango_edad = 3 THEN 1 ELSE 0 END) usuarios_3544,
+					SUM(CASE WHEN id_rango_edad = 4 THEN 1 ELSE 0 END) usuarios_4554,
+					SUM(CASE WHEN id_rango_edad = 5 THEN 1 ELSE 0 END) usuarios_mas
+				from persona where  id_aplicacion=".$aplicacionFromDb->idaplicacion;
+				$usuarios = Yii::app()->db->createCommand($sql)->queryAll();
+
+				$sql2 = "select * from push_notificaciones where  id_aplicacion=".$aplicacionFromDb->idaplicacion;
+				$notificaciones = Yii::app()->db->createCommand($sql2)->queryAll();
+				$total = count($notificaciones);
+
+				$estadistica=$usuarios[0];
+				$estadistica['notificaciones']=$total;
+				
+
+			}else{
+				$estadistica = array(
+				"usuarios"=>"0",
+				"usuarios_hombres"=>"0",
+				"usuarios_mujeres"=>"0",
+				"usuarios_otro"=>"0",
+				"usuarios_1824"=>"0",
+				"usuarios_2534"=>"0",
+				"usuarios_3544"=>"0",
+				"usuarios_4554"=>"0",
+				"usuarios_mas"=>"0",
+				"notificaciones"=>"0");
+			}
+			
+		}else if(Yii::app()->user->getState('nombreRole')=="ADMINISTRADOR"){
+
+			$sql_aplicaciones = "select * from aplicacion" ;
+			$caplicaciones = Yii::app()->db->createCommand($sql_aplicaciones)->queryAll();
+			$aplicaciones=count($caplicaciones);
+			$sql_plantillas = "select p.nombre as nombre, (select count(*) from aplicacion a where a.id_plantilla=p.idplantilla) num
+			from plantilla p";
+			
+			$plantillas = Yii::app()->db->createCommand($sql_plantillas)->queryAll();
+			
+			
+			$sql = "select p.plan_nombre as  nombre,(select count(*) from usuario u where u.codigo_plan=plan_code) num
+			 from plan p";
+			$planes = Yii::app()->db->createCommand($sql)->queryAll();
+        	$estadistica['plantillas']=$plantillas;
+        	$estadistica['planes']=$planes;
+			$estadistica['aplicaciones']=$aplicaciones;
+			
+		}
+
+
+		$this->render('home',array(
+			"modeloUsuario"=>$modeloUsuario,
+			"modeloPersona"=>$modeloPersona,
+			"personas"=>$personas,
+			"dataTipoLogin"=>$dataTipoLogin,
+			"estadistica"=> $estadistica,
+			
+		));
+
+
     }
 
     public function actionSort()
@@ -117,38 +192,25 @@ class UsuarioController extends Controller{
 					$model->attributes=$_POST['RegisterForm'];
 					// validate user input and redirect to the previous page if valid
 					if($model->validate() && $model->register()){
-					  //  Yii::app()->user->returnUrl = array("site/index");                                                          
-					   // $this->redirect(Yii::app()->user->returnUrl);
-						$messageType = 'success';
-						$message = "<div class='alert alert-info alert-dismissable'>Se envío un email, para confirmar tu correo.</div>";
-						Yii::app()->user->setFlash($messageType, $message);
-		
+						$this->redirect(array('userManager'));
+
 					}
 			}
 		
-		//	require_once Yii::app()->getBasePath() . '/extensions/payu-php-sdk-4.5.6/lib/PayU.php';
-		    $acceso_api=  Api::model()->findByAttributes(array("tipo"=>'payu'));
-      		PayU::$language = SupportedLanguages::ES; //Seleccione el idioma.
-			PayU::$isTest = true; //Dejarlo True cuando sean pruebas.
-			PayU::$apiKey = $acceso_api->key; //Ingrese aquí su propio apiKey.
-            PayU::$apiLogin = $acceso_api->login; //Ingrese aquí su propio apiLogin.
-            PayU::$merchantId = $acceso_api->id_prod; //Ingrese aquí su Id de Comercio.
-			LoggerUtil.setLogLevel(Level.ALL); //Incluirlo únicamente si desea ver toda la traza del log; si solo se desea ver la respuesta, se puede eliminar.
-
-				// URL de Pagos
-			Environment::setPaymentsCustomUrl("https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi");
-				// URL de Consultas
-			Environment::setReportsCustomUrl("https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi");
-				// URL de Suscripciones para Pagos Recurrentes
-			Environment::setSubscriptionsCustomUrl("https://sandbox.api.payulatam.com/payments-api/rest/v4.3/");
-
 		
-
-			// display the login form
-//                Yii::app()->user->setFlash('success', "Data1 saved!");
 			$this->render('agregar',array("model"=>$model));
+
+
+
+
 	  
 	}
+
+
+   
+
+
+
 
 
       public function actionParametrosConfig()
@@ -219,11 +281,8 @@ class UsuarioController extends Controller{
 	 */
 	public function actionCreate()
 	{
+
 		$model=new Usuario;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Usuario']))
 		{
 			$model->attributes=$_POST['Usuario'];
@@ -243,11 +302,106 @@ class UsuarioController extends Controller{
 	 */
 	public function actionUpdate($id)
 	{
+		
+		$modelUsuario=$this->loadModel($id);
+		$modelPersona=Persona::model()->findByPk($modelUsuario->id_persona);
+		$model=new UsuarioFormUpdate;
+		if(isset($_POST['UsuarioFormUpdate']))
+		{
+          //var_dump($_POST);die;
+		
+			 $identity=new UserIdentity($modelUsuario->usuario, $modelUsuario->password);
+			 $model->attributes=$_POST['UsuarioFormUpdate'];
+				if($model->save($modelUsuario,$modelPersona ))
+				    $this->redirect(array('update','id'=>$model->id_usuario));
+		}
+		$model->id_usuario=$modelUsuario->id_usuario;
+		$model->usuario=$modelUsuario->usuario;
+		$model->plan=$modelUsuario->codigo_plan;
+		
+		$model->id_persona=$modelPersona->id_persona;
+		$model->persona_nombre=$modelPersona->persona_nombre;
+		$model->persona_apellidos=$modelPersona->persona_apellidos;
+		$model->id_doc=$modelPersona->id_doc;
+		$model->persona_doc=$modelPersona->persona_doc;
+		$model->persona_correo=$modelPersona->persona_correo;
+		$model->ubicacion=$modelPersona->persona_ubicacion;
+		$model->region=$modelPersona->persona_ciudad;
+		$model->telefono=$modelPersona->persona_telefono;
+
+		$pago=new Pago;
+		$response=$pago->consultar_tarjeta($modelUsuario->id_tarjeta);
+        if($response){
+			//var_dump($response);die;
+		   $model->numero_tarjeta=$response->number;
+		   $model->tipo_tarjeta=$response->type;
+		   $model->nombre_tarjeta=$response->name;
+		}
+
+     //   var_dump($response);die;
+
+
+		$paises=array();
+        if($model->ubicacion!=""){
+
+            $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$model->region)));
+            $paises=CHtml::listData($consulta,'idCiudades','Ciudad');
+
+        }
+            $this->render('update',array(
+                'model'=>$model,
+                'paises'=>$paises
+            ));
+	
+	}
+
+
+    public function actionSelectPais() {
+       
+        $codigo = $_POST ['UsuarioFormEdit']['ubicacion'];
+
+        $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
+        $ciudades=CHtml::listData($consulta,'idCiudades','Ciudad');
+    
+        echo CHtml::tag('option', array('value'=>''), 'Seleccione', true);
+
+        foreach ($ciudades as $valor=>$Ciudad) {
+            echo CHtml::tag('option', array('value'=>$valor), CHtml::encode($Ciudad), true);
+        }
+    }
+
+	public function actionPassword($id)
+	{
+		$modelUsuario=$this->loadModel($id);
+		$model=new PasswordForm;
+		if(isset($_POST['PasswordForm']))
+		{
+			$model->attributes=$_POST['PasswordForm'];  
+			
+           if($model->validate()){
+		      
+          	    $identity=new UserIdentity($modelUsuario->usuario, $model->password);
+				if($identity->authenticate()){
+                  	$opciones = [
+						'cost' => 10
+					];
+					$password=password_hash($model->PasswordNew, PASSWORD_BCRYPT, $opciones);
+					$modelUsuario->password=$password;
+					if($modelUsuario->save()){
+						$this->redirect(array('update','id'=>$modelUsuario->id_usuario));
+					}
+				}
+		   }
+		}
+				$this->render('formPassword',array(
+					'model'=>$model
+				));
+	    
+	}
+
+	public function actionUpdateUser($id)
+	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Usuario']))
 		{
 			$model->attributes=$_POST['Usuario'];
@@ -259,6 +413,10 @@ class UsuarioController extends Controller{
 			'model'=>$model,
 		));
 	}
+
+
+
+
 
 	/**
 	 * Deletes a particular model.

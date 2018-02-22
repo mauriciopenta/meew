@@ -69,6 +69,7 @@ $('.search-form form').submit(function(){
 
 		array(
 			'class'=>'CButtonColumn',
+			'template'=>'{view} {update}{delete}',
 			'viewButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/view",array("id"=>$data["id_modulo_app"]))',
 			'updateButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/update",array("id"=>$data["id_modulo_app"]))',
 			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("aplicacion/delete",array("id"=>$data["id_modulo_app"]))',
@@ -78,7 +79,13 @@ $('.search-form form').submit(function(){
 			'deleteButtonImageUrl'=>Yii::app()->baseUrl.'/img/delete.png',
 			
 			'viewButtonImageUrl'=>Yii::app()->baseUrl.'/img/view.png',
-			
+			'afterDelete'=>'function(link,success,data){
+				window.location.reload();
+			}',
+
+
+
+
 			)
 	    ))); 
 		

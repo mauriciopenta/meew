@@ -13,11 +13,12 @@ class RegisterForm extends CFormModel
     public $documento;
     public $personRegister=false;
     private $_identity;
-    
+    private $ubicacion;
 
     
     public function rules()
     {
+
         return [
             [['username', 'email', 'password', 'confirmPassword', 'nombres','apellidos', 'documento', 'tipo_documento' ], 'required', 'message' => 'Campo requerido'],
             ['username', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 50 caracteres'],
@@ -29,10 +30,11 @@ class RegisterForm extends CFormModel
             ['email', 'email_existe'],
             ["nombres, apellidos","match", "pattern" => "/^[a-zA-Z ñÑáéíóúüç]*$/","message"=>"El nombre solo puede estar formado por letras"],
             ['documento', 'match', 'pattern' => "/^[0-9]+$/i", 'message' => 'Sólo se aceptan números'],
-            ['documento', 'documento_existe'],
+           // ['documento', 'documento_existe'],
             ['password', 'match', 'pattern' => "/^.{8,16}$/", 'message' => 'Mínimo 6 y máximo 16 caracteres'],
             ['confirmPassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Los passwords no coinciden'],
         ];
+    
     }
     
     public function email_existe($attribute, $params)
@@ -56,13 +58,13 @@ class RegisterForm extends CFormModel
        
 
         if($user = Persona::model()->exists('persona_doc=:persona_doc',array('persona_doc'=>$this->documento)))
-           $this->addError($attribute, "El email seleccionado existe");
+           $this->addError($attribute, "El Documento ingresado existe");
 
 
         $criteria = new CDbCriteria;
         $personaFromDb= Persona::model()->findByAttributes(array('persona_doc'=>$this->documento));
         if(is_object($personaFromDb) && isset($personaFromDb->persona_correo)){
-            $this->addError($attribute, "El email seleccionado existe");
+            $this->addError($attribute, "El  Documento ingresado existe");
             return true;
         }
        
@@ -94,10 +96,19 @@ class RegisterForm extends CFormModel
             {
                
                $id_persona = $table_persona->id_persona;
-
                $table = new Usuario;
+               $pago=new Pago;
+               //$r=$pago->eliminar_cliente("cf5e4m53k6r");
+               //var_dump($r);die;
+               $response= $pago->crear_cliente($this->nombres.' '.$this->apellidos,$this->email);
+               if($response){
+                $table->id_cliente_payu=$response->id;
+           
+               }
                $table->usuario = $this->username;
                $table->id_persona = $id_persona;
+               $table->codigo_registro = $this->generarCodigo(25);
+              
                $table->id_rol = 2;
                $table->password = $this->password;
                $table->usuario_activo = 2;
@@ -121,38 +132,23 @@ class RegisterForm extends CFormModel
               //Nueva consulta para obtener el id del usuario
               //Para confirmar al usuario se requiere su id y su authKey
              
-              $id = urlencode($table->id_usuario);
-              //$authKey = urlencode($user->authKey);
-              $subject = "Confirmar registro";
-              $body = "<h1>Haga click en el siguiente enlace para finalizar tu registro</h1>";
-              $body .= "<a href='http://yii.local/index.php/site/confirm&id=".$id."'>Confirmar</a>";
-           
-
-              $message = new YiiMailMessage;;
-              //this points to the file test.php inside the view path
-              $message->subject =  $subject;
-              $message->setBody($body);
-              $message->addTo($this->email);
-              $message->from = Yii::app()->params['adminEmail'];
-              Yii::app()->mail->send($message);
-              
-            
-             
-/*
-
-              //Enviamos el correo
-                Yii::$app->mailer->compose()
-                ->setTo($this->email)
-                ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
-                ->setSubject($subject)
-                ->setHtmlBody($body)
-                ->send();*/
-                $messageType = 'success';
-                $message = "<div class='alert alert-info alert-dismissable'>Se envío un email, para confirmar tu correo.</div>";
-                Yii::app()->user->setFlash($messageType, $message);
-
-                $msg = "Ahora sólo falta que confirmes tu registro en tu cuenta de correo";
+                    $id = urlencode($table->id_usuario);
+                    //$authKey = urlencode($user->authKey);
+                    $subject = "Confirmar registro";
                 
+
+                    Yii::import('ext.yii-mail-master.YiiMailMessage');
+                    $message = new YiiMailMessage;
+                    $message->view = "activacion";
+                    $params  = array('clave'=>"Tu clave ");
+                    $message->setSubject($subject);
+                    $message->setBody( 
+                    array("usuario"=>$this->email,"url"=> Yii::app()->params["domain"]."/site/registropago?codigo=".$table->codigo_registro ), 'text/html');   
+                    $message->addTo($this->email);
+                    $message->from = Yii::app()->params['adminEmail'];
+                    Yii::app()->mail->send($message);
+
+                  
                 return true;
                 
               }else{
@@ -176,5 +172,25 @@ class RegisterForm extends CFormModel
 	}
 
  
+
+
+    function generarCodigo($longitud, $tipo=0)
+    {
+        //creamos la variable codigo
+        $codigo = "";
+        //caracteres a ser utilizados
+        $caracteres="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        //el maximo de caracteres a usar
+        $max=strlen($caracteres)-1;
+        //creamos un for para generar el codigo aleatorio utilizando parametros min y max
+        for($i=0;$i < $longitud;$i++)
+        {
+            $codigo.=$caracteres[rand(0,$max)];
+        }
+        //regresamos codigo como valor
+        return $codigo;
+    }
+
+
 
 }

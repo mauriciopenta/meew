@@ -57,7 +57,7 @@ class PushNotificaciones extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'idpush_notificaciones' => 'Idpush Notificaciones',
+			'idpush_notificaciones' => 'Id push Notificaciones',
 			'titulo' => 'Titulo',
 			'cuerpo' => 'Cuerpo',
 			'genero' => 'Genero',
@@ -81,23 +81,108 @@ class PushNotificaciones extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		
+		$condicions="";
 
-		$criteria->compare('idpush_notificaciones',$this->idpush_notificaciones);
-		$criteria->compare('titulo',$this->titulo,true);
-		$criteria->compare('cuerpo',$this->cuerpo,true);
-		$criteria->compare('genero',$this->genero,true);
-		$criteria->compare('edad',$this->edad,true);
-		$criteria->compare('id_aplicacion',$this->id_aplicacion);
-		$criteria->compare('id_modulo',$this->id_modulo);
+		if($this->idpush_notificaciones!='' && preg_match('/^([0-9])*$/',$this->idpush_notificaciones)){
+			$condicions=$condicions.sprintf(" and a.idpush_notificaciones=%s", (int)$this->idpush_notificaciones);
+	
+		}
+		if($this->titulo!=''){
+	     	$condicions.=" and a.titulo LIKE '%". $this->titulo."%'";
+		}
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+		if($this->cuerpo!='' ){
+			$condicions.=" and a.cuerpo LIKE '%". $this->cuerpo."%'";
+		}
+		
+		if($this->edad!='' ){
+			$condicions.=" and (SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.edad "
+			." AND c.tipo='rango_edad') LIKE '%". $this->edad."%'";
+		}
+
+		if($this->genero!=''){
+			$condicions.=" and (SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.genero "
+			." AND c.tipo='genero') LIKE '%".$this->genero."%'";
+        }
+
+
+
+		$sql = "select idpush_notificaciones, titulo, cuerpo, "
+		."(SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.genero "
+		." AND c.tipo='genero') as genero,"
+		."(SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.edad "
+		." AND c.tipo='rango_edad') as edad	,"
+		."(SELECT MIN(nombre_modulo) FROM modulo_app d WHERE d.id_modulo_app=a.id_modulo ) as id_modulo"
+	
+		." from push_notificaciones a where a.id_aplicacion=".$aplicacionFromDb->idaplicacion
+	    .$condicions
+		." order by a.idpush_notificaciones desc";
+		
+
+		$consulta = Yii::app()->db->createCommand($sql)->queryAll();
+		$total = count($consulta);
+
+		$dataProvider = new CSqlDataProvider($sql, array(
+				'totalItemCount'=>$total,
+				'keyField' => 'id_modulo_app',
+				'sort'=>array(
+					'attributes'=>array(
+						 'idpush_notificaciones','titulo', 'cuerpo', 'genero','edad','id_modulo'
+					),
+				),
+				'pagination'=>array(
+					'pageSize'=>10,
+				),
 		));
+		return $dataProvider;
+
+
+
+
+
 	}
 
+
+
+
+
+	public function search_filter()
+	{
+		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		
+		
+		
+
+		$sql = "select idpush_notificaciones, titulo, cuerpo, "
+		."(SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.genero "
+		." AND c.tipo='genero') as genero,"
+		."(SELECT MIN(nombre) FROM parametros c WHERE c.codigo=a.edad "
+		." AND c.tipo='rango_edad') as edad	,"
+		."(SELECT MIN(nombre_modulo) FROM modulo_app d WHERE d.id_modulo_app=a.id_modulo ) as id_modulo"
+		." from push_notificaciones a where a.id_aplicacion=".$aplicacionFromDb->idaplicacion
+		." order by a.idpush_notificaciones desc";
+
+
+		$consulta = Yii::app()->db->createCommand($sql)->queryAll();
+		$total = count($consulta);
+
+		$dataProvider = new CSqlDataProvider($sql, array(
+				'totalItemCount'=>$total,
+				'keyField' => 'id_modulo_app',
+				'sort'=>array(
+					'attributes'=>array(
+						 'idpush_notificaciones','titulo', 'cuerpo', 'genero','edad','id_modulo'
+					),
+				),
+				'pagination'=>array(
+					'pageSize'=>10,
+				),
+		));
+		return $dataProvider;
+	}
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

@@ -4,7 +4,8 @@
               <h3 class="box-title">Información de Contacto </h3>
             </div>
             <div class="box-header">
-              <h5 >configura las variables del módulo de contacto.</h5>
+              <h5> Configura las variables del módulo de contacto.</h5>
+			  <p>  Configura las variables del módulo de contacto, ya que a través de él, tus usuarios se comunicarán directamente con tu negocio.  Cuando este módulo está completamente lleno, los usuarios se sentirán más seguros en caso que ocurra un evento inesperado con tus productos y/o servicios .</p>
             </div>
 
 			<div class="box-body">
@@ -47,17 +48,17 @@
 						<?php 
 						$consultapais=Paises::model()->findAll(array('order'=>'pais'));
 						$type_listpais=CHtml::listData($consultapais,'codigo','pais');
-						echo $form->dropDownList($modelViral,'codigo_telefonico', $type_listpais, array('id'=>'pais', 'class' =>'form-control','style'=>'height:26px;','empty'=>'Seleccione') ); 
+						echo $form->dropDownList($modelViral,'codigo_telefonico', $type_listpais, array('id'=>'pais', 'class' =>'form-control','style'=>'height:30px;','empty'=>'Seleccione') ); 
 						?>
 					</div>	
 				  <div class="col-sm-2">  
 				     <?php echo $form->labelEx($modelViral,'Codigo'); ?>
-					 <?php  echo "<input 'class'='form-control' style='width:50px !important; margin-right:10px;' type='text' id='telf' disabled='disabled' value='+".$modelViral->codigo_telefonico."' />"; ?>
+					 <?php  echo "<input 'class'='form-control' style='width:50px !important; margin-right:10px; height:30px !important;' type='text' id='telf' disabled='disabled' value='+".$modelViral->codigo_telefonico."' />"; ?>
 			      </div> 
 				  <div class="col-sm-4">
 				   <div class="form-group has-feedback	">
 					<?php echo $form->labelEx($modelViral,'Teléfono'); ?>
-					<?php echo $form->textField($modelViral,'telefono',array('class' => 'form-control')); ?>
+					<?php echo $form->textField($modelViral,'telefono',array('class' => 'form-control', 'style'=>'height:30px !important;' )); ?>
 					<?php echo $form->error($modelViral,'telefono'); ?>
 				   </div> 
 				</div> 
@@ -98,6 +99,10 @@
 			<button id="pasar" class="btn btn-info pull-right">Pasar al mapa</button>
 		</div>	
 		<br>
+	
+		<div class="color_text_marcador">
+             Mueva el marcador <i class="ion-location" style="color:#ea4335;"></i> para fijar la posición con mayor precisión
+		</div>
 		<div id="map_canvas" style="width:100%;height:300px;margin-top:20px; margin-bottom:20px;"></div>
 			
 			<!--campos ocultos donde guardamos los datos-->

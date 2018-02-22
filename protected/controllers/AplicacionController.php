@@ -149,6 +149,7 @@ class AplicacionController extends Controller
                    $moduloApp->aplicacion_usuario_id_usuario=Yii::app()->user->getState('id_usuario');
                 }
                 if(!isset($moduloApp->id_modulo_app)){
+                   
                     if($moduloApp->save()){
                     //  var_dump($moduloApp->id_modulo_app);die;
                         if( $moduloApp->tipo_modulo==1 || $moduloApp->tipo_modulo==2 ){
@@ -282,33 +283,67 @@ class AplicacionController extends Controller
         }else{
 
             $imageFile = CUploadedFile::getInstanceByName('file');
-           
+            $rnd = rand(0,9999);
+                          
                           
                  //   $tmp = $uploadedFile->tempName;
                 //  var_dump(dirname(Yii::app()->request->scriptFile));die;
+                if(isset($imageFile)){  
                     if($type=='splash'){
+                        if($model->imagen_splash!=''){
+                            $file_old= dirname(Yii::app()->request->scriptFile). $model->imagen_splash;
+                            if (file_exists($file_old) ){
+                                unlink($file_old);
+                            } else {
+                                // File not found.
+                            }
+                        }    
+
                         try {
-                            $fileName = "splash-" . $idaplicacion . ".".$imageFile->getExtensionName(); 
+                            $fileName = "splash-" . $idaplicacion.$rnd . ".".$imageFile->getExtensionName(); 
                       
                         } catch (Exception $e) {
-                            $fileName = "splash-" . $idaplicacion .$uploadedFile->tempName; 
+                            $fileName = "splash-" . $idaplicacion. $rnd .$uploadedFile->tempName; 
                         }
                        
                        
                         $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
                         $model->imagen_splash= '/uploads/'.$fileName; 
                     }else if($type=='icon'){
-                        $fileName = "icon-".$idaplicacion.".".$imageFile->getExtensionName(); 
+                       if($model->imagen_icon!=''){
+                                $file_old= dirname(Yii::app()->request->scriptFile). $model->imagen_icon;
+                                 
+                                if (file_exists($file_old) ){
+                                    unlink($file_old);
+                                } else {
+                                    // File not found.
+                                }
+                        }
+                        
+                        $fileName = "icon-".$idaplicacion.$rnd.".".$imageFile->getExtensionName(); 
+                         
+
                         $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
                         $model->imagen_icon= '/uploads/'.$fileName; 
                     }else if($type=='icon_header'){
-                        $fileName = "iconfeader-".$idaplicacion.".".$imageFile->getExtensionName(); 
+                        if($model->icon_interno!=''){
+                       
+                                $file_old= dirname(Yii::app()->request->scriptFile). $model->icon_interno;
+                                if (file_exists($file_old) ){
+                                    unlink($file_old);
+                                } else {
+                                    // File not found.
+                                }
+                        }        
+                          
+
+                        $fileName = "iconfeader-".$idaplicacion.$rnd.".".$imageFile->getExtensionName(); 
                         $imageFile->saveAs(dirname(Yii::app()->request->scriptFile).'/uploads/'.$fileName);
                      
                         $model->icon_interno= '/uploads/'.$fileName; 
                     }
                     $model->save();
-                    
+                }
                     header("Content-Type: text/html");
                     echo CJSON::encode(
                         array(
@@ -360,33 +395,41 @@ class AplicacionController extends Controller
     {
 
         $model=Aplicacion::model()->find('idaplicacion='.$idaplicacion);
+
+         
         if($model===null){
 			throw new CHttpException(404,'The requested page does not exist.');
         }else{
         
-            $files =array();
-            if($model->imagen_splash!=''){
-              $files[0]=dirname (Yii::app()->request->scriptFile).$model->imagen_splash;
+            $validFiles = [];
+            if($model->imagen_splash!==''){
+              $file=dirname (Yii::app()->request->scriptFile).$model->imagen_splash;
+              if(file_exists($file)) {
+                $validFiles[] = $file;  
+              }
             }
 
-            if($model->imagen_icon!=''){
-                $files[1]=dirname (Yii::app()->request->scriptFile).$model->imagen_icon;
+            if($model->imagen_icon!==''){
+                $file=dirname (Yii::app()->request->scriptFile).$model->imagen_icon;
+                if(file_exists($file)) {
+                    $validFiles[] = $file;  
+                }
             }
-            if($model->icon_interno!=''){
-                $file[2]=dirname (Yii::app()->request->scriptFile).$model->icon_interno;
+          
+
+            if($model->icon_interno !==''){
+                $file=dirname (Yii::app()->request->scriptFile).$model->icon_interno;
+                if(file_exists($file)) {
+                    $validFiles[] = $file;  
+                }
             }
+
+         
             $rnd = rand(0,9999);
            
             $destination=dirname (Yii::app()->request->scriptFile)."/uploads/".$idaplicacion.$rnd.".zip";
-            $validFiles = [];
-            if(is_array($files)) {
-               foreach($files as $file) {
-                  if(file_exists($file)) {
-                     $validFiles[] = $file;
-                  }
-               }
-            }
-         
+           
+
          $result=false;
             if(count($validFiles)) {
                $zip = new ZipArchive();
@@ -617,7 +660,7 @@ class AplicacionController extends Controller
 		{
             $model->attributes=$_POST['ModuloApp'];
             $model->texto_html=$_POST['ModuloApp']['texto_html'];
-            $model->texto_html=$_POST['ModuloApp']['icon'];
+            $model->icon=$_POST['ModuloApp']['icon'];
             if($model->save()){
                Yii::app()->user->returnUrl = array("/aplicacion/config#modulos");                                                          
                $this->redirect(Yii::app()->user->returnUrl); 

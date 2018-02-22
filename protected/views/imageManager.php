@@ -20,16 +20,20 @@
 			<div class="row">
 					<div class="col-md-4">
 					      <label>Splash (2732 x2732)</label>
+						 
 						  <div id="splash" ></div>
+						  <p> (Ten en cuenta que la imagen se adaptará a cada dispositivo, por lo tanto, intente dejar lo que quiere que se visualice en el centro.)</p>
+				
 					</div>
 				
 					<div class="col-md-4">
-				        <label>Icono Aplicacion (1024x1024 o 512x512)</label>
+				        <label>Icono Aplicación (1024x1024 o 512x512)</label>
 						<div id="icon_app" ></div>
+						<p>Este será el ícono que verá el usuario al instalar tu aplicación.</p>
 					</div>
                 
                     <div class="col-md-4">
-                         <label>Icono Header (4:1)</label>
+                         <label>Icono Login y Header (4:1)</label>
 						<div id="icon_header" ></div>
 		           </div>
 				

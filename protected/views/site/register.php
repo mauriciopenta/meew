@@ -42,7 +42,7 @@
             'Login',
     );
 ?>
-<div >
+<div>
  
   <!-- /.login-logo -->
   <!-- /.login-logo -->

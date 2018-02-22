@@ -43,6 +43,41 @@
 					<?php echo $form->error($model,'valor'); ?>
 				</div>
 
+
+              <div class="row">
+			      <div class="col-md-6">
+					<div class="form-group has-feedback">
+						<?php echo $form->labelEx($model,'Periodo Plan'); ?><br>
+							<?php 
+								$sql1 = "select codigo, nombre from parametros b where  b.tipo='periodo_plan'";
+							
+								$consulta1 = Yii::app()->db->createCommand($sql1)->queryAll();
+							
+								$type_list=CHtml::listData($consulta1,'codigo','nombre');
+					
+								echo $form->dropDownList($model,'periodo_plan', $type_list, array('id'=>'tipo_modulo' , 'class' => 'form-control','empty'=>'Seleccione','disabled'=>!$model->isNewRecord));
+							?>
+						<?php echo $form->error($model,'periodo_plan'); ?>
+				  	 </div>
+				  </div>	
+				 <div class="col-md-6">
+					<div class="form-group has-feedback">
+						<?php echo $form->labelEx($model,'Moneda'); ?><br>
+							<?php 
+								$sql1 = "select codigo, nombre from parametros b where  b.tipo='moneda'";
+							
+								$consulta1 = Yii::app()->db->createCommand($sql1)->queryAll();
+							
+								$type_list=CHtml::listData($consulta1,'codigo','nombre');
+					
+								echo $form->dropDownList($model,'moneda', $type_list, array('id'=>'moneda' , 'class' => 'form-control','empty'=>'Seleccione','disabled'=>!$model->isNewRecord));
+							?>
+						<?php echo $form->error($model,'moneda'); ?>
+					</div>
+				  </div>
+				</div>	
+
+
 				<div class="form-group">
 					<?php echo $form->labelEx($model,'descripcion'); ?>
 					<?php echo $form->textArea($model,'descripcion',array('id'=>'descripcion','class' => 'form-control','rows'=>6, 'cols'=>50)); ?>

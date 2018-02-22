@@ -63,159 +63,54 @@
     </div>
     <!-- ./col -->
     <div class="row">
-    <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
-
-        <div class="info-box-content">
-          <span class="info-box-text">Aplicaciones <br>Registradas</span>
-          <span class="info-box-number">90<small>%</small></span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-purple"><i class="ion ion-android-apps"></i></span>
-
-        <div class="info-box-content">
-          <span class="info-box-text">Aplicaciones <br>plantilla formal</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-
-    <!-- /.col -->
-    <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
-
-        <div class="info-box-content">
-          <span class="info-box-text">Aplicaciones <br>plantilla slider</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-blue-active"><i class="ion ion-person-stalker"></i></span>
+          <div class="info-box">
+            <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
+            
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios <br>Pioneros</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-yellow-active"><i class="ion ion-person-stalker"></i></span>
+            <div class="info-box-content">
+                  <span class="info-box-text">Aplicaciones <br>Registradas</span>
+                  <span class="info-box-number"><?php echo $estadistica['aplicaciones'];?></small></span>
+            </div>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios Estrategas <br>push 10</span>
-          <span class="info-box-number">41,410</span>
+            </div>
+          <!-- /.info-box -->
         </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-orange"><i class="ion ion-person-stalker"></i></span>
+        <?php  foreach($estadistica['plantillas'] as $plantilla): ?>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
+            
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios Estrategas <br>push 20</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-orange-active"><i class="ion ion-person-stalker"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text"><?php echo $plantilla['nombre'];?></span>
+                  <span class="info-box-number"><?php echo $plantilla['num'];?></small></span>
+                </div>
+                </div>
+         
+          </div>
+        <?php  endforeach; ?>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios Estrategas <br>push 30</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-green-active"><i class="ion ion-person-stalker"></i></span>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios Estratega <br>Comercial</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-red"><i class="ion ion-person-stalker"></i></span>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Usuarios Expert@ <br> Mark 100</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-red"><i class="ion ion-person-stalker"></i></span>
 
-        <div class="info-box-content">
-        <span class="info-box-text">Usuarios Expert@ <br> Mark 200</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- ./col -->
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-red-active"><i class="ion ion-person-stalker"></i></span>
+        <?php  foreach($estadistica['planes'] as $plan ): ?>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-blue-active"><i class="ion ion-person-stalker"></i></span>
+      
 
-        <div class="info-box-content">
-        <span class="info-box-text">Usuarios Expert@ <br> Mark 300</span>
-          <span class="info-box-number">41,410</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
+                <div class="info-box-content">
+                  <span class="info-box-text">Usuario <?php echo $plan['nombre'];?></span>
+                  <span class="info-box-number"><?php echo $plan['num'];?></small></span>
+                </div>
+                </div>
+         
+          </div>
+        <?php  endforeach; ?>
     </div>
-    <!-- ./col -->
+   
+    
 
 
   </div>
@@ -230,7 +125,16 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios Registrados</span>
-            <span class="info-box-number">90<small>%</small></span>
+            <span class="info-box-number">
+             <?php 
+              echo $estadistica['usuarios'];
+         
+
+             ?>
+
+
+
+            </span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -243,7 +147,9 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios Hombres</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"> 
+               <?php echo $estadistica['usuarios_hombres'];?>
+             </span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -258,30 +164,14 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios Mujeres</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number">  <?php echo $estadistica['usuarios_mujeres'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->
       </div>
-      <!-- /.col -->
-
-      <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-aqua"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios Hombres</span>
-            <span class="info-box-number">41,410</span>
-          </div>
-          <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-
-
+  
+  
       <!-- /.col -->
       <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="info-box">
@@ -289,7 +179,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios Otro Genero</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_otro'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -304,7 +194,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios entre 18-24 años</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_1824'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -321,7 +211,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios entre 25-35 años</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_2534'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -339,7 +229,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios entre 35-44 años</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_3544'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -354,7 +244,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios entre 45-54 años</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_4554'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -372,7 +262,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios de más de 55 años</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_mas'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -389,7 +279,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Mensajes Push Enviados</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-number"><?php echo $estadistica['usuarios_mas'];?></span>
           </div>
           <!-- /.info-box-content -->
         </div>

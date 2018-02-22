@@ -191,12 +191,15 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
+                
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="<?php echo Yii::app()->request->baseUrl ?>/index.php/usuario/update?id=<?php echo Yii::app()->user->getState('id_usuario') ?>" class="btn btn-default btn-flat">Editar Perfil</a>
                 </div>
+
                 <div class="pull-right">
                   <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
                 </div>
+              
               </li>
             </ul>
           </li>
@@ -319,17 +322,17 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
             </li>
             <li class="treeview active"> 
                 <a>
-                  <i class="fa fa-support"></i> <span>Notificaciones</span>
+                  <i class="fa fa-bell"></i> <span>Notificaciones</span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
                       <li>
-                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/admin"><i class="fa fa-envelope"></i>Historial</a>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/admin"><i class="fa fa-history"></i>Historial</a>
                       </li>
                       <li>
-                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/create"><i class="fa fa-ticket"></i>Crear Notificación</a>
+                          <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/pushNotificaciones/create"><i class="ion-android-send"></i> Enviar Notificación</a>
                       </li>
                 </ul>  
             </li>

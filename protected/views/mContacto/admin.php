@@ -60,9 +60,11 @@ $('.search-form form').submit(function(){
 				'dataProvider'=>$model->search_id_app(),
 				'filter'=>$model,
 				'columns'=>array(
+					'usuario',
 					'id_mcontacto',
 					'mcontacto_mensaje',
 					'asunto',
+					
 					'aplicacion_usuario_id_usuario',
 					'fecha',
 					'respuesta',

@@ -46,6 +46,22 @@ return array(
 			'driver' => 'GD',
 		),	
 
+
+		'mail' => array(
+			'class' => 'ext.yii-mail-master.YiiMail',
+			'transportType'=>'smtp',
+			'transportOptions'=>array(
+			'host'=>'smtp.gmail.com',
+			'username'=>'johan.gomez@pentasesores.com',
+			'password'=>'JohanGomez2017*',
+			'port'=>'465',
+			'encryption'=>'ssl',
+			),
+			'viewPath' => 'application.views.mail',
+			'logging' => true,
+			'dryRun' => false),
+
+
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
@@ -64,20 +80,6 @@ return array(
 			),
 		),
 
-
-		
-//		'db'=>array(
-//			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-//		),
-		// uncomment the following to use a MySQL database
-		
-//		'db'=>array(
-//                    'tablePrefix'=>'',
-//                    'connectionString' => 'pgsql:host=ec2-174-129-242-241.compute-1.amazonaws.com;port=5432;dbname=d1b9pv88jl26t9',
-//                    'username'=>'ajrbjyuywyluwm',
-//                    'password'=>'sRVVqYKhD2bdn_qWz6tCYSP71h',
-//                    'charset'=>'UTF8',
-//                ),
 		'db'=>array(
                     'tablePrefix'=>'',
                     'connectionString' => 'mysql:host=localhost;port=3306;dbname=meewco_meew',
@@ -111,27 +113,6 @@ return array(
                         )
                     ),
                 ),
-                'mail' => array(
-			'class' => 'application.extensions.yii-mail-master.YiiMail',
-			'transportType'=>'smtp',
-			'transportOptions'=>array(
-				'host'=>'smtp.gmail.com',				
-				'username'=>'soportecentroforjar@gmail.com',
-				'password'=>"SDIS_&%_1",
-				'port'=>'465',
-				'encryption'=>'tls',
-			),
-				'viewPath' => 'application.views.mail',
-				'logging' => true,
-				'dryRun' => false
-					),
-					
-				
-			
-		
-
-
-
                     'user'=>array(
                     // enable cookie-based authentication
                     'allowAutoLogin'=>true,
@@ -145,6 +126,8 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
+		'domain'=>"http://meew.co/dashmeew/index.php",
+		'domainimg'=>"http://meew.co/dashmeew",
 		// this is used in contact page
 		'adminEmail'=>'johan.gomez@zonesoftware.com',
 		'postsPerPage'=>10,
