@@ -75,16 +75,7 @@ $this->breadcrumbs=array(
                                 }
                             ?>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>No. Documento</th>
-                                <th>Persona Nombres</th>
-                                <th>Persona Apellidos</th>
-                                <th>Persona correo</th>
-                                <th>Estado usuario</th>
-                                <th>Acción</th>
-                            </tr>
-                        </tfoot>
+                       
                     </table>
 
                     <div class="center_button" >

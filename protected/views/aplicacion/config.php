@@ -22,6 +22,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/plugins/IconP
 <script  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCmaKXUxZlLs8JTKXAZEkdI6_QZzIVVPnc"></script>
   
 <?php
+
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Aplicacion/Aplicacion.js",CClientScript::POS_END);
 
 /* @var $this UsuarioController */
@@ -37,26 +38,38 @@ $this->breadcrumbs=array(
 <div class="form">
 <section class="content" id="divAplicacion">
    <?php $this->renderPartial('plantilla_config', array('model'=>$model,'modelAplicacion'=>$modelAplicacion)); ?>
-	<?php $this->renderPartial('info_contacto', array('modelViral'=>$modelViral)); ?>
-		<div class="box box-info" id="modulos" action="#modulos">
-					<div class="box-header">
-					<h3 class="box-title">Modulos</h3>
-					</div>
-					<div class="box-body">
-					<div class="row">
-						<div class="col-md-12" >
-							<?php $this->renderPartial('administrador_modulo', array('model'=>$moduloSearch)); ?>
-							<?php $this->renderPartial('createModulo', array('model'=>$moduloApp,'model_aplicacion'=>$model)); ?>
+	<?php 
+	   $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+        
+	   if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
+   
+	
+			$this->renderPartial('info_contacto', array('modelViral'=>$modelViral)); ?>
+			
+			
+				<div class="box box-info" id="modulos" action="#modulos">
+							<div class="box-header">
+							<h3 class="box-title">Modulos</h3>
+							</div>
+							<div class="box-body">
+							<div class="row">
+								<div class="col-md-12">
+									<?php $this->renderPartial('administrador_modulo', array('model'=>$moduloSearch)); ?>
+									<?php
+											$this->renderPartial('createModulo', array('model'=>$moduloApp,'model_aplicacion'=>$model,"modulos"=>$modulos)); 
+										
+									?>
+								</div>
 						</div>
+					</div>
 				</div>
-			</div>
-		</div>
 
 		<div class="box box-info">
 		<div class="form" id="ordenModulo" action="#ordenModulo">
 			<?php $this->renderPartial('orden', array('model'=>$model)); ?>
 					
 		</div>
+	   <?php }?>
 	</div>
 </div>
 </section>

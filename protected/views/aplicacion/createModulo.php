@@ -33,11 +33,8 @@
 	<div class="form-group has-feedback">
 	    <?php echo $form->labelEx($model,'tipo módulo'); ?><br>
             <?php 
-				$sql1 = "select codigo, nombre from parametros b where  b.tipo='modulo' and b.max>(select COUNT(codigo) from modulo_app a where a.aplicacion_usuario_id_usuario=".Yii::app()->user->getState('id_usuario'). " and a.tipo_modulo=b.codigo )";
-			
-				$consulta1 = Yii::app()->db->createCommand($sql1)->queryAll();
-			
-				$type_list=CHtml::listData($consulta1,'codigo','nombre');
+		
+				$type_list=CHtml::listData($modulos,'codigo','nombre');
 	
 				echo $form->dropDownList($model,'tipo_modulo', $type_list, array('id'=>'tipo_modulo' , 'class' => 'form-control','empty'=>'Seleccione','disabled'=>!$model->isNewRecord));
 			?>

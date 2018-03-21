@@ -170,38 +170,48 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
           </li-->
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
+          <?php if(Yii::app()->user->getState('nombreRole')=="ADMINISTRADOR"):?>
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs"><?php echo "Admin ".Yii::app()->user->getState('nombrePerson')?></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="user-body">
+                  <div class="row">
+                  </div>
+                </li>
+               
+                <li class="user-footer">
+                      <a href="<?php echo Yii::app()->request->baseUrl ?>/index.php/usuario/password?id=<?php echo Yii::app()->user->getState('id_usuario') ?>" class="btn btn-default btn-flat">Cambiar Contraseña</a>
+                </li>
+                <li class="user-footer">
+                      <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                </li>
+                
+                
+            </ul>
+          <?php elseif(Yii::app()->user->getState('nombreRole')=="CLIENTE"):?>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <span class="hidden-xs"><?php echo Yii::app()->user->getState('nombrePerson')?></span>
             </a>
             <ul class="dropdown-menu">
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <!--div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div-->
-                </div>
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
                 
-                <div class="pull-left">
-                  <a href="<?php echo Yii::app()->request->baseUrl ?>/index.php/usuario/update?id=<?php echo Yii::app()->user->getState('id_usuario') ?>" class="btn btn-default btn-flat">Editar Perfil</a>
-                </div>
-
-                <div class="pull-right">
-                  <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
-                </div>
-              
+                <li class="user-footer">
+                    <a href="<?php echo Yii::app()->request->baseUrl ?>/index.php/usuario/update?id=<?php echo Yii::app()->user->getState('id_usuario') ?>" class="btn btn-default btn-flat">Editar Perfil</a>
+                </li>
+               <li class="user-footer">
+                    <a href="<?php echo Yii::app()->request->baseUrl ?>/index.php/usuario/password?id=<?php echo Yii::app()->user->getState('id_usuario') ?>" class="btn btn-default btn-flat">Cambiar Contraseña</a>
+               </li>
+              <li class="user-footer">
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/logout" class="btn btn-default btn-flat">Cerrar Sesión</a>
               </li>
-            </ul>
+              </ul>
+           <?php endif;?> 
+
+         
+          
+          
+            
+        
           </li>
           <!-- Control Sidebar Toggle Button -->
           <!--li>
@@ -260,15 +270,18 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-adjust"></i>Parámetros</a></li>
-                </ul>  
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/aplicaciones"><i class="fa ion-android-apps"></i>Aplicaciones</a></li>
+                </ul>
+              
                 <ul class="treeview-menu">
                   <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/plan/admin"><i class="fa fa-cube"></i>Planes</a></li>
                 </ul>
                 <ul class="treeview-menu">
-                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/aplicaciones"><i class="fa fa-cube"></i>Aplicaciones</a></li>
-                </ul>
-           
+                  <li><a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin"><i class="fa fa-adjust"></i>Parámetros</a></li>
+                </ul>  
+                <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/terminos/edit"><i class="fa ion-document-text"></i> Términos</a>
+                </li>
         </li>
 
             
@@ -297,7 +310,9 @@ $cs->registerScriptFile(Yii::app()->request->baseUrl . '/bootstrap/js/bootstrap.
                   <li>
                     <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/config#ordenModulo"><i class="fa fa-sort"></i> Orden Módulos</a>
                   </li>
-
+                  <li>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/terminos/edit"><i class="fa ion-document-text"></i> Términos</a>
+                  </li>
                   
                 </ul> 
             </li>  

@@ -201,7 +201,7 @@ class SiteController extends Controller
                 }else{
                 // display the login form
 //                Yii::app()->user->setFlash('success', "Data1 saved!");
-                $this->render('recover',array("model"=>$model,"dialog"=>false));
+                           $this->render('recover',array("model"=>$model,"dialog"=>false));
                 }
             }
             else{
@@ -284,6 +284,7 @@ class SiteController extends Controller
        
 		$modelPersona=Persona::model()->findByPk($modelUsuario->id_persona);
         $model=new UsuarioFormEdit;
+
          
 
         if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
@@ -298,15 +299,16 @@ class SiteController extends Controller
             //var_dump(json_encode($_POST));die;
             $model->attributes=$_POST['UsuarioFormEdit'];
          	if($model->save($modelUsuario, $modelPersona)){
+
+
+
                 $model_login=new LoginForm;
                 $model_login->username=$modelUsuario->usuario;
                 $model_login->password=$model->password;
                 $model_login->rememberMe=0;
                  if($model_login->validate() && $model_login->login()){
-                              
-                           
-                            Yii::app()->user->returnUrl = array("usuario/home");          
-                            $this->redirect(Yii::app()->user->returnUrl);
+                    Yii::app()->user->returnUrl = array("usuario/home");          
+                    $this->redirect(Yii::app()->user->returnUrl);
                  }
 
             }
@@ -329,13 +331,16 @@ class SiteController extends Controller
         $paises=array();
         if($model->ubicacion!=""){
 
-            $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$model->region)));
+            $consulta=Ciudades::model()->findAll( array('order'=>'Ciudad desc', 'condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$model->region)));
             $paises=CHtml::listData($consulta,'idCiudades','Ciudad');
 
         }
+
+       
             $this->render('registropago',array(
                 'model'=>$model,
-                'paises'=>$paises
+                'paises'=>$paises,
+                "dialog"=>$model->msg_error==""? false:true
             ));
        }else{
 
@@ -349,7 +354,7 @@ class SiteController extends Controller
        
         $codigo = $_POST ['UsuarioFormEdit']['ubicacion'];
 
-        $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
+        $consulta=Ciudades::model()->findAll( array('order'=>'Ciudad asc', 'condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
         $ciudades=CHtml::listData($consulta,'idCiudades','Ciudad');
     
         echo CHtml::tag('option', array('value'=>''), 'Seleccione', true);

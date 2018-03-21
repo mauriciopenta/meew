@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="login_header" >
+<html class="scroll_off" >
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,88 +18,97 @@
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/plugins/iCheck/square/blue.css">
 
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+ 
 </head>
 
 
 
-<body >
+<body class="scroll_off">
+
     <?php
     $this->pageTitle=Yii::app()->name . ' - Login';
-    $this->breadcrumbs=array(
-            'Login',
-    );
+  
     ?>
 
-<div class="login-box">
-  <div class="login-logo">
-      <a href="../../index2.html">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew-letra.png',"" ,['class'=>'logo_meew'] ); ?></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-  <div class="box-header with-border">
-			 
-			 <h3>Reajustar contraseña</h3>
-			 </div>
-		<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'register-form',
-	'enableClientValidation'=>true,
-	'enableAjaxValidation'=>true,
-	'clientOptions'=>array(
-			'validateOnSubmit'=>false)
-	)); ?>
-			
-		<section class="content" >       
-	
-			
-			<div class="form" >
-			   <div class="row" style="padding:15px;">
-						<div class="col-md-12">
-								
-									
-											<div class="form-group ">
-												<?php echo $form->labelEx($model,'PasswordNew'); ?>
-											
-												<?php echo $form->passwordField($model,'PasswordNew', array ('class' => 'form-control','placeholder'=>'Digite su nueva contraseña')); ?>
-											
-												<?php echo $form->error($model,'PasswordNew'); ?>
-											</div>
-											<div class="form-group ">
-												<?php echo $form->labelEx($model,'confirmPassword'); ?>
-											
-												<?php echo $form->passwordField($model,'confirmPassword', array ('class' => 'form-control','placeholder'=>'Confirme su nueva contraseña')); ?>
-											
-												<?php echo $form->error($model,'confirmPassword'); ?>
-											</div>
-								
-								<div class="form-group ">
-										<?php echo CHtml::submitButton('Guardar', array ('class' => 'btn btn-info pull-right')); ?>
-								</div>
-			
-		</div> 
-	  </div>
-	</section>    
-  <?php $this->endWidget(); ?>
-</div><!-- form -->
 
-    <!--div class="social-auth-links text-center">
-      <p>- O -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div-->
-    <!-- /.social-auth-links -->
+  <div class="contenedor_header">
+  
+      <div class="frame_header">
+      </div>
+   
+  </div>
+  
+  <div class="row" style="height:100%;">
+    <div class="col-sm-3 contenedor_izquierda">
+        <div class="frame_izquierda">
+         
+        </div>
+    </div>
 
     
-   
-    <!--?php echo CHtml::link('Registrar Usuario',array('site/register')); ?-->
+    <div class="col-sm-6 content_center">
+             
+              <div class="login-box">
+         
+              <!-- /.login-logo -->
+              <div class="login-box-body">
+              <div class="box-header with-border">
+                  
+                  <h3>Reajustar contraseña</h3>
+                  </div>
+                <?php $form=$this->beginWidget('CActiveForm', array(
+              'id'=>'register-form',
+              'enableClientValidation'=>true,
+              'enableAjaxValidation'=>true,
+              'clientOptions'=>array(
+                  'validateOnSubmit'=>false)
+              )); ?>
+                  
+                <section class="content" >       
+              
+                  
+                  <div class="form" >
+                    <div class="row" style="padding:15px;">
+                        <div class="col-md-12">
+                            
+                              
+                                  <div class="form-group ">
+                                    <?php echo $form->labelEx($model,'PasswordNew'); ?>
+                                  
+                                    <?php echo $form->passwordField($model,'PasswordNew', array ('class' => 'form-control','placeholder'=>'Digite su nueva contraseña')); ?>
+                                  
+                                    <?php echo $form->error($model,'PasswordNew'); ?>
+                                  </div>
+                                  <div class="form-group ">
+                                    <?php echo $form->labelEx($model,'confirmPassword'); ?>
+                                  
+                                    <?php echo $form->passwordField($model,'confirmPassword', array ('class' => 'form-control','placeholder'=>'Confirme su nueva contraseña')); ?>
+                                  
+                                    <?php echo $form->error($model,'confirmPassword'); ?>
+                                  </div>
+                            
+                             <div class="form-group has-feedback">
+                                <?php echo CHtml::submitButton('Guardar', array ('class' => 'btn btn-info btn-block')); ?>
+                            </div>
+                  
+                </div> 
+                </div>
+              </section>    
+              <?php $this->endWidget(); ?>
+            </div><!-- form -->
   </div>
+</div>
+    <div class="col-sm-3 contenedor_derecha">
+        <div class="frame_derecha">
+
+             <div class="login-logo">
+                <a >	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew.png',"" ,['class'=>'logo_inferior'] ); ?></a>
+            </div>
+
+        </div>
+    </div>
+  </div>
+</div>
   <!-- /.login-box-body -->
 
 <!-- /.login-box -->
@@ -111,10 +120,17 @@ Yii::app()->clientScript->registerCoreScript('jquery.ui');
 
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/bootstrap.min.js"></script>
-
+<!-- iCheck -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
 
 </body>
 </html>
-
-
-

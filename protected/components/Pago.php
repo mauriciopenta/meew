@@ -3,26 +3,56 @@
     {
 
 
+        public $urlPayments="";
+        public $urlReports="";
+        public $urlSubscriptions="";
+        public $urlsTest =false;
+        public $isTest =false;
+        public $acceso_api;
+        //urls prueba sandbox
+/*
      public $urlPayments="https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi";
      public $urlReports="https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi";
      public $urlSubscriptions="https://sandbox.api.payulatam.com/payments-api/rest/v4.3/";
-     public $acceso_api;
+ */
+   
+
 
      function init(){
+
+
+         if($this->urlsTest){
+            $this->urlPayments="https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi";
+            $this->urlReports="https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi";
+            $this->urlSubscriptions="https://sandbox.api.payulatam.com/payments-api/rest/v4.3/";
+         }else{
+            $this->urlPayments="https://api.payulatam.com/payments-api/4.0/service.cgi";
+            $this->urlReports="https://api.payulatam.com/reports-api/4.0/service.cgi";
+            $this->urlSubscriptions="https://api.payulatam.com/payments-api/rest/v4.3/";
+         }
         $pay = dirname (Yii::app()->request->scriptFile) . '/protected/extensions/lib/PayU.php';
         require_once($pay);
-        $this->acceso_api=  Api::model()->findByAttributes(array("tipo"=>'payu'));
+        
+        if($this->isTest){
+            $this->acceso_api=  Api::model()->findByAttributes(array("tipo"=>'payu_prueba'));
+
+          
+
+        }else{
+            $this->acceso_api=  Api::model()->findByAttributes(array("tipo"=>'payu'));
+        }
+
+
         PayU::$language = SupportedLanguages::ES; //Seleccione el idioma.
-        PayU::$isTest = true; //Dejarlo True cuando sean pruebas.
+        PayU::$isTest = $this->isTest; //Dejarlo True cuando sean pruebas.
         PayU::$apiKey =  $this->acceso_api->key; //Ingrese aquí su propio apiKey.
         PayU::$apiLogin =  $this->acceso_api->login; //Ingrese aquí su propio apiLogin.
         PayU::$merchantId =  $this->acceso_api->id_prod; //Ingrese aquí su Id de Comercio.
-
         Environment::setPaymentsCustomUrl($this->urlPayments);
         Environment::setReportsCustomUrl($this->urlReports); 
         Environment::setSubscriptionsCustomUrl($this->urlSubscriptions);
-       
-     }
+
+    }
      
      function crear_plan($nombre, $plan_code, $periodo_plan, $moneda, $valor ){
 
@@ -36,7 +66,7 @@
 				//DAY||WEEK||MONTH||YEAR
 				PayUParameters::PLAN_INTERVAL => $periodo_plan,
 				// Ingresa aquí la cantidad de intervalos
-				PayUParameters::PLAN_INTERVAL_COUNT => "12",
+				PayUParameters::PLAN_INTERVAL_COUNT => "1",
 				// Ingresa aquí la moneda para el plan
 				PayUParameters::PLAN_CURRENCY => $moneda,
 
@@ -59,6 +89,8 @@
 				// Ingresa aquí la cantidad de días de prueba de la suscripción.
 				PayUParameters::TRIAL_DAYS => "0"
             );
+
+           // var_dump($parameters);die;
                 //retorna id_plan=$response->id;
         
 			$response = PayUSubscriptionPlans::create($parameters);
@@ -151,6 +183,7 @@
             $response->fullName;
             $response->email;
             $creditCards=$response->creditCards;
+            $suscripcion=$response->subscriptions;
         
             foreach ($creditCards as $creditCard) {
                 $creditCard->token;
@@ -168,7 +201,7 @@
                 $address->phone;
             }
         }
-            return  $creditCard;
+            return  json_encode( $suscripcion);
         }
 
         function eliminar_cliente($id_cliente){
@@ -298,7 +331,8 @@
 
 
 //crea todos los elementos existentes
-    function suscripcionCompleta($plan_code, $id_usuario, $token,$dias_de_prueba ,$cuotas){
+    function suscripcionCompleta($plan_code, $id_usuario, $token, $dias_de_prueba ,$cuotas){
+        $this->init(); 
 
         $parameters = array(
             // Ingresa aquí el código del plan a suscribirse.
@@ -310,7 +344,8 @@
             // Ingresa aquí la cantidad de días de prueba de la suscripción.
             PayUParameters::TRIAL_DAYS => $dias_de_prueba,
             // Ingresa aquí el número de cuotas a pagar.
-            PayUParameters::INSTALLMENTS_NUMBER => $cuotas,
+            PayUParameters::INSTALLMENTS_NUMBER => $cuotas
+
 
         );
          //retorna SUBSCRIPTION_ID = $response->id;
@@ -321,6 +356,8 @@
 
 
     function eliminar_suscripcion($id_suscripcion){
+        $this->init(); 
+
         $parameters = array(
             // Ingresa aquí el ID de la suscripción.
             PayUParameters::SUBSCRIPTION_ID => $id_suscripcion,
@@ -333,8 +370,252 @@
  
 
 
+    function crear_cargo_adicional($descripcion, $valor, $moneda, $suscripcion, $impuesto, $base_devolucion ){
+        $this->init(); 
 
+        $parameters = array(
+            //Descripción del item
+            PayUParameters::DESCRIPTION => $descripcion,
+            //Valor del item
+            PayUParameters::ITEM_VALUE => $valor,
+            //Moneda
+            PayUParameters::CURRENCY => $moneda,
+            //Identificador de la subscripción
+            PayUParameters::SUBSCRIPTION_ID => $suscripcion,
+            //Impuestos - opcional
+            PayUParameters::ITEM_TAX => $impuesto,
+            //Base de devolución - opcional
+            PayUParameters::ITEM_TAX_RETURN_BASE => $base_devolucion,
+        );
+        //id
+        $response = PayURecurringBillItem::create($parameters);
+
+        
+        return $response;
+    } 
+
+
+
+    function actualizar_cargo_adicional($id_pago, $descripcion, $valor, $moneda, $impuesto, $base_devolucion ){
+        $this->init(); 
+
+        $parameters = array(
+            PayUParameters::RECURRING_BILL_ITEM_ID => $id_pago,
+            //Descripción del item
+            PayUParameters::DESCRIPTION => $descripcion,
+            //Valor del item
+            PayUParameters::ITEM_VALUE => $valor,
+            //Moneda
+            PayUParameters::CURRENCY => $moneda,
+            //Impuestos - opcional
+            PayUParameters::ITEM_TAX => $impuesto,
+            //Base de devolución - opcional
+            PayUParameters::ITEM_TAX_RETURN_BASE => $base_devolucion,
+        );
+        //id
+        $response = PayURecurringBillItem::create($parameters);
+
+        
+        return $response;
+    } 
+
+
+    function consultar_cargo_adicional($id_pago){
+        $this->init(); 
+
+        $parameters = array(
+            //Identificador del cargo extra
+            PayUParameters::RECURRING_BILL_ITEM_ID => $id_pago,
+        );
+        $response = PayURecurringBillItem::find($parameters);
+        return $response;
+    }
+
+    function eliminar_cargo_adicional($id_pago){
+        $this->init(); 
+
+        $parameters = array(
+            //Identificador del cargo extra
+            PayUParameters::RECURRING_BILL_ITEM_ID => $id_pago,
+        );
+        
+        $response = PayURecurringBillItem::delete($parameters);
+        return $response;
     }
 
 
+    function consulta_id($id_pagador){
+        $this->init(); 
+
+        $parameters = array(
+            // Ingresa aquí el nombre del cliente
+            PayUParameters::CUSTOMER_ID => $id_pagador,
+        );
+        $response = PayUCustomers::find($parameters);
+
+      
+         return $response;
+
+    }
+
+    function cobro_individual($id_account,
+    $reference,
+    $nombre,
+    $correo,
+    $descripcion,
+    $moneda, 
+    $token, 
+    $metodo, 
+    $nombre_comprador, 
+    $nombre_pagador,
+    $telefono_comprador, 
+    $telefono_pagador,
+    $documento_comprador,
+    $documento_pagador,
+    $value){
+
+        $this->init(); 
+        $ip=$this->get_client_ip_server();
+        session_start();    
+      
+        $parameters = array(
+            //Ingrese aquí el identificador de la cuenta.
+            PayUParameters::ACCOUNT_ID => $this->acceso_api->cuenta,
+            //Ingrese aquí el código de referencia.
+            PayUParameters::REFERENCE_CODE => $reference,
+            //Ingrese aquí la descripción.
+            PayUParameters::DESCRIPTION => $descripcion,
+            
+            // -- Valores --
+            //Ingrese aquí el valor.        
+            PayUParameters::VALUE => $value,
+            //Ingrese aquí la moneda.
+            PayUParameters::CURRENCY => $moneda,
+            
+
+            // -- Comprador 
+            //Ingrese aquí el nombre del comprador.
+            PayUParameters::BUYER_NAME => $nombre_comprador,
+            //Ingrese aquí el email del comprador.
+            PayUParameters::BUYER_EMAIL => $correo,
+            //Ingrese aquí el teléfono de contacto del comprador.
+            PayUParameters::BUYER_CONTACT_PHONE => $telefono_comprador,
+            //Ingrese aquí el documento de contacto del comprador.
+            PayUParameters::BUYER_DNI => $documento_comprador,
+            //Ingrese aquí la dirección del comprador.
+            PayUParameters::BUYER_STREET => "calle 100",
+            PayUParameters::BUYER_STREET_2 => "5555487",
+            PayUParameters::BUYER_CITY => "Medellin",
+            PayUParameters::BUYER_STATE => "Antioquia",
+            PayUParameters::BUYER_COUNTRY => "CO",
+            PayUParameters::BUYER_POSTAL_CODE => "000000",
+            PayUParameters::BUYER_PHONE => $telefono_comprador,
+            
+            // -- pagador --
+            //Ingrese aquí el nombre del pagador.
+            PayUParameters::PAYER_NAME => $nombre_pagador,
+            //Ingrese aquí el email del pagador.
+            PayUParameters::PAYER_EMAIL => $correo,
+            //Ingrese aquí el teléfono de contacto del pagador.
+            PayUParameters::PAYER_CONTACT_PHONE => $telefono_pagador,
+            //Ingrese aquí el documento de contacto del pagador.
+            PayUParameters::PAYER_DNI => $documento_pagador,
+            //Ingrese aquí la dirección del pagador.
+          
+            
+            PayUParameters::PAYER_PHONE => $telefono_pagador,
+            
+            PayUParameters::PAYER_ID => $id_account,
+            //DATOS DEL TOKEN
+            PayUParameters::TOKEN_ID => $token,
+            
+            //Ingrese aquí el nombre de la tarjeta de crédito
+            //VISA||MASTERCARD||AMEX||DINERS
+            PayUParameters::PAYMENT_METHOD => $metodo,
+            
+            //Ingrese aquí el número de cuotas.
+            PayUParameters::INSTALLMENTS_NUMBER => "12",
+            //Ingrese aquí el nombre del pais.
+            PayUParameters::COUNTRY => PayUCountries::CO,
+            
+            //Session id del device.
+            PayUParameters::DEVICE_SESSION_ID => session_id(),
+            //IP del pagadador
+            PayUParameters::IP_ADDRESS => getHostByName(getHostName()),
+            //Cookie de la sesión actual.
+            PayUParameters::PAYER_COOKIE => session_id(),
+            //Cookie de la sesión actual.        
+            PayUParameters::USER_AGENT=>"Mozilla/5.0 (Windows NT 5.1; rv:18.0) Gecko/20100101 Firefox/18.0"
+      
+        );
   
+        // var_dump($parameters);die;
+        $response = PayUPayments::doAuthorizationAndCapture($parameters);
+        return $response;
+    }
+   
+
+
+
+    function get_client_ip_server() {
+        $ipaddress = '';
+        if ($_SERVER['HTTP_CLIENT_IP'])
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if($_SERVER['HTTP_X_FORWARDED'])
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if($_SERVER['HTTP_FORWARDED_FOR'])
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if($_SERVER['HTTP_FORWARDED'])
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if($_SERVER['REMOTE_ADDR'])
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+     
+        return $ipaddress;
+    }
+
+
+
+
+}
+
+
+  /*
+     logica de pagos 
+
+
+     Cambio de suscripcion
+     
+     Modificar la suscripcion 
+     
+     si el pagador ya lleva 15 dias y creo una nueva suscripcion con los dias de prueba
+     
+     Payu cargo adicional para el siguiente cargo, cada uno de los pagadores con un plan.
+
+     * Elimino la suscripcion y la creo con el periodo de gracia y el adicional
+     lo cobro con pago indibidual de tokenizacion.
+
+     * Debes consultar el pago 
+
+
+     * Consulta de orden por identificador
+
+Guardar informacion
+
+  id_pagador 
+  id_token (tarjeta)
+  id_suscripcion
+  id_plan
+  
+
+
+
+
+
+  
+  
+  
+  */

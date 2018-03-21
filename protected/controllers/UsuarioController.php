@@ -32,11 +32,11 @@ class UsuarioController extends Controller{
 	{
 		return array(
 			array('allow',  // allow all users to access 'index' and 'view' actions.
-				'actions'=>array('index','view','selectpais','home','update','updateuser','password','registropago'),
+				'actions'=>array('index','view','selectpais','home','update','usuarios','updateuser','password','registropago','Validate_plan'),
 				'users'=>array('@'),
 			),
             array('allow', 
-            'actions' => array('admin', 'delete','userManager','update','agregar'),
+            'actions' => array('admin', 'delete','userManager','update','agregar','usuarios'),
             'users' => array('admin')
             ),
             array('deny',  // deny all users
@@ -144,6 +144,8 @@ class UsuarioController extends Controller{
 		}
 
 
+		//var_dump($estadistica);die;
+		
 		$this->render('home',array(
 			"modeloUsuario"=>$modeloUsuario,
 			"modeloPersona"=>$modeloPersona,
@@ -155,6 +157,156 @@ class UsuarioController extends Controller{
 
 
     }
+
+
+
+
+	public function actionValidate_plan($code)
+	{
+  
+		$model=$this->loadModel(Yii::app()->user->getState('id_usuario'));
+		if($model->codigo_plan!=$code ){
+		  $plan_antiguo=Plan::model()->find("plan_code='".$model->codigo_plan."'");
+		  $plan_nuevo=Plan::model()->find("plan_code='".$code."'");
+	
+		  $pago=new Pago;
+		  $info_pago=$pago->consulta_id($model->id_cliente_payu);
+			
+		  $currentPeriodStart =$info_pago->subscriptions[0]->currentPeriodStart;
+		  $currentPeriodEnd =$info_pago->subscriptions[0]->currentPeriodEnd;
+		  $dias	= (strtotime($currentPeriodEnd)-strtotime($currentPeriodStart))/86400;
+		  $dias = abs($dias); 
+		  $dias = floor($dias);		
+		  header('Content-type: application/json');
+			  if($plan_antiguo->periodo_plan=="MONTH" && $plan_nuevo->periodo_plan=="MONTH"){
+			
+
+				
+					 if($dias > 15 && $plan_nuevo->valor > $plan_antiguo->valor){
+						
+						$valor= $plan_nuevo->valor - (($plan_antiguo->valor)/30)*$dias;
+						$valor = abs($valor); 
+						$valor = floor($valor);		
+					 	echo CJSON::encode( array("response"=> "El cambio de plan tiene un costo de $".$valor."."));die;
+					
+					 }else{
+						$date = new DateTime($currentPeriodEnd);
+						
+						/// si el cambio se realiza a menos de 15 dias se dan los dias de trial y se cambia el plan dejando el cobro para despues
+						echo CJSON::encode(array("response"=>"El cambio de plan se cobrara despues del ".date_format($date, 'd M Y')));die;
+					  }
+			  }else if($plan_antiguo->periodo_plan=="YEAR" && $plan_nuevo->periodo_plan=="YEAR"){
+			
+				  if($plan_nuevo->valor>$plan_antiguo->valor){
+					 $valor= $plan_nuevo->valor - ($plan_antiguo->valor/365)*$dias;
+					 $valor = abs($valor); 
+					 $valor = floor($valor);		
+				  
+					 echo CJSON::encode( array("response"=>"El cambio de plan tiene un costo de $".$valor."."));die;
+			
+				  }else{
+					  
+					echo CJSON::encode( array("response"=>"Este cambio no se puede realizar hasta terminar el periodo."));die;
+				  }
+			  }else if($plan_antiguo->periodo_plan=="MONTH" && $plan_nuevo->periodo_plan=="YEAR"){
+				   $valor= $plan_nuevo->valor;
+				   $valor = abs($valor); 
+				   $valor = floor($valor);		
+				
+				   echo CJSON::encode( array("response"=>"El cambio de plan tiene un costo de $".$valor."."));die;
+	 		  }else if($plan_antiguo->periodo_plan=="YEAR" && $plan_nuevo->periodo_plan=="MONTH"){
+				   echo CJSON::encode( array("response"=>"El cambio de plan no se puede realizar."));die;
+	 		  }
+  
+			   echo CJSON::encode( array("response"=>" "));die;
+	 		
+		}
+  
+		       echo CJSON::encode( array("response"=>" "));die;
+	 		
+	}
+
+
+	public function actionUsuarios($genero=null, $edad=null)
+	{
+    	$model=new PushNotificaciones;
+		$conditions="";
+		$params=array();
+		$model_usuario=new Usuario('search');
+		$model_usuario->unsetAttributes();
+		$modeloUsuario=new Usuario();
+		$modeloPersona=new Persona();
+		$conditions.="id_aplicacion=:id_aplicacion";
+		$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+		$params[':id_aplicacion']=$aplicacionFromDb->idaplicacion;
+		if($genero!=null){
+			$model->genero=$genero;
+			$conditions.=" and id_genero=:id_genero";
+			$params[':id_genero']=$model->genero;
+		}
+		
+		if($edad!=null){
+			$model->edad=$edad;
+			$conditions.=" and id_rango_edad=:id_rango_edad";
+			$params[':id_rango_edad']=$model->edad;
+		}
+
+		$consulta=array('select'=>'*',
+		'condition'=> $conditions
+		,'params'=> $params);
+		$personas=$modeloPersona->model()->findAll($consulta);
+
+        $dataTipoLogin= TipoLogin::model()->findAll();
+		
+		$sql_genero = "select codigo, nombre from parametros b where b.tipo='genero'";
+						
+		$consulta_genero = Yii::app()->db->createCommand($sql_genero)->queryAll();
+						
+		$genero=CHtml::listData($consulta_genero,'codigo','nombre');
+					
+		$sql_edad = "select codigo, nombre from parametros b where b.tipo='rango_edad'";
+					
+		$consulta_edad = Yii::app()->db->createCommand($sql_edad)->queryAll();
+	
+		$edades=CHtml::listData($consulta_edad,'codigo','nombre');
+		if(isset($_POST['PushNotificaciones']))
+		{
+			$model->attributes=$_POST['PushNotificaciones'];
+        	$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+			$model->id_aplicacion =$aplicacionFromDb->idaplicacion;
+		   if($_POST['yt1']!='Enviar'){
+			$conditions="";   
+			$conditions.="id_aplicacion=:id_aplicacion";
+			if($model->genero!=""){
+				$conditions.=" and id_genero=:id_genero";
+				$params[':id_genero']=$model->genero;
+			}
+			
+			if($model->edad!=""){
+				$conditions.=" and id_rango_edad=:id_rango_edad";
+				$params[':id_rango_edad']=$model->edad;
+			}
+			$consulta=array('select'=>'*',
+			'condition'=> $conditions
+			,'params'=> $params);
+  			 $personas=$modeloPersona->model()->findAll($consulta);
+			 $dataTipoLogin= TipoLogin::model()->findAll();
+		   }
+		}
+		if(isset($_GET['Usuario']))
+			$model->attributes=$_GET['Usuario'];
+		$this->render('usuarios',array(
+			'model'=>$model,
+			"modeloUsuario"=>$modeloUsuario,
+            "modeloPersona"=>$modeloPersona,
+            "personas"=>$personas,
+			"dataTipoLogin"=>$dataTipoLogin,
+			"genero"=>$genero,
+			"edades"=> $edades
+		));
+	}
+
+
 
     public function actionSort()
     {
@@ -178,39 +330,22 @@ class UsuarioController extends Controller{
 	public function actionAgregar(){
 		
 			$model=new RegisterForm;
-			//print_r($_POST);
-			// if it is ajax validation request
+		
 			if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
 			{
-					print_r( CActiveForm::validate($model));
-//                        
+   			    print_r( CActiveForm::validate($model));
 				Yii::app()->end();
 			}
-			
 			// collect user input data
 			if(isset($_POST['RegisterForm'])){
 					$model->attributes=$_POST['RegisterForm'];
 					// validate user input and redirect to the previous page if valid
 					if($model->validate() && $model->register()){
 						$this->redirect(array('userManager'));
-
 					}
 			}
-		
-		
 			$this->render('agregar',array("model"=>$model));
-
-
-
-
-	  
 	}
-
-
-   
-
-
-
 
 
       public function actionParametrosConfig()
@@ -302,8 +437,17 @@ class UsuarioController extends Controller{
 	 */
 	public function actionUpdate($id)
 	{
-		
-		$modelUsuario=$this->loadModel($id);
+	
+		$model=new UsuarioFormUpdate;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='update-form')
+		{
+			  	print_r( CActiveForm::validate($model));
+//                        
+			    Yii::app()->end();
+		}
+
+		$modelUsuario=$this->loadModel($id);  
+		   
 		$modelPersona=Persona::model()->findByPk($modelUsuario->id_persona);
 		$model=new UsuarioFormUpdate;
 		if(isset($_POST['UsuarioFormUpdate']))
@@ -360,7 +504,7 @@ class UsuarioController extends Controller{
        
         $codigo = $_POST ['UsuarioFormEdit']['ubicacion'];
 
-        $consulta=Ciudades::model()->findAll( array('condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
+        $consulta=Ciudades::model()->findAll( array('order'=>'Ciudad asc', 'condition'=> 'Paises_Codigo=:codigo','params'=> array(':codigo'=>$codigo)));
         $ciudades=CHtml::listData($consulta,'idCiudades','Ciudad');
     
         echo CHtml::tag('option', array('value'=>''), 'Seleccione', true);
@@ -393,9 +537,9 @@ class UsuarioController extends Controller{
 				}
 		   }
 		}
-				$this->render('formPassword',array(
-					'model'=>$model
-				));
+		$this->render('formPassword',array(
+			'model'=>$model
+		));
 	    
 	}
 
@@ -413,10 +557,6 @@ class UsuarioController extends Controller{
 			'model'=>$model,
 		));
 	}
-
-
-
-
 
 	/**
 	 * Deletes a particular model.

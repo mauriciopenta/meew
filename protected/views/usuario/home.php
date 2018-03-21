@@ -13,81 +13,77 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
 
-  <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>44</h3>
-
-          <p>Usuarios</p>
-        </div>
-        <div class="icon">
-        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager" > <i class="ion ion-person-add"></i></a>
-         
-        </div>
-        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager" class="small-box-footer">Gestionar usuarios <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-
-
-
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>----</h3>
-
-          <p>Planes</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-cube"></i>
-        </div>
-        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/plan/admin" class="small-box-footer"> Gestionar Planes<i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h3><sup style="font-size: 20px">---</sup></h3>
-
-          <p>Configuración</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-adjust"></i>
-        </div>
-        <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin" class="small-box-footer">Gestionar Parámetros <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    </div>
-    <!-- ./col -->
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
-            
-
-            <div class="info-box-content">
-                  <span class="info-box-text">Aplicaciones <br>Registradas</span>
-                  <span class="info-box-number"><?php echo $estadistica['aplicaciones'];?></small></span>
+   <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+                <div class="inner">
+                  <br><p>Usuarios</p><br><br>
+                </div>
+                <div class="icon">
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager" > <i class="ion ion-person-add"></i></a>
+                
+                </div>
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager" class="small-box-footer">Gestionar usuarios <i class="fa fa-arrow-circle-right"></i></a>
             </div>
-
-            </div>
-          <!-- /.info-box -->
         </div>
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+                <br><p>Planes</p><br><br>
+            </div>
+            <div class="icon">
+                <i class="ion ion-cube"></i>
+            </div>
+             <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/plan/admin" class="small-box-footer"> Gestionar Planes <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+           <div class="small-box bg-green">
+              <div class="inner">
+                <br><p>Configuración</p><br><br>
+              </div>
+              <div class="icon">
+                <i class="fa fa-adjust"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/parametros/admin" class="small-box-footer">Gestionar Parámetros <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple-active">
+              <div class="inner">
+                <h4><?php echo $estadistica['aplicaciones'];?></h4>
+                <p class="box_home_text">Aplicaciones <br>Registradas</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-apps"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/aplicaciones" class="small-box-footer"> Aplicaciones  <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+
+
         <?php  foreach($estadistica['plantillas'] as $plantilla): ?>
-          <div class="col-md-4 col-sm-6 col-xs-12">
-              <div class="info-box">
-                <span class="info-box-icon bg-purple-active"><i class="ion ion-android-apps"></i></span>
-            
-
-                <div class="info-box-content">
-                  <span class="info-box-text"><?php echo $plantilla['nombre'];?></span>
-                  <span class="info-box-number"><?php echo $plantilla['num'];?></small></span>
-                </div>
-                </div>
-         
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-purple-active">
+              <div class="inner">
+                <h4><?php echo $plantilla['num'];?></h4>
+                <p class="box_home_text"><?php echo $plantilla['nombre']==NULL ? 0: $plantilla['nombre'] ;?></p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-apps"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/aplicacion/aplicaciones" class="small-box-footer"> Aplicaciones  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
           </div>
         <?php  endforeach; ?>
 
@@ -95,18 +91,25 @@
 
 
         <?php  foreach($estadistica['planes'] as $plan ): ?>
-          <div class="col-md-4 col-sm-6 col-xs-12">
-              <div class="info-box">
-                <span class="info-box-icon bg-blue-active"><i class="ion ion-person-stalker"></i></span>
-      
 
-                <div class="info-box-content">
-                  <span class="info-box-text">Usuario <?php echo $plan['nombre'];?></span>
-                  <span class="info-box-number"><?php echo $plan['num'];?></small></span>
-                </div>
-                </div>
-         
+
+
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue-active">
+
+              <div class="inner">
+                <h4><?php echo $plan['num'];?></h4>
+
+                <p class="box_home_text">Usuario <?php echo $plan['nombre'];?></p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-stalker"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/userManager" class="small-box-footer"> Usuarios  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
           </div>
+
         <?php  endforeach; ?>
     </div>
    
@@ -119,176 +122,163 @@
    
 
   <div class="row">
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-blue-active"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios Registrados</span>
-            <span class="info-box-number">
-             <?php 
-              echo $estadistica['usuarios'];
-         
-
-             ?>
 
 
-
-            </span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-purple-active">
+                    <div class="inner">
+                      <h4><?php echo $estadistica['usuarios']==NULL ? 0: $estadistica['usuarios']; ?></h4>
+                       <p class="box_home_text">Usuarios Registrados</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-person"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-blue"><i class="ion ion-person"></i></span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios Hombres</span>
-            <span class="info-box-number"> 
-               <?php echo $estadistica['usuarios_hombres'];?>
-             </span>
-          </div>
-          <!-- /.info-box-content -->
+
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-blue">
+                    <div class="inner">
+
+                    <h4><?php echo $estadistica['usuarios_hombres']==NULL ? 0: $estadistica['usuarios_hombres']; ?></h4>
+                    
+                      <p class="box_home_text">Usuarios Hombres</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-man"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?genero=2" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-           <!-- /.col -->
-           <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-aqua-active"><i class="ion ion-person"></i></span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios Mujeres</span>
-            <span class="info-box-number">  <?php echo $estadistica['usuarios_mujeres'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-aqua-active">
+                    <div class="inner">
+                      <h4><?php echo $estadistica['usuarios_mujeres']==NULL ? 0: $estadistica['usuarios_mujeres']; ?></h4>
+                      <p class="box_home_text">Usuarios Mujeres</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-woman"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?genero=1" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-  
-  
-      <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-red-active"><i class="ion ion-person"></i></span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios Otro Genero</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_otro'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-red-active">
+                    <div class="inner">
+                       <h4><?php echo $estadistica['usuarios_otro']==NULL ? 0: $estadistica['usuarios_otro']; ?></h4>
+                      <p class="box_home_text">Usuarios Otro Genero</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-person"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?genero=3" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-            <!-- /.col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-red"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios entre 18-24 años</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_1824'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-red-active">
+                    <div class="inner">
+                      <h4><?php echo $estadistica['usuarios_1824']==NULL ? 0: $estadistica['usuarios_1824']; ?></h4>
+                      <p class="box_home_text">Usuarios entre 18-24 años</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-person"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?edad=" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-        <!-- /.col -->
+   
 
-            <!-- /.col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-green-active"><i class="ion ion-person"></i></span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios entre 25-35 años</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_2534'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-green-active">
+                    <div class="inner">
+                       <h4><?php echo $estadistica['usuarios_2534']==NULL ? 0: $estadistica['usuarios_2534']; ?></h4>
+                      <p class="box_home_text">Usuarios entre 25-35 años</p>
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-person"></i>
+                    </div>
+                    <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?edad=2" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-
-  <!-- /.col -->
-
-            <!-- /.col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-green"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios entre 35-44 años</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_3544'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                 <h4><?php echo $estadistica['usuarios_3544']==NULL ? 0: $estadistica['usuarios_3544']; ?></h4>
+                     
+                <p class="box_home_text">Usuarios entre 35-44 años</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?edad=3" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-       <!-- /.col -->
 
-            <!-- /.col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-orange-active"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios entre 45-54 años</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_4554'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+            <div class="small-box bg-orange-active">
+              <div class="inner">
+                 <h4><?php echo $estadistica['usuarios_4554']==NULL ? 0: $estadistica['usuarios_4554']; ?></h4>
+                
+                
+                <p class="box_home_text">Usuarios entre 45-54 años</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?edad=4" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-
-  <!-- /.col -->
-
-            <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-orange"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Usuarios de más de 55 años</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_mas'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+    
+        <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+            <div class="small-box bg-orange">
+              <div class="inner">
+              <h4><?php echo $estadistica['usuarios_mas']==NULL ? 0: $estadistica['usuarios_mas']; ?></h4>
+                
+                <p class="box_home_text">Usuarios de más de 55 años</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/usuario/usuarios?edad=5" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-  <!-- /.col -->
-
-            <!-- /.col -->
-       <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-purple"><i class="ion ion-person"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Mensajes Push Enviados</span>
-            <span class="info-box-number"><?php echo $estadistica['usuarios_mas'];?></span>
-          </div>
-          <!-- /.info-box-content -->
+        <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+            <div class="small-box bg-purple">
+              <div class="inner">
+              <h4><?php echo $estadistica['notificaciones']==NULL ? 0: $estadistica['notificaciones']; ?></h4>
+                <p class="box_home_text">Mensajes Push Enviados</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-email"></i>
+              </div>
+              <a href="<?php echo Yii::app()->request->baseUrl?>/index.php//pushNotificaciones/admin" class="small-box-footer"> Ir  <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
 
-    </div>
-    <!-- /.row -->
+
+    
 
     <?php endif;?> 
 

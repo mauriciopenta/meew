@@ -883,18 +883,34 @@ ul.yiiPager{
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0,startColorstr='#ebebeb',endColorstr='#cfd1cf');
 }
 .login_page{
+
   width: 100%;
   height: 100%;
   background: #155067 !important;
   background-image: linear-gradient(to bottom,#165067,#0e2a35) !important;
+
 }
 
-.login_header{
-  background: rgb(147, 150, 55) !important;
-}
+
+
 .hold-transition{
-  background: #155067 !important;
-  background-image: linear-gradient(to bottom,#165067,#0e2a35) !important;
+
+  background: #fff !important;
+
+}
+.login-box-body, .register-box-body {
+ 
+  border: 1px solid #15506779;
+  border-radius: 5px;
+  z-index: 100;
+  border-radius: 8px;
+  transition-timing-function: ease-out;
+  transition-duration: .15s;
+  transform: translateY(0);
+  -webkit-box-shadow: 0 0 8px #15506779;
+  box-shadow: 0 0 8px #1550677a;
+  background-color: #fff;
+
 }
 
 
@@ -969,7 +985,7 @@ ul.yiiPager{
   -webkit-box-shadow: 0 0 8px rgba(0,0,0,.2);
   box-shadow: 0 0 8px rgba(0,0,0,.2);
   background-color: #fff;
-  padding: 10px 22px;
+  padding: 10px 10px;
   width: 100%;
   margin-top: 24px;
 
@@ -977,22 +993,24 @@ ul.yiiPager{
 
 
 .plan .titulo{
-  font-size: 1.8em;
+  font-size: 1.6em;
   font-weight: bold;
   color:#155067 !important;
   text-transform:uppercase; 
+  line-height: 1.1;
+
 }
 
 .plan .valor{
 
-  font-size: 1.3em !important;
+  font-size: 1.2em !important;
   font-weight: 600;
   
 }
 
 .plan .periodo{
 
-  font-size: 1.4em;
+  font-size: 1.2em;
   font-weight: 600;
   
 }
@@ -1004,8 +1022,10 @@ ul.yiiPager{
 }
 .plan .descripcion{
 
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 500;
+  text-align: left;
+  padding: 5px;
   
 }
 
@@ -1013,13 +1033,23 @@ ul.yiiPager{
   list-style-image: url(img/check_icon.png);
   text-align: left !important;
   color: #000;
+  font-size: 1.0em;
   margin-left: -8px;
 }
+
+
+
+
 
 .listplan li{
   text-align: initial;
   padding-top: 0px !important;
   padding-bottom: 5px;
+}
+
+.valida_plan{
+  margin-left: 15px;
+  color: rgb(160, 9, 9);
 }
 
 .ui-widget-header{
@@ -1029,4 +1059,158 @@ ul.yiiPager{
 }
 .ui-dialog .ui-dialog-titlebar-close {
   background: #fff !important;
+}
+
+
+.frame_izquierda{
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  background-image: url('img/frame_izquierdo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 134px;
+  height: 604px;
+
+}
+
+
+
+
+.frame_derecha{
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  background-image: url('img/frame_derecho.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 700px;
+  height: 472px;
+  z-index: 0;
+}
+
+
+
+
+.frame_header{
+
+  position: relative;
+  float: right;
+  background-image: url('img/header.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 274px;
+  height: 81px;
+} 
+.contenedor_derecha{
+ 
+  height: 92%;
+
+}
+
+
+
+
+
+.content_center{
+  display: block;
+  z-index: 100;
+}
+
+
+.contenedor_izquierda{
+  height: 92%;
+
+}
+.contenedor_header{
+  width: 100%;
+  height: 81px;
+}
+.scroll_off{
+  height: 100%;
+  overflow-y: hidden !important;
+}
+.scroll_off .body{
+  height: 100%;
+}
+.scroll_off #content{
+  height: 100%;
+  overflow-y: hidden ;
+  overflow-x: hidden ;
+}
+
+.text_meew{
+  color:#195367; 
+  position: absolute;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 2.0em;
+  right: 10px;
+  top: 55px;
+  width: auto;
+  z-index: 0;
+}
+
+.text_datos{
+  color:#fff; 
+  font-weight: 800;
+  font-style: italic;
+  font-size: 2.0em;
+}
+.logo_inferior{
+   
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  width: auto;
+  height: 110px;
+
+}
+.login-box-msg{
+  font-size: 1.3em;
+  font-weight: 600;
+  color:#195367; 
+}
+
+
+.box_home_text{
+  
+  max-width: 120px;
+  max-height: 50px;
+  min-height: 42px;
+}
+
+
+@media(max-width: 800px) {
+  .contenedor_derecha{
+    display: none;
+  }
+  .contenedor_izquierda{
+    display: none;
+  }
+
+}
+
+@media(max-height: 460px) {
+  .frame_derecha{
+    display: none;
+  }
+  .frame_izquierda{
+    display: none;
+  }
+
+
+  .scroll_off .body{
+    height: auto !important;
+  }
+  .scroll_off #content{
+    height: auto;
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+  }
+
+
+
+
+
 }

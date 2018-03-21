@@ -59,15 +59,16 @@
 .skin-meew .wrapper,
 .skin-meew .main-sidebar,
 .skin-meew .left-side {
-  background-color: #222d32;
+  background-color: #053646;
 }
 .skin-meew .user-panel > .info,
 .skin-meew .user-panel > .info > a {
   color: #fff;
 }
 .skin-meew .sidebar-menu > li.header {
-  color: #4b646f;
-  background: #1a2226;
+  color: #fff;
+  background: #03232e;;
+  font-weight: bold;
 }
 .skin-meew .sidebar-menu > li > a {
   border-left: 3px solid transparent;
@@ -75,12 +76,13 @@
 .skin-meew .sidebar-menu > li:hover > a,
 .skin-meew .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
+  border-left: 10px solid #000;
+  background:  rgba(0, 0, 0, 0.164);
   border-left-color: #155067;
 }
 .skin-meew .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
-  background: #2c3b41;
+  background: #053646;
 }
 .skin-meew .sidebar a {
   color: #b8c7ce;

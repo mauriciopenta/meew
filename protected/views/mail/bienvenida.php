@@ -12,17 +12,22 @@ ol{
 a {
     color: #fff !important;
 }
+a[href]{
+  color: #fff !important;
+}
+
+
 </style>
 </head>
 <body style="background-color:#075067;padding-top:25px;padding-bottom:25px" bgcolor="#075067;">
 
-<div style="width:100%;min-width:800px" align="center" >
+<div style="width:100%; min-width:300px;" align="center" >
 
-<table width="60%" border="0" cellspacing="0" cellpadding="0" style="min-width:600px">
+<table width="60%" border="0" cellspacing="0" cellpadding="0" style="min-width:300px;">
   <tr>
     <td align="center" valign="top" style="background-color:#FFFFFF;" bgcolor="#FFFFFF;">
     <br>
-    <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <table width="90%" style="min-width: 270px;" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td align="left" valign="top" bgcolor="#3d90bd" style="background-color:#075067;padding:0px 20px 0px 20px"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>

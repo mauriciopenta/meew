@@ -19,6 +19,8 @@
  * @property string $id_tarjeta
  * @property string $codigo_registro
  * @property string $fecha_suscripcion
+ * @property string $ultima_transaccion
+ * @property string $estado_pago
  */
 class Usuario extends CActiveRecord
 {
@@ -42,11 +44,11 @@ class Usuario extends CActiveRecord
 			array('id_tipologin, id_persona, id_rol, id_empresa, usuario_activo', 'numerical', 'integerOnly'=>true),
 			array('usuario', 'length', 'max'=>50),
 			array('token_push', 'length', 'max'=>300),
-			array('id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro', 'length', 'max'=>200),
+			array('id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro, ultima_transaccion, estado_pago', 'length', 'max'=>200),
 			array('password, fecha_suscripcion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password, usuario_activo, token_push, id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro, fecha_suscripcion', 'safe', 'on'=>'search'),
+			array('id_usuario, id_tipologin, id_persona, id_rol, id_empresa, usuario, password, usuario_activo, token_push, id_cliente_payu, id_suscripcion, codigo_plan, id_tarjeta, codigo_registro, fecha_suscripcion, ultima_transaccion, estado_pago', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -82,6 +84,8 @@ class Usuario extends CActiveRecord
 			'id_tarjeta' => 'Id Tarjeta',
 			'codigo_registro' => 'Codigo Registro',
 			'fecha_suscripcion' => 'Fecha Suscripcion',
+			'ultima_transaccion' => 'Ultima Transaccion',
+			'estado_pago' => 'Estado Pago',
 		);
 	}
 
@@ -118,6 +122,8 @@ class Usuario extends CActiveRecord
 		$criteria->compare('id_tarjeta',$this->id_tarjeta,true);
 		$criteria->compare('codigo_registro',$this->codigo_registro,true);
 		$criteria->compare('fecha_suscripcion',$this->fecha_suscripcion,true);
+		$criteria->compare('ultima_transaccion',$this->ultima_transaccion,true);
+		$criteria->compare('estado_pago',$this->estado_pago,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -59,11 +59,27 @@ class AplicacionForm extends CFormModel
                     politicas_privacidad_activo, celular_activo,modulo_viral, genero, rango_edad "  , "boolean"],
                     ['nombre', 'match', 'pattern' => "/^.{5,20}$/", 'message' => 'Mínimo 3 y máximo 20 caracteres'],
                     ['color', 'match', 'pattern' => "/^.{7,30}$/", 'message' => 'No es un color valido'],
-                    ['imageFile', 'file','types'=>'jpg, jpeg, png, PNG, JPEG, JPG', 'maxSize'=>1024 * 1024 * 100,'allowEmpty'=>true, 'on'=>'update','message' => 'No es una imagen']
-                    
+                    ['imageFile', 'file','types'=>'jpg, jpeg, png, PNG, JPEG, JPG', 'maxSize'=>1024 * 1024 * 100,'allowEmpty'=>true, 'on'=>'update','message' => 'No es una imagen'],
+                    ['imageFile','dimensionValidation']
                 ];
             
             }
+
+
+
+            public function dimensionValidation($attribute,$param)
+            {
+                $uploadedFile=CUploadedFile::getInstance($this,'imageFile');
+                      
+                if(isset($uploadedFile)){  
+                   
+                    list($width, $height) = getimagesize($uploadedFile->tempname);
+                    if($width!=800 || $height!=1200)
+                       $this->addError('imageFile','La imagen debe tener 800x1200 ');
+                }	
+            }
+        
+
 
             public function attributeLabels()
             {

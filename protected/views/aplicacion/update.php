@@ -19,7 +19,17 @@ $this->breadcrumbs=array(
             <div class="box-body">
 			<h1>Editar Modulo </h1>
 
-                <?php $this->renderPartial('createModulo', array('model'=>$model,'model_aplicacion'=>$model_aplicacion)); ?>
+                <?php 
+                
+                $this->renderPartial('createModulo', array('model'=>$model,'model_aplicacion'=>$model_aplicacion,$model,"modulos"=>$modulos ));
+                
+                
+									
+                
+                ?>
+
+
+
 
       </div>
      </div>

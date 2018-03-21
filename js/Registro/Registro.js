@@ -57,10 +57,7 @@ var Registro = function(){
         $("#num_tarjeta").keyup(function(e){
             var num = $(this).val().toString();
             var charCount = num.length;
-         
             /* VALIDACION DE TIPO */
-
-           
             if(charCount == 1) { 
                 if(num == "4" ){
                   //  $("#type").html("VISA");

@@ -2,20 +2,15 @@
 /* @var $this UsuarioController */
 /* @var $model Usuario */
 /* @var $form CActiveForm */
-
-
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/Registro.js",CClientScript::POS_END);
-
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/Actualizar.js",CClientScript::POS_END);
 
 ?>
 
-
-
 <div>
-  <div id="divRegistro" style="width:80%; margin:0 auto;">
+  <div id="divActualizar" style="width:80%; margin:0 auto;">
 		
 		<?php $form=$this->beginWidget('CActiveForm', array(
-			'id'=>'register-form',
+			'id'=>'update-form',
 			'enableClientValidation'=>true,
 			'enableAjaxValidation'=>true,
 			'clientOptions'=>array(
@@ -61,22 +56,16 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 														
 														<?php echo $form->error($model,'usuario'); ?>
 													</div>
-
-													<div class="form-group ">
+                                            		<div class="form-group ">
 														<?php echo $form->labelEx($model,'persona_nombre'); ?>
-														
 														<?php echo $form->textField($model,'persona_nombre', array ('class' => 'form-control','placeholder'=>'nombres','disabled'=>'true')); ?>
-														
 														<?php echo $form->error($model,'persona_nombre'); ?>
 													</div> 
 													<div class="form-group ">
 														<?php echo $form->labelEx($model,'persona_apellidos'); ?>
-														
 														<?php echo $form->textField($model,'persona_apellidos', array ('class' => 'form-control','placeholder'=>'Apellidos','disabled'=>'true')); ?>
-														
 														<?php echo $form->error($model,'persona_apellidos'); ?>
 													</div> 
-												
 											</div>		
 											<div class="col-md-6">		
 										        	<div class="form-group ">
@@ -207,8 +196,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 													<?php echo $form->textField($model,'codigo_tarjeta', array ('class' => 'form-control')); ?>
 													<?php echo $form->error($model,'codigo_tarjeta'); ?>
 												</div>
-
-									</div> 
+										</div> 
 											
 									</div> 
 								</div> 
@@ -236,8 +224,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 													<div class="titulo"><?php echo $plan['plan_nombre'];?> </div>
 													<div class="valor">
 															<?php 
-																$sql1 = "select codigo, nombre from parametros b where  b.tipo='periodo_plan' and b.codigo=".$plan['periodo_plan'];;
-							
+																$sql1 = "select codigo, nombre from parametros b where  b.tipo='periodo_plan' and b.codigo='".$plan['periodo_plan']."'";
 																$consulta1 = Yii::app()->db->createCommand($sql1)->queryAll();
 																echo  $plan['valor_text']." ".$plan['moneda']."/".$consulta1[0]['nombre'];
 															?>
@@ -272,7 +259,12 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 										<?php  endforeach;
 									}
 								?> 
+                             	<?php echo $form->error($model,'plan'); ?>
 								</div> 
+								<div id="error_plan" class="valida_plan" >  </div>
+
+							
+
 								<div class="form-group ">
 									<?php echo CHtml::submitButton('Guardar', array ('class' => 'btn btn-info pull-right')); ?>
 								</div>	

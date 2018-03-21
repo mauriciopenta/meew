@@ -74,10 +74,21 @@ class ModuloAppController extends Controller
 				$this->redirect(array('view','id'=>$model->id_modulo_app));
 		}
 
+
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
+
+
+	public function loadPlan($id)
+	{
+		$model=Plan::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+
 
 	/**
 	 * Updates a particular model.

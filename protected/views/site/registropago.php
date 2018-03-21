@@ -61,6 +61,8 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 					'validateOnSubmit'=>false)
 			)); ?>
 					
+					
+
 				<section class="content" >       
 				<div class="box box-primary">  
 				<div class="box-header with-border">
@@ -153,7 +155,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 																$region = array();
 																if(isset($model->ubicacion)){
 															    	
-																    $region = CHtml::listData(Ciudades::model()->findAll("Paises_Codigo = '$model->ubicacion'"),'idCiudades','Ciudad');
+																    $region = CHtml::listData(Ciudades::model()->findAll( array( 'order'=>'Ciudad DESC', 'condition'=> "Paises_Codigo = '".$model->ubicacion."'" )),'idCiudades','Ciudad');
 														       	}
 																
 																echo $form->dropDownList($model,'region', $region, array('class' => 'form-control','empty'=>'Seleccione') ) ?>
@@ -246,7 +248,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 															</div>
 											         	</div> 
 														
-
+													
 											</div> 				
 												
 												<div class="col-md-6">
@@ -290,7 +292,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 														       <div class="titulo"><?php echo $plan['plan_nombre'];?> </div>
 															   <div class="valor">
 																	<?php 
-																		$sql1 = "select codigo, nombre from parametros b where  b.tipo='periodo_plan' and b.codigo=".$plan['periodo_plan'];;
+																		$sql1 = "select codigo, nombre from parametros b where  b.tipo='periodo_plan' and b.codigo='".$plan['periodo_plan']."'";
 									
 																		$consulta1 = Yii::app()->db->createCommand($sql1)->queryAll();
 																	    echo  $plan['valor_text']." ".$plan['moneda']."/".$consulta1[0]['nombre'];
@@ -334,6 +336,33 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/Registro/R
 										?> 
 										 </div> 
 										 <div class="form-group ">
+									     	 <?php
+
+
+												/** Start Widget **/
+												$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+													'id'=>'dialog-animation',
+													'options'=>array(
+														'title'=>'Error',
+														'autoOpen'=>$dialog,
+														'show'=>array(
+															'effect'=>'blind',
+															'duration'=>1000,
+														),
+														'hide'=>array(
+															'effect'=>'explode',
+															'duration'=>500,
+														),            
+													),
+												));
+												if($dialog){
+
+													echo $model->msg_error;
+												}
+												$this->endWidget('zii.widgets.jui.CJuiDialog');
+
+
+												?>
 										     <?php echo CHtml::submitButton('Guardar', array ('class' => 'btn btn-info pull-right')); ?>
 										</div>	
 									</div> 

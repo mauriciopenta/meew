@@ -81,7 +81,7 @@ class PlanController extends Controller
             if($model->validate()){
 			  $pago=new Pago;
 			  $response = $pago->crear_plan($modelplan->plan_nombre, $modelplan->plan_code, $modelplan->periodo_plan, $modelplan->moneda, $modelplan->valor );
-              if($response){
+			  if($response){
 				$modelplan->id_payu=$response->id;
 				if($modelplan->insert()){
 					foreach( $_POST['Modulos'] as $value){
@@ -132,7 +132,9 @@ class PlanController extends Controller
 		
 			$model_plan->mensajes_push=$model->mensajes_push;
 			$pago=new Pago;
+
 			$response = $pago->editar_plan($modelplan->plan_nombre, $model_plan->plan_code, $model_plan->moneda, $modelplan->valor );
+			var_dump($response);die;
 			if($response){
          	 	if($model_plan->save()){
 	             $sql = "select idparametros ,codigo, nombre from parametros b where  b.tipo='modulo'";

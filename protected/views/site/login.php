@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html class="login_header" >
+<html class="scroll_off" >
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -28,7 +27,8 @@
 
 
 
-<body >
+<body class="scroll_off">
+
     <?php
     $this->pageTitle=Yii::app()->name . ' - Login';
     $this->breadcrumbs=array(
@@ -36,59 +36,79 @@
     );
     ?>
 
-<div class="login-box">
-  <div class="login-logo">
-      <a href="../../index2.html">	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew-letra.png',"" ,['class'=>'logo_meew'] ); ?></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Iniciar sesión</p>
-    <?php $form=$this->beginWidget('CActiveForm', array(
-            'id'=>'login-form',
-            'enableClientValidation'=>true,
-            'enableAjaxValidation'=>true,
-            'clientOptions'=>array(
-                    'validateOnSubmit'=>true,
-            ),
-    )); ?>
-   
-    <div class="form-group has-feedback">
-        <?php echo $form->labelEx($model,'Usuario'); ?>
-        <?php echo $form->textField($model,'username', array ('class' => 'form-control','placeholder'=>'Digite nombre de usuario')); ?>
-        <?php echo $form->error($model,'username'); ?>
-    </div>
-    <div class="form-group has-feedback">
-        <?php echo $form->labelEx($model,'Contraseña'); ?>
-        <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite la contraseña')); ?>
-        <?php echo $form->error($model,'password'); ?>
-    </div>
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="form-group">
-              
-          </div>
 
-          <div class="form-group has-feedback">
-						
-								<div>
-                
-                  <?php echo $form->checkBox($model,'rememberMe', array('style' => 'float:left;')); ?>
-                  <?php echo $form->label($model,'rememberMe', array('style' => 'float:left;')); ?>
-              
-                </div>
-					</div>
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <?php echo CHtml::submitButton('Login', array ('class' => 'btn btn-primary btn-block btn-flat')); ?>
-        </div>
-        
-        <!-- /.col -->
-      </div>    
-      <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/recover" style="color:#1c6a8a;">Olvido su contraseña?</a><br>
+  <div class="contenedor_header">
   
-<?php $this->endWidget(); ?>
-</div><!-- form -->
+      <div class="frame_header">
+      </div>
+   
+  </div>
+  
+  <div class="row" style="height:100%;">
+    <div class="col-sm-3 contenedor_izquierda">
+        <div class="frame_izquierda">
+         
+        </div>
+      
+    </div>
+
+    
+    <div class="col-sm-6 content_center">
+           
+          <div class="login-box" >
+
+            <!-- /.login-logo -->
+            <div class="login-box-body" >
+              <p class="login-box-msg">Iniciar sesión</p>
+              <?php $form=$this->beginWidget('CActiveForm', array(
+                      'id'=>'login-form',
+                      'enableClientValidation'=>true,
+                      'enableAjaxValidation'=>true,
+                      'clientOptions'=>array(
+                              'validateOnSubmit'=>true,
+                      ),
+              )); ?>
+            
+              <div class="form-group has-feedback">
+                  <?php echo $form->labelEx($model,'Usuario'); ?>
+                  <?php echo $form->textField($model,'username', array ('class' => 'form-control','placeholder'=>'Digite nombre de usuario')); ?>
+                  <?php echo $form->error($model,'username'); ?>
+              </div>
+
+              <div class="form-group has-feedback">
+                  <?php echo $form->labelEx($model,'Contraseña'); ?>
+                  <?php echo $form->passwordField($model,'password', array ('class' => 'form-control','placeholder'=>'Digite la contraseña')); ?>
+                  <?php echo $form->error($model,'password'); ?>
+              </div>
+                <div class="row">
+                  <div class="col-xs-8">
+                    <div class="form-group">
+                        
+                    </div>
+
+                    <div class="form-group has-feedback">
+                      
+                          <div>
+                          
+                            <?php echo $form->checkBox($model,'rememberMe', array('style' => 'float:left;')); ?>
+                            <?php echo $form->label($model,'rememberMe', array('style' => 'float:left;')); ?>
+                        
+                          </div>
+                    </div>
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-xs-4">   
+                    <br>
+                    <?php echo CHtml::submitButton('Login', array ('class' => 'btn btn-info btn-block')); ?>
+                  </div>
+                  
+                  <!-- /.col -->
+                </div>    
+
+                <a href="<?php echo Yii::app()->request->baseUrl?>/index.php/site/recover" style="color:#1c6a8a;">Olvido su contraseña?</a><br>
+            
+          <?php $this->endWidget(); ?>
+          </div><!-- form -->
 
     <!--div class="social-auth-links text-center">
       <p>- O -</p>
@@ -103,6 +123,19 @@
    
     <!--?php echo CHtml::link('Registrar Usuario',array('site/register')); ?-->
   </div>
+
+  </div>
+    <div class="col-sm-3 contenedor_derecha">
+        <div class="frame_derecha">
+
+             <div class="login-logo">
+                <a >	<?php echo CHtml::image(Yii::app()->request->baseUrl.'/img/meew.png',"" ,['class'=>'logo_inferior'] ); ?></a>
+            </div>
+
+        </div>
+    </div>
+  </div>
+</div>
   <!-- /.login-box-body -->
 
 <!-- /.login-box -->

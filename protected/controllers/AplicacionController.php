@@ -31,7 +31,7 @@ class AplicacionController extends Controller
                     'users'=>array('@'),
                 ),
                 array('allow', 
-                'actions' => array('admin', 'delete','aplicaciones','download_resources'),
+                'actions' => array('admin','status', 'delete','aplicaciones','download_resources'),
                 'users' => array('admin')
                 ),
                 array('deny',  // deny all users
@@ -195,10 +195,14 @@ class AplicacionController extends Controller
                   }
             }
             $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+            $consultaModulo=array();
+            
             if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
-               
-              // var_dump($aplicacionFromDb->login_activo );die;
-               
+                $modelUsuario=$this->loadModelUsuario(Yii::app()->user->getState('id_usuario'));
+                $plan=Plan::model()->find("plan_code='".$modelUsuario->codigo_plan."'");
+                $sql = "select idparametros ,codigo, nombre from parametros b where b.tipo='modulo' and b.max > (select COUNT(codigo) from modulo_app a where a.aplicacion_usuario_id_usuario=".Yii::app()->user->getState('id_usuario'). " and a.tipo_modulo=b.codigo ) and (SELECT count(1) FROM plan_has_parametros a WHERE a.parametros_idparametros=b.idparametros AND a.plan_id_plan=".$plan->id_plan.")=1";
+                $consultaModulo = Yii::app()->db->createCommand($sql)->queryAll();
+            
                 $model->aplicacion_existe=true;
                 $model->idaplicacion= $aplicacionFromDb->idaplicacion;
                 $model->nombre= $aplicacionFromDb->nombre;
@@ -248,11 +252,19 @@ class AplicacionController extends Controller
                 }
             }
             $moduloSearch= new ModuloApp;
-           
-            $this->render('config',array('model'=>$model,'modelViral'=>$modelViral,'moduloApp'=>$moduloApp ,'moduloSearch'=>$moduloSearch, 'modelAplicacion'=>$aplicacionFromDb));
+            //$pago=new Pago;
+            //$response=$pago->consulta_id($modelUsuario->id_cliente_payu);
+            //var_dump($response);die;
+
+
+
+          
+
+            $this->render('config',array('model'=>$model,'modelViral'=>$modelViral,'moduloApp'=>$moduloApp ,'moduloSearch'=>$moduloSearch, 'modelAplicacion'=>$aplicacionFromDb,'modulos'=>$consultaModulo));
       }
 
-
+  
+  
       public function actionUpload() {
 
         Yii::import("ext.EAjaxUpload.qqFileUploader");
@@ -272,6 +284,24 @@ class AplicacionController extends Controller
         echo $return; // it's array 
     }
 
+
+    public function actionStatus($id, $estado) {
+       
+       
+        $model=Aplicacion::model()->find("idaplicacion=".$id);
+        if($model===null){
+            throw new CHttpException(404,'The requested page does not exist.');
+        }else{
+
+            $model->estado=$estado;
+         
+            if($model->save()){
+                var_dump("true");die;
+            }
+        }
+
+    }
+
     public function actionUpload_resource($idaplicacion = null, $type = null)
     {
         
@@ -284,10 +314,6 @@ class AplicacionController extends Controller
 
             $imageFile = CUploadedFile::getInstanceByName('file');
             $rnd = rand(0,9999);
-                          
-                          
-                 //   $tmp = $uploadedFile->tempName;
-                //  var_dump(dirname(Yii::app()->request->scriptFile));die;
                 if(isset($imageFile)){  
                     if($type=='splash'){
                         if($model->imagen_splash!=''){
@@ -358,11 +384,8 @@ class AplicacionController extends Controller
     }
    public function createZip($files = array(), $destination = '', $overwrite = false) {
 
-
-        if(file_exists($destination) && !$overwrite) { return false; }
-     
-     
-        $validFiles = [];
+       if(file_exists($destination) && !$overwrite) { return false; }
+         $validFiles = [];
         if(is_array($files)) {
            foreach($files as $file) {
               if(file_exists($file)) {
@@ -370,20 +393,14 @@ class AplicacionController extends Controller
               }
            }
         }
-     
-     
         if(count($validFiles)) {
            $zip = new ZipArchive();
            if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
               return false;
            }
-     
-     
            foreach($validFiles as $file) {
               $zip->addFile($file,$file);
            }
-     
-     
            $zip->close();
            return file_exists($destination);
         }else{
@@ -473,10 +490,9 @@ class AplicacionController extends Controller
   
           if(isset($_POST['ModuloApp']))
           {
-              var_dump(json_encode($_POST));die;
-              $moduloApp->attributes=$_POST['ModuloApp'];
 
-              var_dump($moduloApp->attributes);die;
+          
+              $moduloApp->attributes=$_POST['ModuloApp'];
 
               $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
               
@@ -648,7 +664,8 @@ class AplicacionController extends Controller
          
         // Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-    
+        $consultaModulo=array();
+           
         if(isset($_POST['ajax']) && $_POST['ajax']==='modulo-app-form')
         {
             echo CActiveForm::validate($model);
@@ -668,10 +685,17 @@ class AplicacionController extends Controller
             
 		}else{
             $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
-           
+            $modelUsuario=$this->loadModelUsuario(Yii::app()->user->getState('id_usuario'));
+            $plan=Plan::model()->find("plan_code='".$modelUsuario->codigo_plan."'");
+            $sql = "select idparametros ,codigo, nombre from parametros b where b.tipo='modulo' and b.max > (select COUNT(codigo) from modulo_app a where a.aplicacion_usuario_id_usuario=".Yii::app()->user->getState('id_usuario'). " and a.tipo_modulo=b.codigo ) and (SELECT count(1) FROM plan_has_parametros a WHERE a.parametros_idparametros=b.idparametros AND a.plan_id_plan=".$plan->id_plan.")=1";
+            $consultaModulo = Yii::app()->db->createCommand($sql)->queryAll();
+        
+
+             
             $this->render('update',array(
                 'model'=>$model,
-                'model_aplicacion'=>$aplicacionFromDb
+                'model_aplicacion'=>$aplicacionFromDb,
+                'modulos'=> $consultaModulo
             ));
         }
 	}
@@ -731,6 +755,16 @@ class AplicacionController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+
+	public function loadModelUsuario($id)
+	{
+		$model=Usuario::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+
 
 	/**
 	 * Performs the AJAX validation.

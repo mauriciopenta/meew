@@ -115,6 +115,12 @@
 		<?php echo $form->label($model,'paquete'); ?>
 		<?php echo $form->textField($model,'paquete',array('size'=>200,'maxlength'=>200)); ?>
 	</div>
+	<div class="row">
+		<?php echo $form->label($model,'estado'); ?>
+		<?php echo $form->textField($model,'estado_search',array('size'=>200,'maxlength'=>200)); ?>
+	</div>
+
+
 <?php $this->endWidget(); ?>
 
 </div><!-- search-form -->

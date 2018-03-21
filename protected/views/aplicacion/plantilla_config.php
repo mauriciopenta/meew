@@ -100,7 +100,7 @@
              <div  class="row" style="margin-left:5px;" >
                 <div class="col-md-6">
 						<div class="form-group has-feedback" >
-								<label >Imagen fondo</label>
+								<label >Imagen fondo (800x1200) </label>
 								
 								<?php echo $form->fileField($model, 'imageFile', array('size' => 48)); ?>  
 								<?php echo $form->error($model,'imageFile'); ?>
@@ -128,8 +128,11 @@
 
 	   </div>
 	</div>
-
-
+<?php
+	$aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+        
+		if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
+	?>
 <div class="box box-primary"  id="estilo" action="#estilo" >
 		<div class="box-header with-border">
 			<h3 class="box-title"> Estructura</h3>
@@ -252,6 +255,7 @@
 				<?php echo CHtml::submitButton('Guardar', array ('class' => 'btn btn-info pull-right')); ?>
 			</div>
 		</div><!-- form -->
+		<?php }?>
 	   </div>
 	   </div>
 	   <?php $this->endWidget(); ?>
@@ -259,10 +263,14 @@
 	</div>
 
 	<?php
-		$this->widget('ImageManager', array(
-			'aplicacion' => $modelAplicacion,
-			'controllerRoute'=>'RecursosController'
-			)); 
+	 $aplicacionFromDb= Aplicacion::model()->findByAttributes(array('usuario_id_usuario'=>Yii::app()->user->getState('id_usuario')));
+        
+	   if(is_object($aplicacionFromDb) && isset($aplicacionFromDb->nombre)){
+			$this->widget('ImageManager', array(
+				'aplicacion' => $modelAplicacion,
+				'controllerRoute'=>'RecursosController'
+				)); 
+       }
 	?>
 
 
