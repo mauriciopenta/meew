@@ -29,7 +29,7 @@ class SiteController extends Controller
      */
     public function filters(){
         return array(
-                'enforcelogin -dataContentSlider -dataContent -selectpais -login -recover -reset -registropago -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile  -aplicacionConfig',                      
+                'enforcelogin  -loadStyles -dataContentSlider -dataContent -selectpais -login -recover -reset -registropago -register -index -logout -contact -registerPlatform -searchservices -registerPlatformMovile -loginPlatformMovile  -aplicacionConfig',                      
         );
     }
 	/**
@@ -384,6 +384,20 @@ class SiteController extends Controller
             switch($res["tipo_modulo"]){
                 case 1:
                    $response["content"]=$this->consultaGallery($res["id_contenido"]);
+                    $img=0;
+                    $vid=0;
+                    if(!empty($response["content"])){
+                       foreach($response["content"] as $cont){
+                           if($cont["tipo_contenido"]==1){
+                               $img++;
+                           }
+                           else{
+                                $vid++;
+                           }
+                       } 
+                    }
+                    $response["img"]=$img;
+                    $response["vid"]=$vid;
                 break;
                 case 2:
                     $response["content"]=$this->consultaGallery($res["id_contenido"]);
@@ -471,8 +485,15 @@ class SiteController extends Controller
         }
     
     
-        
-        public function actionLoginPlatformMovile(){
+        public function actionLoadStyles(){
+            $datos=Yii::app()->request->getPost("idapp");
+            $modelApp=  Aplicacion::model()->findByAttributes(array("idaplicacion"=>$datos));
+            $parametros=Parametros::model()->findAllBySql("select * from parametros where tipo='genero' or tipo='rango_edad' order by codigo asc");
+            $result["estilos"]=$modelApp; 
+            $result["parametros"]=$parametros;
+            echo CJSON::encode($result);
+        }
+         public function actionLoginPlatformMovile(){
             $modeloUsuario= Usuario::model();
 //            $modeloPersona= Persona::model();
             $datos=Yii::app()->request->getPost("Usuario");
@@ -503,6 +524,8 @@ class SiteController extends Controller
                 $response["usuario"]["token"]="lkjd02kd0lksksdfAAsld9E";
                 $response["idplantilla"]=$modelApp["id_plantilla"];
                 $response["image"]=$modelApp["url_fondo"];
+                $response["color"]=$modelApp["color"];
+                $response["color_icon"]=$modelApp["color_icon"];
                 $response["msg"]="";
                 $response["contplantilla"]=$modeloModulApp;
                 $response["contmb"]=$menuBottom;
