@@ -407,7 +407,6 @@ class SiteController extends Controller
                 break;
                 case 4:
                     $response["content"]=$this->consultaUbicacion($res["aplicacion_idaplicacion"]);
-                    array_push($response["content"],$this->consultaPersona($res["aplicacion_idaplicacion"]));
                 break;
                 case 5:
                     $response["content"]=$this->consultaTemaSoporte($res["aplicacion_idaplicacion"]);
@@ -432,7 +431,7 @@ class SiteController extends Controller
         }
         public function consultaUbicacion($idApp){
             $conn=Yii::app()->db;
-            $sql="SELECT direccion,longitud,latitud FROM m_viral WHERE aplicacion_idaplicacion=:idapp";
+            $sql="SELECT direccion,longitud,latitud,telefono,correo_contacto FROM m_viral WHERE aplicacion_idaplicacion=:idapp";
             $query=$conn->createCommand($sql);
             $query->bindParam(":idapp", $idApp);
             $read=$query->query();
