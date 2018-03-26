@@ -406,7 +406,8 @@ class SiteController extends Controller
                     $response["content"]=$res["texto_html"];
                 break;
                 case 4:
-                    $response["content"]="";
+                    $response["content"]=$this->consultaUbicacion($res["aplicacion_idaplicacion"]);
+                    array_push($response["content"],$this->consultaPersona($res["aplicacion_idaplicacion"]));
                 break;
                 case 5:
                     $response["content"]=$this->consultaTemaSoporte($res["aplicacion_idaplicacion"]);
@@ -415,7 +416,30 @@ class SiteController extends Controller
 //            $response["content"]=$res;
             echo CJSON::encode($response);
         }
-        
+        public function consultaPersona($idApp){
+            $conn=Yii::app()->db;
+            $sql="SELECT persona_correo,persona_telefono FROM aplicacion as ap "
+                    . "left join usuario as us on us.id_usuario=ap.usuario_id_usuario "
+                    . "left join persona as pr on pr.id_persona=us.id_persona  "
+                    . "WHERE idaplicacion=:idapp";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":idapp", $idApp);
+            $read=$query->query();
+            $res=$read->read();
+            $read->close();
+            return $res;
+            
+        }
+        public function consultaUbicacion($idApp){
+            $conn=Yii::app()->db;
+            $sql="SELECT direccion,longitud,latitud FROM m_viral WHERE aplicacion_idaplicacion=:idapp";
+            $query=$conn->createCommand($sql);
+            $query->bindParam(":idapp", $idApp);
+            $read=$query->query();
+            $res=$read->read();
+            $read->close();
+            return $res;
+        }
         public function consultaGallery($galeriid){
             $conn=Yii::app()->db;
             $sql="SELECT * FROM gallery_photo WHERE gallery_id=:galleryid";
