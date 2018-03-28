@@ -514,6 +514,21 @@ class SiteController extends Controller
             $parametros=Parametros::model()->findAllBySql("select * from parametros where tipo='genero' or tipo='rango_edad' order by codigo asc");
             $result["estilos"]=$modelApp; 
             $result["parametros"]=$parametros;
+            $result["login_rs"]["login_facebook"]=$modelApp["login_facebook"];
+            $result["campo_registro"]["nombre_activo"]["activo"]=$modelApp["nombre_activo"];
+            $result["campo_registro"]["nombre_activo"]["label"]="Nombres";
+            $result["campo_registro"]["apellido_activo"]["activo"]=$modelApp["apellido_activo"];
+            $result["campo_registro"]["apellido_activo"]["label"]="Apellidos";
+            $result["campo_registro"]["celular_activo"]["activo"]=$modelApp["celular_activo"];
+            $result["campo_registro"]["celular_activo"]["label"]="Celular";
+            $result["campo_registro"]["politicas_privacidad_activo"]["activo"]=$modelApp["politicas_privacidad_activo"];
+            $result["campo_registro"]["politicas_privacidad_activo"]["label"]="Políticas de privacidad";
+            $result["campo_registro"]["nombre_usuario"]["activo"]=$modelApp["nombre_usuario_activo"];
+            $result["campo_registro"]["nombre_usuario"]["label"]="Usuario";
+            $result["campo_registro"]["rango_edad"]["activo"]=$modelApp["rango_edad"];
+            $result["campo_registro"]["rango_edad"]["label"]="Edad";
+            $result["campo_registro"]["genero"]["activo"]=$modelApp["genero"];
+            $result["campo_registro"]["genero"]["label"]="Género";
             echo CJSON::encode($result);
         }
          public function actionLoginPlatformMovile(){
